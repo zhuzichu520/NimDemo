@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            app:qmui_skin_background="?attr/app_skin_color_divider" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            app:qmui_skin_background="?attr/app_skin_color_background_item">
+
+            <FrameLayout
+                android:id="@+id/layout_left"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_voice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/nim_ic_input_voice" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/start_keyboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/nim_ic_input_keyboard" />
+
+            </FrameLayout>
+
+            <com.qmuiteam.qmui.layout.QMUIFrameLayout
+                android:id="@+id/center_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layout_emoji"
+                app:layout_constraintStart_toEndOf="@+id/layout_left"
+                app:qmui_borderWidth="1px"
+                app:qmui_radius="5dp"
+                app:qmui_skin_border="?attr/app_skin_color_divider">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/center_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web|email|phone"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:maxLength="5000"
+                    android:maxLines="3"
+                    android:textSize="17sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/center_audio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:editable="false"
+                    android:gravity="center"
+                    android:text="@string/record_audio"
+                    android:textSize="17sp" />
+
+            </com.qmuiteam.qmui.layout.QMUIFrameLayout>
+
+            <FrameLayout
+                android:id="@+id/layout_emoji"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layout_right">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/center_emoji"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/nim_ic_input_emoji" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/center_keyboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/nim_ic_input_keyboard" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/layout_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/end_more"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    app:srcCompat="@mipmap/nim_ic_input_more" />
+
+                <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                    android:id="@+id/end_send"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:text="@string/send"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="17sp"
+                    app:qmui_radius="6dp"
+                    app:qmui_skin_background="?attr/app_skin_color_primary" />
+
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+</layout>

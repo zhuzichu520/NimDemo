@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!ELEMENT modules (module+)>
+    <!ELEMENT module (#PCDATA)>
+    <!ATTLIST module
+        name CDATA #REQUIRED
+        application CDATA #REQUIRED
+        app (true|false) 'false'
+        >
