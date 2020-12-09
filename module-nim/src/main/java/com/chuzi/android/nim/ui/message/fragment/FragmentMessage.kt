@@ -28,7 +28,7 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
  * since: v 1.0.0
  */
 
-@Route(path = RoutePath.Nim.FRAGMENT_MESSAGE_P2P)
+@Route(path = RoutePath.Nim.FRAGMENT_NIM_MESSAGE_P2P)
 class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage, ArgMessage>() {
 
     private val fragmentOperation: Fragment by lazy {

@@ -68,34 +68,43 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
          * 用户资料发生变化
          */
         RxBus.toObservable(NimEvent.OnUserInfoUpdateEvent::class.java)
-            .bindToSchedulers()
-            .life(viewModel)
-            .subscribe {
+            .map {
                 viewModel.refreshData(it.list.map { userInfo ->
                     userInfo.account
                 })
+            }
+            .bindToSchedulers()
+            .life(viewModel)
+            .subscribe {
+                AppFactorySDK.sessionLiveData.value = it
             }
 
         /**
          * 监听好友关系变化
          */
         RxBus.toObservable(NimEvent.OnAddedOrUpdatedFriendsEvent::class.java)
-            .bindToSchedulers()
-            .life(viewModel)
-            .subscribe {
+            .map {
                 viewModel.refreshData(it.list.map { friend ->
                     friend.account
                 })
+            }
+            .bindToSchedulers()
+            .life(viewModel)
+            .subscribe {
+                AppFactorySDK.sessionLiveData.value = it
             }
 
         /**
          * 监听最近会话变换
          */
         RxBus.toObservable(NimEvent.OnRecentContactEvent::class.java)
+            .map {
+                viewModel.handleRecentList(it.list)
+            }
             .bindToSchedulers()
             .life(viewModel)
             .subscribe {
-                viewModel.handleRecentList(it.list)
+                AppFactorySDK.sessionLiveData.value = it
             }
 
         /**
@@ -131,7 +140,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
          */
         viewModel.onItemClickEvent.observe(viewLifecycleOwner) {
             navigate(
-                RoutePath.Nim.ACTIVITY_MESSAGE_MAIN,
+                RoutePath.Nim.ACTIVITY_NIM_MESSAGE,
                 arg = ArgMessage(it.contactId, it.contact.sessionType.value)
             )
         }
@@ -259,7 +268,6 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
             .arrow(true)
             .show(binding.menu)
     }
-
 
     class SessionOptionHolder(itemView: View) : ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.text)

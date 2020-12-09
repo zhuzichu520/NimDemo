@@ -57,7 +57,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5">
 
-            <View
+            <TextView
                 android:id="@+id/view_record"
                 android:layout_width="130dp"
                 android:layout_height="12dp"

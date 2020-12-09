@@ -1,12 +1,11 @@
 package com.chuzi.android.nim.ui.contract.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
-import com.chuzi.android.nim.ui.NimShare
+import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSearch
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.ext.map
@@ -25,7 +24,7 @@ class ViewModelContract : ViewModelBase<ArgDefault>() {
      * 所有数据
      */
     val items: LiveData<List<Any>> =
-        Transformations.map(NimShare.sessionLiveData) { list ->
+        Transformations.map(AppFactorySDK.sessionLiveData) { list ->
             val data = ArrayList<Any>()
             data.add(ItemViewModelSearch(this))
             data.add(
@@ -35,12 +34,26 @@ class ViewModelContract : ViewModelBase<ArgDefault>() {
                     R.mipmap.nim_item_add_friends
                 )
             )
+            data.add(
+                ItemViewModelContractGroup(
+                    this,
+                    R.string.my_frends,
+                    R.mipmap.nim_item_my_fridends
+                )
+            )
+            data.add(
+                ItemViewModelContractGroup(
+                    this,
+                    R.string.team_group,
+                    R.mipmap.nim_item_team_group
+                )
+            )
             data.add(ItemViewModelLine(this))
             data.add(ItemViewModelContractHistoryTitle(this))
             val historyList = mutableListOf<ItemViewModelContractHistory>()
             list.forEach { item ->
-                if (item.contact.sessionType == SessionTypeEnum.P2P) {
-                    historyList.add(ItemViewModelContractHistory(this, item.contact))
+                if (item.sessionType == SessionTypeEnum.P2P) {
+                    historyList.add(ItemViewModelContractHistory(this, item))
                 }
             }
             data.addAll(historyList)

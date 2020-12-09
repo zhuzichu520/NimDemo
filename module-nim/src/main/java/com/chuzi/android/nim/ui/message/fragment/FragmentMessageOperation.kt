@@ -15,7 +15,7 @@ import com.chuzi.android.shared.route.RoutePath
  * time: 2020/12/7 3:25 PM
  * since: v 1.0.0
  */
-@Route(path = RoutePath.Nim.FRAGMENT_MESSAGE_OPERATION)
+@Route(path = RoutePath.Nim.FRAGMENT_NIM_MESSAGE_OPERATION)
 class FragmentMessageOperation :
     FragmentBase<NimFragmentMessageOperationBinding, ViewModelMessageOperation, ArgDefault>() {
 

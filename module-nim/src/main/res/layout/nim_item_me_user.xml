@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.chuzi.android.nim.ui.me.viewmodel.ItemViewModelMeUser" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:qmui_skin_background="?attr/app_skin_color_background_item">
+
+        <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="10dp"
+            app:onClickCommand="@{item.onClickCommand}"
+            app:qmui_borderWidth="1dp"
+            app:qmui_radius="5dp"
+            app:qmui_skin_border="?attr/app_skin_color_divider">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="20dp"
+                android:text="@{item.name}"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:qmui_skin_text_color="?attr/app_skin_color_font_primary" />
+
+            <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                android:id="@+id/icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/name"
+                app:placeholder="@{item.placeholder}"
+                app:qmui_is_circle="true"
+                app:url="@{item.avatar}"
+                tools:src="@mipmap/ic_launcher" />
+
+
+        </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+
+    </FrameLayout>
+</layout>

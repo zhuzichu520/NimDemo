@@ -53,6 +53,6 @@ inline fun <reified T> itemDiffOf(crossinline closure: (oldItem: T, newItem: T) 
     }
 }
 
-fun Any.diffEquals(item: Any): Boolean {
+fun Any?.diffEquals(item: Any?): Boolean {
     return this == item
 }

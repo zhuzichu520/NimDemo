@@ -17,6 +17,15 @@
     <string name="on_disturb">免打扰</string>
     <string name="remove">移除</string>
 
+    <string name="me">我的</string>
+    <string name="me_file">我的本地文件</string>
+    <string name="me_setting">设置</string>
+    <string name="me_cache_clear">清理缓存</string>
+    <string name="me_session_clear">批量会话清理</string>
+    <string name="me_call">在线客服</string>
+    <string name="me_about">关于我们</string>
+    <string name="me_collection">收藏</string>
+
     <string name="send">Send</string>
     <string name="record_audio">按住 说话</string>
     <string name="recording_cancel">手指上滑　取消发送</string>
@@ -29,6 +38,8 @@
     <string name="message_operation_local">位 置</string>
 
     <string name="new_frends">新的好友</string>
+    <string name="my_frends">我的好友</string>
+    <string name="team_group">工作群</string>
     <string name="history_title">历史联系人</string>
 
     <string name="rich_scan">扫一扫</string>

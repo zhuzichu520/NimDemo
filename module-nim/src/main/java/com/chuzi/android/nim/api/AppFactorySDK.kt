@@ -20,6 +20,7 @@ import com.chuzi.android.shared.storage.AppStorage
 import com.chuzi.android.widget.crash.CrashConfig
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.auth.LoginInfo
+import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.netease.nimlib.sdk.util.NIMUtil
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
 import jonathanfinerty.once.Once
@@ -36,6 +37,12 @@ object AppFactorySDK {
      * 消息未读数
      */
     private val unReadNumber: MutableLiveData<Int> = MutableLiveData()
+
+    /**
+     * 最近会话livedata对象，在会话列表中维护该集合
+     * @see com.chuzi.android.nim.ui.session.fragment.FragmentSession
+     */
+    val sessionLiveData = MutableLiveData<List<RecentContact>>(listOf())
 
     /**
      * 开放接口，SDK调用总集

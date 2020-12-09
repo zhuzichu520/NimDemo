@@ -13,10 +13,10 @@ import com.chuzi.android.shared.route.RoutePath
  * since: v 1.0.0
  */
 
-@Route(path = RoutePath.Nim.ACTIVITY_MESSAGE_MAIN)
+@Route(path = RoutePath.Nim.ACTIVITY_NIM_MESSAGE)
 class ActivityMessage : ActivityBase() {
 
-    override fun getRoute(): String = RoutePath.Nim.FRAGMENT_MESSAGE_P2P
+    override fun getRoute(): String = RoutePath.Nim.FRAGMENT_NIM_MESSAGE_P2P
 
     override fun onDestroy() {
         super.onDestroy()

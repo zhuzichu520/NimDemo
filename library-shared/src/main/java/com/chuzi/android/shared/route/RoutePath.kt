@@ -11,18 +11,39 @@ object RoutePath {
      */
     object Nim {
 
+        /**
+         * NIM
+         */
         const val ACTIVITY_NIM_MAIN = "/nim/activity/main"
         const val FRAGMENT_NIM_MAIN = "/nim/fragment/main"
+
+        /**
+         * 联系人
+         */
         const val FRAGMENT_NIM_CONTRACT = "/nim/fragment/contract"
+
+        /**
+         * 会话
+         */
         const val FRAGMENT_NIM_SESSION = "/nim/fragment/session"
+
+        /**
+         * 设置
+         */
         const val FRAGMENT_NIM_SETTING = "/nim/fragment/setting"
 
-        const val ACTIVITY_MESSAGE_MAIN = "/message/activity/main"
-        const val FRAGMENT_MESSAGE_P2P = "/message/fragment/p2p"
-        const val FRAGMENT_MESSAGE_TEAM = "/message/fragment/team"
-        const val FRAGMENT_MESSAGE_EMOTICON = "/message/fragment/emoticon"
-        const val FRAGMENT_MESSAGE_OPERATION = "/message/fragment/operation"
+        /**
+         * Message
+         */
+        const val ACTIVITY_NIM_MESSAGE = "/nim/activity/message"
+        const val FRAGMENT_NIM_MESSAGE_P2P = "/nim/fragment/message/p2p"
+        const val FRAGMENT_NIM_MESSAGE_EMOTICON = "/nim/fragment/message/emoticon"
+        const val FRAGMENT_NIM_MESSAGE_OPERATION = "/nim/fragment/message/operation"
 
+        /**
+         * 我的
+         */
+        const val FRAGMENT_NIM_ME = "/nim/fragment/me"
     }
 
 }

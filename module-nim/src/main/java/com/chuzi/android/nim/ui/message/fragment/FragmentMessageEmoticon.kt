@@ -16,7 +16,7 @@ import com.qmuiteam.qmui.arch.QMUIFragment
  * time: 2020/12/7 3:25 PM
  * since: v 1.0.0
  */
-@Route(path = RoutePath.Nim.FRAGMENT_MESSAGE_EMOTICON)
+@Route(path = RoutePath.Nim.FRAGMENT_NIM_MESSAGE_EMOTICON)
 class FragmentMessageEmoticon :
     FragmentBase<NimFragmentMessageEmoticonBinding, ViewModelMessageEmoticon, ArgDefault>() {
 

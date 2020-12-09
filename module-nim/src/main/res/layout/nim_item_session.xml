@@ -94,7 +94,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+        <TextView
             android:layout_width="0dp"
             android:layout_height="1px"
             app:layout_constraintBottom_toBottomOf="parent"

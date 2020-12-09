@@ -43,7 +43,7 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
         val postcards = listOf<Postcard>(
             ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_SESSION),
             ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_CONTRACT),
-            ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_SETTING)
+            ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_ME)
         )
         initTabs()
         initBadge()
@@ -107,7 +107,7 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
         val setting = builder
             .setNormalDrawable(R.mipmap.nim_ic_main_setting_normal.toDrawableByResId())
             .setSelectedDrawable(R.mipmap.nim_ic_main_setting_selected.toDrawableByResId())
-            .setText(R.string.setting.toStringByResId())
+            .setText(R.string.me.toStringByResId())
             .build(context)
 
         binding.tabs.addTab(session).addTab(contract).addTab(setting)

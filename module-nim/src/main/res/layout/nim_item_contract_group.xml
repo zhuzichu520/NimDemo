@@ -12,7 +12,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        app:qmui_skin_background="?attr/app_skin_color_background_item">
+        app:onClickCommand="@{item.onClickCommand}"
+        app:qmui_skin_background="?attr/qmui_skin_support_s_list_item_bg_2">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon"
@@ -35,13 +36,24 @@
             android:singleLine="true"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/arrow"
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="parent"
+            app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
             app:textId="@{item.textId}"
             tools:text="哈啊快结束的风景阿拉山口的减肥啦时间都放辣椒塑料袋封口机阿斯利康地方" />
 
-        <View
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="14dp"
+            android:src="@mipmap/nim_ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:layout_width="0dp"
             android:layout_height="1px"
             app:layout_constraintBottom_toBottomOf="parent"
