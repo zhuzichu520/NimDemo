@@ -53,7 +53,7 @@ class InitModule(private val project: Project) {
 
         project.dependencies.apply {
             add("implementation", project.fileTree(mapOf("dir" to "libs", "include" to "*.jar")))
-            add("api", project(mapOf("path" to ":library-shared")))
+            add("implementation", project(mapOf("path" to ":library-shared")))
             add("kapt", Kapts.AROUTER_COMPILER)
             add("kapt", Kapts.QMUI_ARCH_COMPILER)
         }

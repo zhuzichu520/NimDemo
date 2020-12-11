@@ -4,6 +4,7 @@ object RoutePath {
 
     object Login {
         const val FRAGMENT_LOGIN_MAIN = "/login/fragment/main"
+        const val ACTIVITY_LOGIN_MAIN = "/login/activity/main"
     }
 
     /**
@@ -30,7 +31,9 @@ object RoutePath {
         /**
          * 设置
          */
+        const val ACTIVITY_NIM_SETTING = "/nim/activity/setting"
         const val FRAGMENT_NIM_SETTING = "/nim/fragment/setting"
+        const val FRAGMENT_NIM_SETTING_THEME = "/nim/fragment/setting/theme"
 
         /**
          * Message
@@ -44,6 +47,10 @@ object RoutePath {
          * 我的
          */
         const val FRAGMENT_NIM_ME = "/nim/fragment/me"
+        const val ACTIVITY_NIM_ME_CLEAN_CACHE = "/nim/activity/me/clean_cache"
+        const val FRAGMENT_NIM_ME_CLEAN_CACHE = "/nim/fragment/me/clean_cache"
+        const val ACTIVITY_NIM_ME_CLEAN_SESSION = "/nim/activity/me/clean_session"
+        const val FRAGMENT_NIM_ME_CLEAN_SESSION = "/nim/fragment/me/clean_session"
     }
 
 }

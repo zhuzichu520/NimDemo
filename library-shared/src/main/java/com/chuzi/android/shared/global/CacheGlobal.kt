@@ -1,10 +1,16 @@
 package com.chuzi.android.shared.global
 
+import com.chuzi.android.libs.tool.byteCountToDisplaySizeTwo
+import com.chuzi.android.libs.tool.forceDelete
 import com.chuzi.android.libs.tool.isExternalStorageWriteable
+import com.chuzi.android.libs.tool.sizeOf
 import com.chuzi.android.shared.global.AppGlobal.context
 import java.io.File
 
 object CacheGlobal {
+
+    //缓存根根目录
+    private const val CACHE_BASE_DISK = "cache_root"
 
     private const val CACHE_COIL_FILE_NAME = "cache_coil"
 
@@ -71,12 +77,17 @@ object CacheGlobal {
     /**
      * 获取存储目录
      */
-    private fun getBaseDiskCacheDir(): File {
-        return if (isExternalStorageWriteable()) {
+    fun getBaseDiskCacheDir(): File {
+        val file = if (isExternalStorageWriteable()) {
             context.externalCacheDir ?: context.cacheDir
         } else {
             context.cacheDir
         }
+        val baseFile = File(file.toString(), CACHE_BASE_DISK)
+        if (!baseFile.exists()) {
+            baseFile.mkdirs()
+        }
+        return baseFile
     }
 
     private fun getDiskCacheDir(last: String): File {
@@ -85,6 +96,24 @@ object CacheGlobal {
             file.mkdirs()
         }
         return file.absoluteFile
+    }
+
+    /**
+     * 清除所有缓存
+     */
+    fun clear() {
+        forceDelete(getBaseDiskCacheDir())
+    }
+
+    private fun getCacheSize(): Long {
+        return sizeOf(getBaseDiskCacheDir())
+    }
+
+    /**
+     * 获取文件内容大小，保留两位小数
+     */
+    fun getCacheSizeString(): String {
+        return byteCountToDisplaySizeTwo(getCacheSize())
     }
 
 }

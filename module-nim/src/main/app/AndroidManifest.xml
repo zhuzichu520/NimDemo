@@ -50,7 +50,7 @@
             android:value="768" />
 
         <activity
-            android:name=".ActivityNim"
+            android:name=".ui.main.ActivityNim"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
             <intent-filter>

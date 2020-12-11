@@ -29,6 +29,7 @@ import com.chuzi.android.shared.entity.arg.ArgMessage
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.dp2px
 import com.chuzi.android.shared.route.RoutePath
+import com.chuzi.android.shared.skin.SkinManager
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
@@ -145,6 +146,9 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
             )
         }
 
+        SkinManager.onSkinChangeListener.observe(viewLifecycleOwner) {
+            viewModel.returnItemColor()
+        }
     }
 
     /**

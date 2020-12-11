@@ -12,7 +12,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        app:qmui_skin_background="?attr/app_skin_color_background_item">
+        app:qmui_skin_background="?attr/app_skin_color_background_1">
 
         <com.qmuiteam.qmui.layout.QMUIConstraintLayout
             android:layout_width="match_parent"

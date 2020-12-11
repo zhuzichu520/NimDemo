@@ -21,7 +21,7 @@
 
     <style name="DialogTheme2TitleStyle" parent="QMUI.Dialog.Title">
         <item name="android:textColor">?attr/qmui_config_color_gray_1</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">28dp</item>
         <item name="android:singleLine">false</item>
@@ -42,7 +42,7 @@
 
     <style name="DialogTheme2ActionStyle">
         <item name="android:textColor">?attr/qmui_config_color_blue</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
         <item name="android:minWidth">64dp</item>
         <item name="android:background">@null</item>
@@ -54,7 +54,7 @@
 
     <style name="DialogTheme2MessageContentStyle" parent="QMUI.Dialog.MessageContent">
         <item name="android:textColor">?attr/qmui_config_color_gray_4</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">13dp</item>
         <item name="android:paddingBottom">27dp</item>
@@ -63,12 +63,12 @@
     </style>
 
     <style name="ReleaseMessageContentStyle" parent="DialogTheme2MessageContentStyle">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">19sp</item>
         <item name="android:gravity">left</item>
     </style>
 
     <style name="DialogTheme2MenuItemStyle" parent="@style/QMUI.Dialog.MenuItem">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">21sp</item>
         <item name="android:textColor">?attr/qmui_config_color_gray_1</item>
         <item name="android:paddingLeft">32dp</item>
         <item name="android:paddingRight">32dp</item>

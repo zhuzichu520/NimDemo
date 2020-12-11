@@ -9,6 +9,7 @@ import com.chuzi.android.nim.ui.contract.viewmodel.ItemViewModelLine
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.ext.autoLoading
 import com.chuzi.android.shared.ext.map
+import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.storage.AppStorage
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.rxjava.rxlife.life
@@ -57,21 +58,27 @@ class ViewModelMe : ViewModelBase<ArgDefault>() {
                 this,
                 R.string.me_setting,
                 R.mipmap.nim_ic_me_setting
-            )
+            ) {
+                navigate(RoutePath.Nim.ACTIVITY_NIM_SETTING)
+            }
         )
         data.add(
             ItemViewModelMeGroup(
                 this,
                 R.string.me_cache_clear,
                 R.mipmap.nim_ic_me_cache_clear
-            )
+            ) {
+                navigate(RoutePath.Nim.ACTIVITY_NIM_ME_CLEAN_CACHE)
+            }
         )
         data.add(
             ItemViewModelMeGroup(
                 this,
                 R.string.me_session_clear,
                 R.mipmap.nim_ic_me_session_clear
-            )
+            ) {
+                navigate(RoutePath.Nim.ACTIVITY_NIM_ME_CLEAN_SESSION)
+            }
         )
         data.add(ItemViewModelLine(this))
         data.add(

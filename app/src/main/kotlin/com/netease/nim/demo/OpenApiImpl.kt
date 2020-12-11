@@ -12,4 +12,8 @@ class OpenApiImpl : OpenApi {
 
     override fun testApi(): String = "test"
 
+    override fun logout() {
+
+    }
+
 }

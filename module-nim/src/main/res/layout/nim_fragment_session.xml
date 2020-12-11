@@ -20,7 +20,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/recycler"
             app:layout_constraintTop_toTopOf="parent"
-            app:qmui_skin_background="?attr/app_skin_color_background_item" />
+            app:qmui_skin_background="?attr/app_skin_color_background_1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
@@ -43,7 +43,8 @@
             android:src="@mipmap/nim_ic_add"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title" />
+            app:layout_constraintTop_toTopOf="@+id/title"
+            app:qmui_skin_tint_color="?attr/app_skin_color_font_primary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"

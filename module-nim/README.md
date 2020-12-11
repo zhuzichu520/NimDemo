@@ -453,10 +453,10 @@ object AppFactorySDK {
      * 登录IM
      * @param account 用户账号
      * @param token 用户密码 可以不传 由sdk生成
-     * @param callback 回调接口，成功会返回一个IM token，失败返回错误信息 以及错误码
+     * @param nimCallBack 回调接口，成功会返回一个IM token，失败返回错误信息 以及错误码
      */
     @JvmStatic
-    fun loginNim(account: String, token: String? = null, callback: Callback<String>) {
+    fun loginNim(account: String, token: String? = null, nimCallBack: Callback<String>) {
 
     }
 

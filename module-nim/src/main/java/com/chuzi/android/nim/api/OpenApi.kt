@@ -15,6 +15,8 @@ interface OpenApi {
     fun testApi(): String
 
     /**
-     * 后续根据业务添加方法
+     * 退出登录
      */
+    fun logout()
+
 }

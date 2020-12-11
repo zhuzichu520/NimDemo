@@ -31,4 +31,9 @@ object AppStorage {
         token = loginInfo.token
     }
 
+    fun logout(){
+        account = null
+        token = null
+    }
+
 }

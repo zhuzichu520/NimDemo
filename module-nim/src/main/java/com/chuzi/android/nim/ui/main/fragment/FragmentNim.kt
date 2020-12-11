@@ -88,7 +88,7 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
                 QMUIDisplayHelper.sp2px(context, 13),
                 QMUIDisplayHelper.sp2px(context, 15)
             )
-            .skinChangeWithTintColor(false)
+            .skinChangeWithTintColor(true)
             .setDynamicChangeIconColor(false)
             .setNormalIconSizeInfo(24f.dp2px(), 24f.dp2px())
 

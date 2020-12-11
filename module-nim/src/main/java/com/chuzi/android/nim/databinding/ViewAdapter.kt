@@ -1,6 +1,5 @@
 package com.chuzi.android.nim.databinding
 
-import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.chuzi.android.mvvm.databinding.BindingCommand
@@ -22,7 +21,6 @@ fun bindMoonTextView(
 ) {
     moonText?.let {
         ToolMoon.identifyFaceExpression(textView.context, textView, it)
-        textView.movementMethod = LinkMovementMethod.getInstance()
     }
 }
 

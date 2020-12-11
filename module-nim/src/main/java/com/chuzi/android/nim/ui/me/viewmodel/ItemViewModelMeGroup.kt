@@ -16,7 +16,8 @@ import com.chuzi.android.shared.base.ItemViewModelBase
 class ItemViewModelMeGroup(
     viewModel: BaseViewModel<*>,
     @StringRes textId: Int,
-    @DrawableRes iconId: Int
+    @DrawableRes iconId: Int,
+    onClickFunc: (() -> Unit)? = null
 ) : ItemViewModelBase(viewModel) {
 
     val iconId = MutableLiveData(iconId)
@@ -24,7 +25,7 @@ class ItemViewModelMeGroup(
     val textId = MutableLiveData(textId)
 
     val onClickCommand = createCommand {
-
+        onClickFunc?.invoke()
     }
 
 }

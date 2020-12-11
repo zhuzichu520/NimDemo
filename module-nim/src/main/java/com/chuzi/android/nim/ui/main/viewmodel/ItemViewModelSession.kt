@@ -13,6 +13,7 @@ import com.chuzi.android.nim.tools.ToolTeam
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.nim.ui.session.viewmodel.ViewModelSession
 import com.chuzi.android.shared.base.ItemViewModelBase
+import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.badge.Badge
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
@@ -157,14 +158,14 @@ data class ItemViewModelSession(
      * Item正常背景颜色
      */
     fun setItemNormalColor() {
-        background.value = R.color.color_ffffff
+        background.value = if (SkinManager.isDark()) R.color.color_121212 else R.color.color_ffffff
     }
 
     /**
      * Item按压背景颜色
      */
     private fun setItemPressedColor() {
-        background.value = R.color.color_f0f2f4
+        background.value = if (SkinManager.isDark()) R.color.color_000000 else R.color.color_f0f2f4
     }
 
     /**

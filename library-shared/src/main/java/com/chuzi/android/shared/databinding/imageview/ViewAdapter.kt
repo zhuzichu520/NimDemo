@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import coil.load
+import com.chuzi.android.shared.global.AppGlobal
 
 /**
  * desc
@@ -19,7 +20,7 @@ fun bindImageView(
     @DrawableRes placeholder: Int?
 ) {
     (url as? String)?.let {
-        imageView.load(url) {
+        imageView.load(url, imageLoader = AppGlobal.imageLoader) {
             crossfade?.let {
                 crossfade(it)
             }

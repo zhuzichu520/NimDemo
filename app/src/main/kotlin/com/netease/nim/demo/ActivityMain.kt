@@ -1,8 +1,15 @@
 package com.netease.nim.demo
 
-import com.chuzi.android.shared.base.ActivityBase
-import com.chuzi.android.shared.route.RoutePath
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.chuzi.android.nim.api.AppFactorySDK
 
-class ActivityMain : ActivityBase() {
-    override fun getRoute(): String = RoutePath.Login.FRAGMENT_LOGIN_MAIN
+class ActivityMain : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        AppFactorySDK.startLoginActivity(this)
+    }
+
 }

@@ -1,9 +1,10 @@
 package com.chuzi.android.nim.core.config
 
 import android.content.Context
-import com.chuzi.android.nim.ActivityNim
+import com.chuzi.android.nim.ui.main.ActivityNim
 import com.chuzi.android.nim.core.provider.NimUserInfoProvider
 import com.chuzi.android.nim.tools.ToolImage.getImageMaxEdge
+import com.chuzi.android.shared.BuildConfig
 import com.chuzi.android.shared.global.CacheGlobal
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
@@ -106,7 +107,7 @@ object NimConfigSDKOption {
         options: SDKOptions
     ) {
         options.serverConfig = null
-        options.appKey = null
+        options.appKey = BuildConfig.NIM_APPKEY
     }
 
     /**

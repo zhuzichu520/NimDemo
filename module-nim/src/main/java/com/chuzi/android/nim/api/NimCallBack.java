@@ -1,6 +1,6 @@
 package com.chuzi.android.nim.api;
 
-public interface Callback<T> {
+public interface NimCallBack<T> {
     /**
      * 成功时回调
      * @param result 结果

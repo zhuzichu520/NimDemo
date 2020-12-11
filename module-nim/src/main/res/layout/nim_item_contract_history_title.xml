@@ -9,11 +9,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        app:qmui_skin_background="?attr/app_skin_color_background_item">
-
+        app:qmui_skin_background="?attr/app_skin_color_background_1">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="0dp"
@@ -24,12 +22,12 @@
             android:singleLine="true"
             android:text="@string/history_title"
             android:textSize="20sp"
+            app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

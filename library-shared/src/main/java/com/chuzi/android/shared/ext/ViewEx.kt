@@ -2,6 +2,7 @@ package com.chuzi.android.shared.ext
 
 import android.animation.ValueAnimator
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import com.chuzi.android.libs.tool.dp2px
 import com.chuzi.android.libs.tool.toInt
@@ -17,7 +18,7 @@ fun View.changeWidth(startWidth: Float, endWidth: Float, duration: Long = 300) {
     val valueAnimator =
         ValueAnimator.ofInt(dp2px(this.context, startWidth), dp2px(this.context, endWidth))
     valueAnimator.duration = duration
-    valueAnimator.interpolator = LinearInterpolator()
+    valueAnimator.interpolator = AccelerateInterpolator()
     valueAnimator.addUpdateListener {
         layoutParams.width = toInt(it.animatedValue)
         this.layoutParams = layoutParams
@@ -30,7 +31,7 @@ fun View.changeHight(startHight: Float, endHight: Float, duration: Long = 300) {
     val valueAnimator =
         ValueAnimator.ofInt(dp2px(this.context, startHight), dp2px(this.context, endHight))
     valueAnimator.duration = duration
-    valueAnimator.interpolator = LinearInterpolator()
+    valueAnimator.interpolator = AccelerateInterpolator()
     valueAnimator.addUpdateListener {
         layoutParams.height = toInt(it.animatedValue)
         this.layoutParams = layoutParams

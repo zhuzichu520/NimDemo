@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.chuzi.android.nim.ui.me.viewmodel.ItemViewModelCacheSession" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        app:onClickCommand="@{item.onClickCommand}"
+        app:qmui_skin_background="?attr/qmui_skin_support_s_list_item_bg_2">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/nim_selecter_checkbox"
+            android:button="@null"
+            android:checked="@{item.isSelected}"
+            android:clickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:id="@+id/header"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/checkbox"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholder="@{item.placeholder}"
+            app:qmui_is_circle="true"
+            app:url="@{item.avatar}"
+            tools:src="@mipmap/ic_launcher" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="14dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{item.name}"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/date"
+            app:layout_constraintStart_toEndOf="@+id/header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
+            tools:text="强安小助手强安小助手强安小助手强安小助手强安小助手强安小助手强安小助手强手强手强安小助手强安小助手" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="50dp"
+            android:clickable="false"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/header"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:moonText="@{item.content}"
+            app:qmui_skin_text_color="?attr/app_skin_color_font_tertiary"
+            tools:text="这节课你学到哪里啦这节课你学到哪里啦这节课你学到哪里啦这节课你学到哪里啦这节课你学到哪里啦？" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="14dp"
+            android:gravity="center"
+            android:text="@{item.date}"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/name"
+            app:qmui_skin_text_color="?attr/app_skin_color_font_tertiary"
+            tools:text="上午 10:32" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:qmui_skin_background="?attr/app_skin_color_divider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -50,26 +50,28 @@ fun onClickCommand(
     onTouchCommmand: BindingCommand<*>?,
     isThrottleFirst: Boolean?
 ) {
+    val isThrottle = isThrottleFirst ?: false
+
     clickCommand?.apply {
-        view.clicks().isThrottleFirst(isThrottleFirst ?: true).subscribe {
+        view.clicks().isThrottleFirst(isThrottle).subscribe {
             execute()
         }
     }
 
     longClickCommand?.apply {
-        view.longClicks().isThrottleFirst(isThrottleFirst ?: true).subscribe {
+        view.longClicks().isThrottleFirst(isThrottle).subscribe {
             execute()
         }
     }
 
     onClickViewCommand?.apply {
-        view.clicks().isThrottleFirst(isThrottleFirst ?: true).subscribe {
+        view.clicks().isThrottleFirst(isThrottle).subscribe {
             execute(view)
         }
     }
 
     onLongClickViewCommand?.apply {
-        view.longClicks().isThrottleFirst(isThrottleFirst ?: true).subscribe {
+        view.longClicks().isThrottleFirst(isThrottle).subscribe {
             execute(view)
         }
     }
@@ -79,6 +81,7 @@ fun onClickCommand(
             execute(it)
             false
         }.subscribe {
+
         }
     }
 }

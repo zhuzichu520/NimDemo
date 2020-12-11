@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.chuzi.android.nim.ui.me.viewmodel.ViewModelCleanSession" />
+    </data>
+
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qmui_skin_background="?attr/app_skin_color_background">
+
+        <com.chuzi.android.nim.view.LayoutTopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:topTitle="@{@string/me_session_clear}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:itemBinding="@{viewModel.itemBinding}"
+            app:items="@{viewModel.items}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/bottom"
+            app:layout_constraintTop_toBottomOf="@+id/topbar"
+            tools:listitem="@layout/nim_item_cache_session" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:qmui_skin_background="?attr/app_skin_color_background_2">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:onClickCommand="@{viewModel.onClickCommand}">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/nim_selecter_checkbox"
+                    android:button="@null"
+                    android:checked="@{viewModel.all}"
+                    android:clickable="false" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/all_select"
+                    android:textSize="17sp"
+                    app:qmui_skin_text_color="?attr/app_skin_color_font_primary" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:text="@string/delete"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:qmui_skin_text_color="?attr/app_skin_color_error" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toTopOf="@+id/bottom"
+            app:qmui_skin_background="?attr/app_skin_color_divider" />
+
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
+
+</layout>

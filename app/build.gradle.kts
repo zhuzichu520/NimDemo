@@ -59,20 +59,13 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isShrinkResources = true
             isMinifyEnabled = true
-            isZipAlignEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            manifestPlaceholders.apply {
-                put("AMAP_KEY", Config.appKeyAmapRelease())
-            }
         }
         getByName("debug") {
             signingConfig = signingConfigs.getByName("debug")
-            manifestPlaceholders.apply {
-                put("AMAP_KEY", Config.appKeyAmapDebug())
-            }
         }
     }
 
@@ -96,8 +89,15 @@ android {
 
 dependencies {
     implementation(fileTree("dir" to "libs", "include" to "*.jar"))
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(SupportLibs.ANDROIDX_APPCOMPAT)
+    implementation(SupportLibs.ANDROIDX_CORE_KTX)
+    implementation(SupportLibs.ANDROIDX_CONSTRAINTLAYOUT)
+    implementation(SupportLibs.ANDROIDX_RECYCLERVIEW)
+    implementation(SupportLibs.ANDROIDX_EXIFINTERFACE)
+    implementation(SupportLibs.ANDROIDX_SWIPEREFRESHLAYOUT)
+    implementation(SupportLibs.ANDROIDX_FRAGMENT)
+    implementation(SupportLibs.ANDROIDX_FRAGMENT_KTX)
     Config.denpendModules(project)
-    api(project(path = ":library-shared"))
-    kapt(Kapts.AROUTER_COMPILER)
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
 }

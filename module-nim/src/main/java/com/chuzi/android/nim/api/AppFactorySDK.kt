@@ -1,24 +1,30 @@
 package com.chuzi.android.nim.api
 
+import android.app.Activity
 import android.app.Application
+import android.content.res.Configuration
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
+import com.amap.api.maps.MapsInitializer
 import com.chuzi.android.libs.tool.toCast
 import com.chuzi.android.mvvm.Mvvm
-import com.chuzi.android.nim.BuildConfig
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.attachment.NimAttachParser
 import com.chuzi.android.nim.core.config.NimConfigSDKOption
 import com.chuzi.android.nim.core.event.NimEventManager
+import com.chuzi.android.nim.ext.authService
 import com.chuzi.android.nim.ext.msgService
+import com.chuzi.android.shared.BuildConfig
 import com.chuzi.android.shared.global.AppGlobal
+import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.rxhttp.RxHttpManager
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.shared.storage.AppStorage
 import com.chuzi.android.widget.crash.CrashConfig
 import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.auth.LoginInfo
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.netease.nimlib.sdk.util.NIMUtil
@@ -36,7 +42,7 @@ object AppFactorySDK {
     /**
      * 消息未读数
      */
-    private val unReadNumber: MutableLiveData<Int> = MutableLiveData()
+    private val unReadNumber: MutableLiveData<Int> = MutableLiveData(0)
 
     /**
      * 最近会话livedata对象，在会话列表中维护该集合
@@ -47,7 +53,7 @@ object AppFactorySDK {
     /**
      * 开放接口，SDK调用总集
      */
-    private lateinit var openApi: OpenApi
+    lateinit var openApi: OpenApi
 
     /**
      * Application上下文
@@ -78,7 +84,8 @@ object AppFactorySDK {
         ARouter.init(context)
         //初始化皮肤
         SkinManager.install(context)
-
+        //初始化地图 todo 抽一个地图module
+        MapsInitializer.setApiKey(BuildConfig.AMAP_APPKEY_RELEASE)
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
         if (NIMUtil.isMainProcess(context)) {
             //开启数据同步监听
@@ -88,6 +95,7 @@ object AppFactorySDK {
             LoginSyncDataStatusObserver.registerLoginSyncDataStatus(true)
             NimEventManager.registerObserves(true)
         }
+
     }
 
     /**
@@ -118,19 +126,41 @@ object AppFactorySDK {
      * 登录IM
      * @param account 用户账号
      * @param token 用户密码 可以不传 由sdk生成
-     * @param callback 回调接口，成功会返回一个IM token，失败返回错误信息 以及错误码
+     * @param nimCallBack 回调接口，成功会返回一个IM token，失败返回错误信息 以及错误码
      */
     @JvmStatic
-    fun loginNim(account: String, token: String? = null, callback: Callback<String>) {
+    fun login(account: String, token: String? = null, nimCallBack: NimCallBack<String>) {
+        authService().login(LoginInfo(account, token))
+            .setCallback(object : RequestCallback<LoginInfo> {
+                override fun onSuccess(param: LoginInfo?) {
+                    if (param != null) {
+                        AppStorage.login(param)
+                        nimCallBack.onSuccess(param.token)
+                    } else {
+                        nimCallBack.onFail(-1, "用户信息空异常")
+                    }
+                }
 
+                override fun onFailed(code: Int) {
+                    nimCallBack.onFail(code, "IM错误")
+                }
+
+                override fun onException(exception: Throwable?) {
+                    nimCallBack.onFail(-1, "出异常了")
+                    exception?.printStackTrace()
+                }
+            })
     }
 
     /**
      * 退出IM释放资源
      */
     @JvmStatic
-    fun logoutNim() {
-
+    fun logout() {
+        unReadNumber.value = 0
+        sessionLiveData.value = listOf()
+        authService().logout()
+        AppStorage.logout()
     }
 
     /**
@@ -138,6 +168,21 @@ object AppFactorySDK {
      */
     fun getUnReadNumberLiveData(): MutableLiveData<Int> {
         return unReadNumber
+    }
+
+    /**
+     * 使用SDK中登录
+     */
+    fun startLoginActivity(activity: Activity) {
+        ARouter.getInstance().build(RoutePath.Login.ACTIVITY_LOGIN_MAIN).navigation()
+        activity.finish()
+    }
+
+    /**
+     * 皮肤切换
+     */
+    fun applyConfigurationChanged(newConfig: Configuration) {
+        SkinManager.applyConfigurationChanged(newConfig)
     }
 
 

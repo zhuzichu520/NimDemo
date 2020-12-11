@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.chuzi.android.nim.ui.me.viewmodel.ViewModelCleanCache" />
+    </data>
+
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qmui_skin_background="?attr/app_skin_color_background">
+
+        <com.chuzi.android.nim.view.LayoutTopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:topTitle="@{@string/me_cache_clear}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/topbar"
+            app:qmui_skin_background="?attr/app_skin_color_background_1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="@string/used_space"
+                android:textSize="20sp"
+                app:qmui_skin_text_color="?attr/app_skin_color_font_tertiary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@{viewModel.cacheSize}"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
+                tools:text="6.22M" />
+
+            <Button
+                android:id="@+id/clear"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/nim_bg_button"
+                android:gravity="center"
+                android:text="@string/clear_cache"
+                android:textSize="15sp"
+                app:qmui_skin_text_color="?attr/app_skin_color_error" />
+
+        </LinearLayout>
+
+
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
+</layout>

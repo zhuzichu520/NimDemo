@@ -6,7 +6,8 @@
     <attr name="app_skin_color_secondary" format="color" />
     <attr name="app_skin_app_skin_color_secondary_variant" format="color" />
     <attr name="app_skin_color_background" format="color" />
-    <attr name="app_skin_color_background_item" format="color" />
+    <attr name="app_skin_color_background_1" format="color" />
+    <attr name="app_skin_color_background_2" format="color" />
     <attr name="app_skin_color_surface" format="color" />
     <attr name="app_skin_color_error" format="color" />
     <attr name="app_skin_color_font_primary" format="color" />
@@ -45,9 +46,10 @@
         <item name="app_skin_color_secondary">@color/color_408bf7</item>
         <item name="app_skin_app_skin_color_secondary_variant">@color/color_408bf7</item>
         <item name="app_skin_color_background">@color/color_f0f2f4</item>
-        <item name="app_skin_color_background_item">@color/color_ffffff</item>
+        <item name="app_skin_color_background_1">@color/color_ffffff</item>
+        <item name="app_skin_color_background_2">@color/color_eaeaea</item>
         <item name="app_skin_color_surface">@color/color_ffffff</item>
-        <item name="app_skin_color_error">@color/color_b00020</item>
+        <item name="app_skin_color_error">@color/qmui_config_color_red</item>
         <item name="app_skin_color_font_primary">@color/color_333333</item>
         <item name="app_skin_color_font_secondary">@color/color_666666</item>
         <item name="app_skin_color_font_tertiary">@color/color_999999</item>
@@ -90,7 +92,8 @@
         <item name="app_skin_color_secondary">@color/color_408bf7</item>
         <item name="app_skin_app_skin_color_secondary_variant">@color/color_408bf7</item>
         <item name="app_skin_color_background">@color/color_000000</item>
-        <item name="app_skin_color_background_item">@color/color_121212</item>
+        <item name="app_skin_color_background_1">@color/color_121212</item>
+        <item name="app_skin_color_background_2">@color/color_121212</item>
         <item name="app_skin_color_surface">@color/color_121212</item>
         <item name="app_skin_color_error">@color/color_cf6679</item>
         <item name="app_skin_color_font_primary">@color/color_f4f5f7</item>
@@ -112,9 +115,9 @@
         <item name="qmui_skin_support_tab_sign_count_view_bg_color">#80FF303A</item>
         <item name="qmui_skin_support_tab_selected_color">?attr/app_skin_color_secondary</item>
 
-        <item name="qmui_skin_support_s_list_item_bg_1">?attr/app_skin_color_background_item</item>
-        <item name="qmui_skin_support_s_list_item_bg_2">?attr/app_skin_color_background_item</item>
-        <item name="qmui_skin_support_s_common_list_bg">?attr/app_skin_color_background_item</item>
+        <item name="qmui_skin_support_s_list_item_bg_1">?attr/app_skin_color_background_1</item>
+        <item name="qmui_skin_support_s_list_item_bg_2">?attr/app_skin_color_background_1</item>
+        <item name="qmui_skin_support_s_common_list_bg">?attr/app_skin_color_background_1</item>
 
         <item name="qmui_skin_support_dialog_bg">@color/qmui_config_color_black</item>
         <item name="qmui_skin_support_dialog_title_text_color">@color/qmui_config_color_white</item>

@@ -5,6 +5,8 @@ import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.md5
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.mvvm.ext.createCommand
+import com.chuzi.android.nim.api.AppFactorySDK
+import com.chuzi.android.nim.api.NimCallBack
 import com.chuzi.android.nim.domain.UseCaseLogin
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.ext.autoLoading
@@ -41,26 +43,21 @@ class ViewModelLogin : ViewModelBase<ArgDefault>() {
             toast("密码不能为空")
             return@createCommand
         }
-        useCaseLogin.execute(LoginInfo(account, md5(password)))
-            .autoLoading(this)
-            .life(this)
-            .subscribe(
-                {
-                    handleSuccess(it.get())
-
-                },
-                {
-                    handleThrowable(it)
+        showLoading()
+        AppFactorySDK.login(account, md5(password), object :
+            NimCallBack<String> {
+            override fun onSuccess(result: String?) {
+                MainHandler.postDelayed {
+                    navigate(RoutePath.Nim.ACTIVITY_NIM_MAIN, isPop = true)
                 }
-            )
-    }
+                hideLoading()
+            }
 
-    private fun handleSuccess(info: LoginInfo) {
-        AppStorage.login(info)
-        MainHandler.postDelayed {
-            navigate(RoutePath.Nim.ACTIVITY_NIM_MAIN, isPop = true)
-        }
-    }
+            override fun onFail(code: Int, message: String?) {
+                hideLoading()
+            }
+        })
 
+    }
 
 }

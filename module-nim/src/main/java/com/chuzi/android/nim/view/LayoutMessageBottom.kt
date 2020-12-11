@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -355,10 +356,10 @@ class LayoutMessageBottom @JvmOverloads constructor(
             return
         if (isShown) {
             binding.endSend.changeWidth(0f, 60f)
-            alpha(binding.endMore, 300, 0, DEFAULT_INTERPOLATOR, 1f, 0f)
+            alpha(binding.endMore, 300, 0, AccelerateInterpolator(), 1f, 0f)
         } else {
             binding.endSend.changeWidth(60f, 0f)
-            alpha(binding.endMore, 300, 0, DEFAULT_INTERPOLATOR, 0f, 1f)
+            alpha(binding.endMore, 300, 0, AccelerateInterpolator(), 0f, 1f)
         }
         isSendShown = isShown
     }
