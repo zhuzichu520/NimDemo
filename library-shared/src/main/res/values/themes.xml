@@ -95,7 +95,7 @@
         <item name="app_skin_color_background_1">@color/color_121212</item>
         <item name="app_skin_color_background_2">@color/color_121212</item>
         <item name="app_skin_color_surface">@color/color_121212</item>
-        <item name="app_skin_color_error">@color/color_cf6679</item>
+        <item name="app_skin_color_error">@color/qmui_config_color_red</item>
         <item name="app_skin_color_font_primary">@color/color_f4f5f7</item>
         <item name="app_skin_color_font_secondary">@color/color_f4f5f7</item>
         <item name="app_skin_color_font_tertiary">@color/color_f4f5f7</item>
