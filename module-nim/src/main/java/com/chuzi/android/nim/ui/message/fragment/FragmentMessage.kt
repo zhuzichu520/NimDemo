@@ -38,6 +38,7 @@ import com.chuzi.android.shared.entity.arg.ArgMessage
 import com.chuzi.android.shared.entity.arg.ArgPermissions
 import com.chuzi.android.shared.global.CacheGlobal
 import com.chuzi.android.shared.route.RoutePath
+import com.chuzi.android.shared.skin.SkinManager
 import com.netease.nimlib.sdk.msg.MessageBuilder
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
@@ -51,6 +52,7 @@ import com.tbruyelle.rxpermissions3.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
+import com.zhihu.matisse.filter.Filter
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -431,12 +433,13 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         ).life(viewLifecycleOwner).subscribe {
             if (it) {
                 Matisse.from(this)
-                    .choose(MimeType.ofAll())
+                    .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))
                     .countable(true)
                     .maxSelectable(9)
                     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                     .thumbnailScale(0.85f)
                     .imageEngine(GlideEngine())
+                    .theme(if (SkinManager.isDark()) R.style.Matisse_Dracula else R.style.Matisse_Zhihu)
                     .showPreview(false) // Default is `true`
                     .forResult(REQUEST_CODE_CHOOSE)
             } else {
