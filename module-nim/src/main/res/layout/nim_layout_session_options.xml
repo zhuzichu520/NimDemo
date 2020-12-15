@@ -19,6 +19,7 @@
         android:layout_height="1px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:qmui_skin_background="?attr/app_skin_color_divider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

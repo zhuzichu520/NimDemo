@@ -1,5 +1,6 @@
 package com.chuzi.android.shared.global
 
+import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory
 import com.chuzi.android.libs.tool.byteCountToDisplaySizeTwo
 import com.chuzi.android.libs.tool.forceDelete
 import com.chuzi.android.libs.tool.isExternalStorageWriteable
@@ -14,6 +15,8 @@ object CacheGlobal {
 
     private const val CACHE_COIL_FILE_NAME = "cache_coil"
 
+    private const val CACHE_GLIDE_FILE_NAME = "cache_glide"
+
     private const val CACHE_MMKV_FILE_NAME = "cache_mmkv"
 
     private const val CACHE_LOG_FILE_NAME = "cache_log"
@@ -24,12 +27,24 @@ object CacheGlobal {
 
     private const val CACHE_NIM_FILE_NAME = "cache_nim"
 
+    private const val CACHE_LUBAN_FILE_NAME = " cache_luban"
+
+
+
     fun initDir() {
         getCoilCacheDir()
         getMmkvCacheDir()
         getLogCacheDir()
         getCookieCacheDir()
         getHttpCacheDir()
+        getLubanCacheDir()
+    }
+
+    /**
+     * 获取Glide存放路径
+     */
+    fun getGlideCacheDir(): String {
+        return getDiskCacheDir(CACHE_GLIDE_FILE_NAME).absolutePath
     }
 
     /**
@@ -51,6 +66,13 @@ object CacheGlobal {
      */
     fun getMmkvCacheDir(): String {
         return getDiskCacheDir(CACHE_MMKV_FILE_NAME).absolutePath
+    }
+
+    /**
+     * 获取压缩图片文件地址
+     */
+    fun getLubanCacheDir(): String {
+        return getDiskCacheDir(CACHE_LUBAN_FILE_NAME).absolutePath
     }
 
     /**

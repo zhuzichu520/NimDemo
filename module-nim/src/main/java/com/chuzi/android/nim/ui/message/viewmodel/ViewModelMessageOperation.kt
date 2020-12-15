@@ -26,37 +26,27 @@ class ViewModelMessageOperation : ViewModelBase<ArgDefault>() {
                 this,
                 R.string.message_operation_album,
                 R.mipmap.nim_message_operation_album,
-            ) {
-
-            },
+            ),
             ItemViewModelOperation(
                 this,
                 R.string.message_operation_video,
                 R.mipmap.nim_message_operation_video,
-            ) {
-
-            },
+            ),
             ItemViewModelOperation(
                 this,
                 R.string.message_operation_local,
                 R.mipmap.nim_message_operation_local,
-            ) {
-
-            },
+            ),
             ItemViewModelOperation(
                 this,
                 R.string.message_operation_file,
                 R.mipmap.nim_message_operation_file,
-            ) {
-
-            },
+            ),
             ItemViewModelOperation(
                 this,
                 R.string.message_operation_call,
                 R.mipmap.nim_message_operation_call,
-            ) {
-
-            }
+            )
         )
     }
 

@@ -5,7 +5,9 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.MutableLiveData
 import com.chuzi.android.mvvm.base.BaseViewModel
 import com.chuzi.android.mvvm.ext.createCommand
+import com.chuzi.android.nim.ui.event.EventUI
 import com.chuzi.android.shared.base.ItemViewModelBase
+import com.chuzi.android.shared.bus.RxBus
 
 /**
  * desc
@@ -16,8 +18,7 @@ import com.chuzi.android.shared.base.ItemViewModelBase
 data class ItemViewModelOperation(
     private val viewModel: BaseViewModel<*>,
     @StringRes private val titleId: Int,
-    @DrawableRes private val iconId: Int,
-    val onClickItemFunc: () -> Unit
+    @DrawableRes private val iconId: Int
 ) : ItemViewModelBase(viewModel) {
 
     val title = MutableLiveData(titleId)
@@ -25,7 +26,7 @@ data class ItemViewModelOperation(
     val icon = MutableLiveData(iconId)
 
     val onClickCommand = createCommand {
-        onClickItemFunc.invoke()
+        RxBus.post(EventUI.OnClickOperationEvent(titleId))
     }
 
 }

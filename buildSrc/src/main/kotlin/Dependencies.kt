@@ -18,70 +18,45 @@ object Versions {
     const val FRAGMENT = "1.3.0-alpha05"
     const val ESPRESSO_CORE = "3.2.0"
     const val JUNIT = "4.13"
-    const val KTLINT = "0.36.0"
-
     const val OKHTTP = "4.8.1"
-
     const val RXJAVA = "3.0.6"
     const val RXANDROID = "3.0.0"
     const val RXBINDING = "4.0.0"
     const val RXHTTP = "2.3.5"
     const val RXLIFE = "3.0.0"
     const val RXPERMISSIONS = "0.12"
-
     const val MATERIAL = "1.2.0"
-
     const val BINDING_COLLECTION_ADAPTER = "4.0.0"
-
     const val TIMBER = "4.7.1"
     const val LOGBACK = "2.0.0"
     const val SLF4J = "1.7.30"
-
     const val SWIPEREFRESHLAYOUT = "1.1.0"
     const val FLEXBOX = "2.0.1"
     const val CONSTRAINTLAYOUT = "2.0.0"
-
     const val MMKV = "1.2.2"
     const val MULTIDEX = "2.0.1"
     const val ONCE = "1.3.0"
     const val AUTOSIZE = "1.2.1"
-
     const val GUAVA = "27.0.1-android"
-
     const val EASYFLOAT = "1.3.3"
-
     const val GSON = "2.8.6"
-
     const val FASTJSON = "1.2.68"
-
     const val AROUTE_API = "1.5.1"
-
     const val AROUTE_COMPILER = "1.5.1"
-
     const val QMUI = "2.0.0-alpha10"
-
     const val DEVELOPER = "3.1.9"
-
-    const val COIL = "0.13.0"
-
     const val JSOUP = "1.12.1"
-
     const val ROOM = "2.2.5"
-
     const val RECYCLICAL = "1.1.1"
-
-    const val PAGING = "2.1.2"
-
     const val UMSDK_COMMON = "9.3.0"
-
     const val UMSDK_ASMS = "1.1.3"
-
     const val UMSDK_CRASH = "0.0.4"
-
     const val NIM = "8.1.2"
-
     const val AMAP = "latest.integration"
-
+    const val MATISSE = "0.5.3-beta3"
+    const val LUBAN = "1.1.8"
+    const val GLIDE = "4.11.0"
+    const val GLIDE_TRANSFORMATIONS = "4.1.0"
 }
 
 /**
@@ -111,9 +86,7 @@ object NimLibs {
  */
 object BuildPluginsVersion {
     const val AGP = "4.2.0-alpha16"
-    const val DETEKT = "1.7.4"
     const val KOTLIN = "1.4.20"
-    const val KTLINT = "9.2.1"
     const val VERSIONS_PLUGIN = "0.29.0"
     const val ANDROID_MAVEN = "2.1"
 }
@@ -242,8 +215,6 @@ object Libs {
 
     const val QMUI_ARCH = "com.qmuiteam:arch:${Versions.QMUI}"
 
-    const val COIL = "io.coil-kt:coil:${Versions.COIL}"
-
     const val JSOUP = "org.jsoup:jsoup:${Versions.JSOUP}"
 
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
@@ -252,6 +223,18 @@ object Libs {
 
     const val RECYCLICAL = "com.afollestad:recyclical:${Versions.RECYCLICAL}"
 
+    //matisse
+    const val MATISSE = "com.zhihu.android:matisse:${Versions.MATISSE}"
+
+    //Luban
+    const val LUBAN = "top.zibin:Luban:${Versions.LUBAN}"
+    //glide
+    const val GLIDE_OKHTTP =
+        "com.github.bumptech.glide:okhttp3-integration:${Versions.GLIDE}"
+    const val GLIDE =
+        "com.github.bumptech.glide:glide:${Versions.GLIDE}"
+    const val GLIDE_TRANSFORMATIONS =
+        "jp.wasabeef:glide-transformations:${Versions.GLIDE_TRANSFORMATIONS}"
 }
 
 
@@ -267,6 +250,8 @@ object Kapts {
     const val QMUI_ARCH_COMPILER = "com.qmuiteam:arch-compiler:${Versions.QMUI}"
 
     const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
+    //glide
+    const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler:${Versions.GLIDE}"
 }
 
 /**

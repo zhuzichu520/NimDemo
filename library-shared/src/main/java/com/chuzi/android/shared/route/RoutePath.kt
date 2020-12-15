@@ -2,6 +2,8 @@ package com.chuzi.android.shared.route
 
 object RoutePath {
 
+    const val DIALOG_PERMISSIONS_MAIN = "/permissions/dialog/main"
+
     object Login {
         const val FRAGMENT_LOGIN_MAIN = "/login/fragment/main"
         const val ACTIVITY_LOGIN_MAIN = "/login/activity/main"

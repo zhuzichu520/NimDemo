@@ -1,5 +1,6 @@
 package com.chuzi.android.shared.databinding.qmui
 
+import android.view.View
 import androidx.databinding.BindingAdapter
 import com.chuzi.android.mvvm.databinding.BindingCommand
 import com.qmuiteam.qmui.widget.QMUIEmptyView
@@ -73,15 +74,17 @@ fun bindQMUIEmptyView(
 }
 
 @BindingAdapter(
-    value = ["onClickLinkTelCommand", "onClickLinkEmailConmmnd", "onClickLinkUrlCommand"],
+    value = ["onClickLinkTelCommand", "onClickLinkEmailConmmnd", "onClickLinkUrlCommand", "onLongClickLinkCommand"],
     requireAll = false
 )
 fun bindingQmuiTextView(
     qmuiLinkTextView: QMUILinkTextView,
     onClickTelCommand: BindingCommand<String>?,
     onClickEmailConmmnd: BindingCommand<String>?,
-    onClickUrlCommand: BindingCommand<String>?
+    onClickUrlCommand: BindingCommand<String>?,
+    onLongClickLinkCommand: BindingCommand<View>?
 ) {
+
     qmuiLinkTextView.setOnLinkClickListener(object : QMUILinkTextView.OnLinkClickListener {
 
         override fun onMailLinkClick(mailAddress: String?) {
@@ -97,6 +100,11 @@ fun bindingQmuiTextView(
         }
 
     })
+
+    qmuiLinkTextView.setOnLinkLongClickListener {
+        onLongClickLinkCommand?.execute(qmuiLinkTextView)
+    }
+
 }
 
 @BindingAdapter(value = ["onRefreshCommand", "onLoadMoreCommand"], requireAll = false)

@@ -52,7 +52,7 @@ fun onClickCommand(
     onTouchCommmand: BindingCommand<*>?,
     isThrottleFirst: Boolean?
 ) {
-    val isThrottle = isThrottleFirst ?: false
+    val isThrottle = isThrottleFirst ?: true
 
     clickCommand?.apply {
         view.clicks().isThrottleFirst(isThrottle).subscribe {
@@ -162,4 +162,16 @@ fun bindViewGroup(
     layoutDirection?.let {
         viewGroup.layoutDirection = layoutDirection
     }
+}
+
+@BindingAdapter(value = ["layoutWidth", "layoutHeight"], requireAll = false)
+fun bindViewLayout(view: View, layoutWidth: Int?, layoutHeight: Int?) {
+    layoutWidth?.let {
+        view.setBackgroundColor(it)
+        view.layoutParams.width = it
+    }
+    layoutHeight?.let {
+        view.layoutParams.height = it
+    }
+    view.layoutParams = view.layoutParams
 }

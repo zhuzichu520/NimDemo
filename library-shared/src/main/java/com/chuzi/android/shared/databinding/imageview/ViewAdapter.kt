@@ -1,14 +1,10 @@
 package com.chuzi.android.shared.databinding.imageview
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
-import coil.load
-import com.chuzi.android.mvvm.ext.className
-import com.chuzi.android.shared.global.AppGlobal
+import com.bumptech.glide.request.RequestOptions
+import com.chuzi.android.shared.tools.GlideApp
 
 /**
  * desc
@@ -16,45 +12,20 @@ import com.chuzi.android.shared.global.AppGlobal
  * time: 2020/9/18 1:12 PM
  * since: v 1.0.0
  */
-@BindingAdapter(value = ["url", "crossfade", "placeholder"], requireAll = false)
+@BindingAdapter(value = ["url", "placeholder"], requireAll = false)
 fun bindImageView(
     imageView: ImageView,
     url: Any?,
-    crossfade: Boolean?,
     @DrawableRes placeholder: Int?
 ) {
-    when (url) {
-        is String -> {
-            imageView.load(url, imageLoader = AppGlobal.imageLoader) {
-                crossfade?.let {
-                    crossfade(it)
-                }
-                placeholder?.let {
-                    placeholder(it)
-                    error(it)
-                }
-            }
+    url?.apply {
+        val requestOptions = RequestOptions()
+        val glide = GlideApp.with(imageView).load(url)
+        placeholder?.let {
+            requestOptions.placeholder(it)
+            requestOptions.error(it)
         }
-        is Uri -> {
-            imageView.load(url, imageLoader = AppGlobal.imageLoader) {
-                crossfade?.let {
-                    crossfade(it)
-                }
-                placeholder?.let {
-                    placeholder(it)
-                    error(it)
-                }
-            }
-        }
-        is Int -> {
-            imageView.setImageResource(url)
-        }
-        is Drawable -> {
-            imageView.setImageDrawable(url)
-        }
-        is Bitmap -> {
-            imageView.setImageBitmap(url)
-        }
+        glide.apply(requestOptions)
+        glide.into(imageView)
     }
-
 }

@@ -67,5 +67,9 @@
     <string name="news">新闻</string>
     <string name="unsupport_title">无法显示该内容</string>
     <string name="unsupport_desc">客户端版本不支持该内容</string>
+    <string name="copy">复制</string>
+    <string name="go_setting">去设置</string>
+    <string name="permissions_tips">该功能需要您的%s权限，请前往设置中心进行授权</string>
+    <string name="reload">重新加载</string>
 
 </resources>

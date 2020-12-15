@@ -1,18 +1,33 @@
 package com.chuzi.android.nim.ui.message.fragment
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.drawable.AnimationDrawable
+import android.text.TextUtils
 import android.view.KeyEvent
+import android.view.View
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.recyclical.ViewHolder
+import com.afollestad.recyclical.datasource.dataSourceTypedOf
+import com.afollestad.recyclical.setup
+import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.alpha
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
+import com.chuzi.android.nim.core.attachment.AttachmentSticker
 import com.chuzi.android.nim.core.event.NimEvent
 import com.chuzi.android.nim.databinding.NimFragmentMessageBinding
+import com.chuzi.android.nim.emoji.StickerItem
+import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.nim.ui.event.EventUI
+import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageBase
 import com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessage
 import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_DEFAULT
 import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_EMOJI
@@ -20,10 +35,26 @@ import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_MORE
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.bus.RxBus
 import com.chuzi.android.shared.entity.arg.ArgMessage
+import com.chuzi.android.shared.entity.arg.ArgPermissions
+import com.chuzi.android.shared.global.CacheGlobal
 import com.chuzi.android.shared.route.RoutePath
 import com.netease.nimlib.sdk.msg.MessageBuilder
+import com.netease.nimlib.sdk.msg.MsgService
+import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
+import com.qmuiteam.qmui.skin.QMUISkinManager
+import com.qmuiteam.qmui.util.QMUIDisplayHelper
+import com.qmuiteam.qmui.widget.popup.QMUIPopup
+import com.qmuiteam.qmui.widget.popup.QMUIPopups
 import com.rxjava.rxlife.life
+import com.tbruyelle.rxpermissions3.RxPermissions
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.GlideEngine
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
+import java.io.File
+import java.util.*
 
 /**
  * desc
@@ -35,6 +66,10 @@ import com.rxjava.rxlife.life
 @Route(path = RoutePath.Nim.FRAGMENT_NIM_MESSAGE_P2P)
 class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage, ArgMessage>() {
 
+    companion object {
+        private const val REQUEST_CODE_CHOOSE = 0x11
+    }
+
     private val fragmentOperation: Fragment by lazy {
         FragmentMessageOperation()
     }
@@ -45,6 +80,8 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
 
     private var currentFragment: Fragment? = null
 
+    private var normalPopup: QMUIPopup? = null
+
     private lateinit var recordAnima: AnimationDrawable
 
     override fun bindVariableId(): Int = BR.viewModel
@@ -53,6 +90,7 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
 
     override fun initView() {
         super.initView()
+        binding.recycler.itemAnimator = null
         binding.messageBottom.attachContentView(binding.layoutContent, binding.recycler)
         binding.messageBottom.setInputType(TYPE_DEFAULT)
         recordAnima = binding.viewRecord.background as AnimationDrawable
@@ -91,6 +129,16 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
 
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        msgService().setChattingAccount(arg.contactId, arg.sessionTypeEnum())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        msgService().setChattingAccount(MsgService.MSG_CHATTING_ACCOUNT_NONE, SessionTypeEnum.None)
     }
 
     override fun initListener() {
@@ -168,18 +216,28 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
             switchFragment(it, fragmentEmoticon)
         }
 
+        /**
+         * 点击贴图
+         */
         RxBus.toObservable(EventUI.OnClickStickerEvent::class.java)
             .life(viewLifecycleOwner)
             .subscribe {
-
+                sendStickerMessage(it.sticker)
             }
 
+        /**
+         * 点击删除Emoji
+         */
         RxBus.toObservable(EventUI.OnClickEmojiDeleteEvent::class.java)
             .life(viewLifecycleOwner)
             .subscribe {
                 binding.messageBottom.dropText()
             }
 
+        /**
+         * 点击Emoji
+         *
+         */
         RxBus.toObservable(EventUI.OnClickEmojiEvent::class.java)
             .life(viewLifecycleOwner)
             .subscribe {
@@ -212,6 +270,25 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 }
             }
 
+        RxBus.toObservable(EventUI.OnClickOperationEvent::class.java)
+            .life(viewLifecycleOwner)
+            .subscribe {
+                when (it.titleId) {
+                    R.string.message_operation_album -> {
+                        //相册
+                        startAlbum()
+                    }
+                    R.string.message_operation_video -> {
+                    }
+                    R.string.message_operation_local -> {
+                    }
+                    R.string.message_operation_file -> {
+                    }
+                    R.string.message_operation_call -> {
+                    }
+                }
+            }
+
         /**
          * 添加数据完成
          */
@@ -223,6 +300,58 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 //todo zhuzichu 最后一条不可见 显示提醒有新消息
             }
         })
+
+        viewModel.onItemLongClickEvent.observe(viewLifecycleOwner) {
+            showItemPopup(it)
+        }
+
+    }
+
+    /**
+     * 发送贴图消息
+     */
+    private fun sendStickerMessage(sticker: StickerItem) {
+        val attachment = AttachmentSticker(sticker.category, sticker.name)
+        val stickerMessage = MessageBuilder.createCustomMessage(
+            arg.contactId, arg.sessionTypeEnum(), "贴图消息", attachment
+        )
+        viewModel.sendMessage(stickerMessage)
+    }
+
+    /**
+     * 消息长按弹窗
+     */
+    private fun showItemPopup(item: ItemViewModelMessageBase) {
+        val recycler = RecyclerView(requireContext())
+        recycler.layoutManager = LinearLayoutManager(requireContext())
+        recycler.setup {
+            withDataSource(
+                dataSourceTypedOf(
+                    MessageOptionModel(R.string.copy),
+                    MessageOptionModel(R.string.delete),
+                )
+            )
+            withItem<MessageOptionModel, MessageOptionHolder>(R.layout.nim_layout_message_options) {
+                onBind(::MessageOptionHolder) { _, item ->
+                    name.setText(item.textId)
+                }
+                onClick {
+                    when (this.item.textId) {
+                        R.string.copy -> {
+                        }
+                    }
+                    normalPopup?.dismiss()
+                }
+            }
+        }
+        item.viewRef.get()?.let {
+            normalPopup = QMUIPopups.popup(context, QMUIDisplayHelper.dp2px(context, 140))
+                .view(recycler)
+                .skinManager(QMUISkinManager.defaultInstance(context))
+                .shadow(true)
+                .arrow(true)
+                .show(it)
+        }
     }
 
     /**
@@ -291,4 +420,79 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
             (binding.recycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() + 1
         return findLastPosition == position
     }
+
+    /**
+     * 跳转到相册
+     */
+    private fun startAlbum() {
+        RxPermissions(requireActivity()).request(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).life(viewLifecycleOwner).subscribe {
+            if (it) {
+                Matisse.from(this)
+                    .choose(MimeType.ofAll())
+                    .countable(true)
+                    .maxSelectable(9)
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(GlideEngine())
+                    .showPreview(false) // Default is `true`
+                    .forResult(REQUEST_CODE_CHOOSE)
+            } else {
+                navigate(RoutePath.DIALOG_PERMISSIONS_MAIN, arg = ArgPermissions("文件读写"))
+            }
+        }
+    }
+
+    /**
+     * 发送图片消息
+     */
+    private fun sendImageMessage(paths: List<String>) {
+        Luban.with(requireContext())
+            .load(paths)
+            .ignoreBy(100)
+            .setTargetDir(CacheGlobal.getLubanCacheDir())
+            .filter {
+                !(TextUtils.isEmpty(it) || it.toLowerCase(Locale.getDefault()).endsWith(".gif"))
+            }.setCompressListener(object : OnCompressListener {
+                override fun onSuccess(file: File) {
+                    val message =
+                        MessageBuilder.createImageMessage(
+                            arg.contactId,
+                            arg.sessionTypeEnum(),
+                            file
+                        )
+                    message.attachStatus = AttachStatusEnum.transferring
+                    viewModel.sendMessage(message, false)
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+                override fun onStart() {
+
+                }
+            }).launch()
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.let {
+            if (requestCode == REQUEST_CODE_CHOOSE) {
+                sendImageMessage(Matisse.obtainPathResult(it))
+            }
+        }
+    }
+
+    data class MessageOptionModel(
+        @StringRes val textId: Int
+    )
+
+    class MessageOptionHolder(itemView: View) : ViewHolder(itemView) {
+        val name: TextView = itemView.findViewById(R.id.text)
+    }
+
 }

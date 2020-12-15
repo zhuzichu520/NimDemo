@@ -8,6 +8,7 @@ import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.createFlowable
 import com.google.common.base.Optional
 import com.netease.nimlib.sdk.msg.model.IMMessage
+import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 
 /**
@@ -19,7 +20,7 @@ import io.reactivex.rxjava3.core.Flowable
 class UseCaseSendMessage : UseCase<UseCaseSendMessage.Parameters, Flowable<Optional<Void>>>() {
 
     override fun execute(parameters: Parameters): Flowable<Optional<Void>> {
-        return createFlowable<Optional<Void>> {
+        return createFlowable<Optional<Void>>(BackpressureStrategy.BUFFER) {
             msgService().sendMessage(parameters.message, parameters.resend).setCallback(
                 NimRequestCallback(this)
             )

@@ -6,10 +6,12 @@ import com.chuzi.android.mvvm.event.SingleLiveEvent
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
+import com.chuzi.android.nim.core.attachment.AttachmentSticker
 import com.chuzi.android.nim.domain.UseCaseGetMessageList
 import com.chuzi.android.nim.domain.UseCaseGetTeamInfo
 import com.chuzi.android.nim.domain.UseCaseGetUserInfo
 import com.chuzi.android.nim.domain.UseCaseSendMessage
+import com.chuzi.android.nim.tools.ToolImage
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.databinding.qmui.QMUIAction
@@ -17,6 +19,7 @@ import com.chuzi.android.shared.entity.arg.ArgMessage
 import com.chuzi.android.shared.ext.bindToException
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.map
+import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.rxjava.rxlife.life
@@ -51,6 +54,11 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
     val title = MutableLiveData("聊天")
 
     /**
+     * Item长点击事件
+     */
+    val onItemLongClickEvent = SingleLiveEvent<ItemViewModelMessageBase>()
+
+    /**
      * 消息数据
      */
     val items = ObservableArrayList<Any>()
@@ -60,6 +68,8 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
      */
     val itemBinding = OnItemBindClass<Any>().apply {
         map<ItemViewModelMessageText>(BR.item, R.layout.nim_item_message_text)
+        map<ItemViewModelMessageImage>(BR.item, R.layout.nim_item_message_image)
+        map<ItemViewModelMessageSticker>(BR.item, R.layout.nim_item_message_sticker)
         map<ItemViewModelMessageUnknown>(BR.item, R.layout.nim_item_message_unknown)
     }
 
@@ -207,6 +217,7 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
     }
 
     /**
+     * todo 用工厂模式替代when
      * 处理消息集合返回数据模型集合
      * @param list 消息集合
      */
@@ -215,6 +226,17 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
             when (item.msgType) {
                 MsgTypeEnum.text -> {
                     ItemViewModelMessageText(this, item)
+                }
+                MsgTypeEnum.image -> {
+                    ItemViewModelMessageImage(this, item)
+                }
+                MsgTypeEnum.custom -> {
+                    val attachment = item.attachment
+                    if (attachment is AttachmentSticker) {
+                        ItemViewModelMessageSticker(this, item)
+                    } else {
+                        ItemViewModelMessageUnknown(this, item)
+                    }
                 }
                 else -> {
                     ItemViewModelMessageUnknown(this, item)

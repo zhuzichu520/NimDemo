@@ -76,6 +76,7 @@ dependencies {
 
     kapt(Kapts.RXHTTP_COMPILER)
     kapt(Kapts.ROOM_COMPILER)
+    kapt(Kapts.GLIDE_COMPILER)
 
     api(Libs.RXLIFE)
 
@@ -112,8 +113,6 @@ dependencies {
 
     api(Libs.AROUTER_API)
 
-    api(Libs.COIL)
-
     api(Libs.QMUI)
     api(Libs.QMUI_ARCH)
 
@@ -123,6 +122,9 @@ dependencies {
 
     api(Libs.ROOM_KTX)
     api(Libs.ROOM_RUNTIME)
+
+    api(Libs.MATISSE)
+    api(Libs.LUBAN)
 
     api(MyLibs.DEVELOPER_LIBS)
     api(MyLibs.DEVELOPER_MVVM)
@@ -144,9 +146,9 @@ dependencies {
     api(AmapLibs.AMAP_LOCATION)
     api(AmapLibs.AMAP_SEARCH)
 
-//    api(project(":library-libs"))
-//    api(project(":library-widget"))
-//    api(project(":library-mvvm"))
+    api(Libs.GLIDE)
+    api(Libs.GLIDE_OKHTTP)
+    api(Libs.GLIDE_TRANSFORMATIONS)
 
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLibs.ANDROIDX_TEST_RULES)

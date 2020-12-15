@@ -3,7 +3,9 @@ package com.chuzi.android.nim.ui.message.viewmodel
 import android.util.LayoutDirection
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.chuzi.android.mvvm.event.SingleLiveEvent
 import com.chuzi.android.mvvm.ext.createCommand
+import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.shared.base.ItemViewModelBase
@@ -12,6 +14,7 @@ import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
+import java.lang.ref.WeakReference
 
 /**
  * desc
@@ -139,7 +142,21 @@ open class ItemViewModelMessageBase(
         }
     }
 
+    /**
+     * 当前View，用来记录长按点击弹出位置
+     */
+    var viewRef = WeakReference<View>(null)
+
+
     val progress = MutableLiveData<String>()
+
+    /**
+     * 长点击
+     */
+    val onLongClickCommand = createTypeCommand<View> {
+        viewRef = WeakReference(it)
+        viewModel.onItemLongClickEvent.value = this
+    }
 
     /**
      * 重新发送消息

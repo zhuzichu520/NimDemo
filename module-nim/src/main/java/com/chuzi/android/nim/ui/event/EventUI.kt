@@ -33,4 +33,11 @@ class EventUI {
     class OnClickStickerEvent(
         val sticker: StickerItem
     )
+
+    /**
+     * 点击底部更多Item事件
+     */
+    class OnClickOperationEvent(
+        val titleId: Int
+    )
 }
