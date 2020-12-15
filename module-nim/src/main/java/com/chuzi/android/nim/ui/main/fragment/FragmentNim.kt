@@ -42,6 +42,7 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
         super.initView()
         val postcards = listOf<Postcard>(
             ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_SESSION),
+            ARouter.getInstance().build(RoutePath.Media.FRAGMENT_MEDIA_STYLE),
             ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_CONTRACT),
             ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_ME)
         )
@@ -58,7 +59,7 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
             setBadgeTextSize(13.5f, true)
         }.bindTarget(binding.tabs)
         badge.badgeGravity = Gravity.TOP or Gravity.START
-        badge.setGravityOffset(75f, 0f, true)
+        badge.setGravityOffset(58f, 0f, true)
         badge.setOnDragStateChangedListener { dragState, _, _ ->
             if (Badge.OnDragStateChangedListener.STATE_SUCCEED == dragState) {
                 msgService().clearAllUnreadCount()
@@ -95,22 +96,28 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
         val session = builder
             .setNormalDrawable(R.mipmap.nim_ic_main_session_normal.toDrawableByResId())
             .setSelectedDrawable(R.mipmap.nim_ic_main_session_selected.toDrawableByResId())
-            .setText(R.string.session.toStringByResId())
+            .setText(R.string.session.toStringByResId(requireContext()))
+            .build(context)
+
+        val news = builder
+            .setNormalDrawable(R.mipmap.nim_ic_main_news_normal.toDrawableByResId())
+            .setSelectedDrawable(R.mipmap.nim_ic_main_news_selected.toDrawableByResId())
+            .setText(R.string.news.toStringByResId(requireContext()))
             .build(context)
 
         val contract = builder
             .setNormalDrawable(R.mipmap.nim_ic_main_contract_normal.toDrawableByResId())
             .setSelectedDrawable(R.mipmap.nim_ic_main_contract_selected.toDrawableByResId())
-            .setText(R.string.contract.toStringByResId())
+            .setText(R.string.contract.toStringByResId(requireContext()))
             .build(context)
 
-        val setting = builder
-            .setNormalDrawable(R.mipmap.nim_ic_main_setting_normal.toDrawableByResId())
-            .setSelectedDrawable(R.mipmap.nim_ic_main_setting_selected.toDrawableByResId())
-            .setText(R.string.me.toStringByResId())
+        val me = builder
+            .setNormalDrawable(R.mipmap.nim_ic_main_me_normal.toDrawableByResId())
+            .setSelectedDrawable(R.mipmap.nim_ic_main_me_selected.toDrawableByResId())
+            .setText(R.string.me.toStringByResId(requireContext()))
             .build(context)
 
-        binding.tabs.addTab(session).addTab(contract).addTab(setting)
+        binding.tabs.addTab(session).addTab(news).addTab(contract).addTab(me)
 
     }
 

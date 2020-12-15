@@ -7,15 +7,11 @@ import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.shared.storage.AppStorage.account
-import com.netease.nimlib.sdk.NIMClient
-import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.RecentContact
-import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 object ToolTeamMemberAit {
     private const val KEY_AIT = "ait"

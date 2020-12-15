@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -87,6 +88,11 @@ class LayoutMessageBottom @JvmOverloads constructor(
      * 录音读数改变事件
      */
     var onAudioRecordChangeFunc: ((Int) -> Unit)? = null
+
+    /**
+     * 文本发送
+     */
+    var onTextSendFunc: ((String) -> Unit)? = null
 
     /**
      * 开启录音事件
@@ -320,7 +326,6 @@ class LayoutMessageBottom @JvmOverloads constructor(
                 hideView(binding.startKeyboard, binding.centerEmoji, binding.centerAudio)
                 showBottom(true)
                 onShowEmoticonFunc?.invoke(R.id.layout_bottom)
-
             }
             TYPE_MORE -> {
                 if (this.inputType == TYPE_MORE) {
@@ -350,16 +355,16 @@ class LayoutMessageBottom @JvmOverloads constructor(
      * 更新输入判断是否显示发送
      */
     private fun checkSendButtonEnable() {
-        val isShown = binding.centerInput.text.toString()
-            .isNotEmpty() && binding.startVoice.visibility == View.VISIBLE
+        val isShown =
+            !binding.centerInput.text.isNullOrBlank() && binding.startVoice.visibility == View.VISIBLE
         if (isSendShown == isShown)
             return
         if (isShown) {
-            binding.endSend.changeWidth(0f, 60f)
-            alpha(binding.endMore, 300, 0, AccelerateInterpolator(), 1f, 0f)
+            binding.endSend.changeWidth(0f, 60f, 100)
+            alpha(binding.endMore, 100, 0, AccelerateInterpolator(), 1f, 0f)
         } else {
-            binding.endSend.changeWidth(60f, 0f)
-            alpha(binding.endMore, 300, 0, AccelerateInterpolator(), 0f, 1f)
+            binding.endSend.changeWidth(60f, 0f, 100)
+            alpha(binding.endMore, 100, 0, AccelerateInterpolator(), 0f, 1f)
         }
         isSendShown = isShown
     }
@@ -385,6 +390,7 @@ class LayoutMessageBottom @JvmOverloads constructor(
                 setInputType(TYPE_MORE)
             }
             binding.endSend -> {
+                onTextSendFunc?.invoke(binding.centerInput.text.toString())
                 binding.centerInput.setText("")
             }
         }
@@ -403,7 +409,10 @@ class LayoutMessageBottom @JvmOverloads constructor(
             isFocusableInTouchMode = true
             requestFocus()
         }
-        MainHandler.postDelayed(duration) { showKeyboard(context, binding.centerInput) }
+        MainHandler.postDelayed(duration) {
+            showKeyboard(context, binding.centerInput)
+            scrollToBottom()
+        }
     }
 
     /**
@@ -413,6 +422,7 @@ class LayoutMessageBottom @JvmOverloads constructor(
         if (isShown) {
             MainHandler.postDelayed(duration) {
                 showView(binding.layoutBottom)
+                scrollToBottom()
             }
         } else {
             hideView(binding.layoutBottom)
@@ -432,6 +442,34 @@ class LayoutMessageBottom @JvmOverloads constructor(
      */
     fun getInputType(): Int {
         return inputType
+    }
+
+    /**
+     * 追加字符串
+     */
+    fun appendText(s: String?) {
+        val text = binding.centerInput.text ?: return
+        var start: Int = binding.centerInput.selectionStart
+        var end: Int = binding.centerInput.selectionEnd
+        start = if (start < 0) 0 else start
+        end = if (start < 0) 0 else end
+        text.replace(start, end, s)
+    }
+
+    /**
+     * 删除text
+     */
+    fun dropText() {
+        binding.centerInput.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
+    }
+
+    /**
+     * 滑动到置顶位置
+     */
+    private fun scrollToBottom() {
+        MainHandler.postDelayed(50) {
+            recyclerView.scrollBy(0, Int.MAX_VALUE)
+        }
     }
 
 

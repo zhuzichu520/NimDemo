@@ -37,7 +37,7 @@ class ItemViewModelSettingTheme(
     }
 
     val isSelected: LiveData<Boolean> = Transformations.map(uiMode) {
-        uiMode.value == mode
+        it == mode
     }
 
     val onClickCommand = createCommand {

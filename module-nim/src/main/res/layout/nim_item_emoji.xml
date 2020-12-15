@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelEmoji" />
+    </data>
+
+    <com.chuzi.android.shared.view.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/nim_selector_emoticon_item"
+        app:onClickCommand="@{item.onClickEmojiCommand}">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            app:url="@{item.darawble}"
+            tools:src="@mipmap/ic_launcher" />
+
+    </com.chuzi.android.shared.view.SquareRelativeLayout>
+
+</layout>

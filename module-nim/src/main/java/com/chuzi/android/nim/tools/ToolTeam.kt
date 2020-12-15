@@ -2,8 +2,6 @@ package com.chuzi.android.nim.tools
 
 import com.chuzi.android.nim.ext.teamService
 import com.chuzi.android.shared.storage.AppStorage
-import com.netease.nimlib.sdk.NIMClient
-import com.netease.nimlib.sdk.team.TeamService
 import com.netease.nimlib.sdk.team.constant.TeamTypeEnum
 import com.netease.nimlib.sdk.team.model.Team
 

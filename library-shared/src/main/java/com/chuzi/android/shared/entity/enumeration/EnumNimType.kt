@@ -7,5 +7,5 @@ package com.chuzi.android.shared.entity.enumeration
  * since: v 1.0.0
  */
 enum class EnumNimType {
-    LOGIN, LOGOUT
+    LOGIN, LOGOUT,RECREATE
 }

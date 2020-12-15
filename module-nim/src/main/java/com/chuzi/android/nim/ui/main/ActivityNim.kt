@@ -1,14 +1,15 @@
 package com.chuzi.android.nim.ui.main
 
 import android.content.Intent
+import androidx.core.app.ActivityOptionsCompat
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.chuzi.android.libs.tool.startActivity
 import com.chuzi.android.mvvm.Mvvm
-import com.chuzi.android.nim.ext.authService
+import com.chuzi.android.nim.R
 import com.chuzi.android.shared.base.ActivityBase
 import com.chuzi.android.shared.entity.arg.ArgNim
 import com.chuzi.android.shared.entity.enumeration.EnumNimType
 import com.chuzi.android.shared.route.RoutePath
-import com.chuzi.android.shared.storage.AppStorage
 
 /**
  * desc
@@ -29,8 +30,17 @@ class ActivityNim : ActivityBase() {
             EnumNimType.LOGOUT -> {
                 navigate(RoutePath.Login.ACTIVITY_LOGIN_MAIN, isPop = true)
             }
-            else -> {
-
+            EnumNimType.RECREATE -> {
+                finish()
+                startActivity(
+                    this,
+                    ActivityNim::class.java,
+                    bundle = null,
+                    options = ActivityOptionsCompat.makeCustomAnimation(
+                        this,
+                        R.anim.fragment_fade_enter, R.anim.fragment_fade_exit
+                    ).toBundle()
+                )
             }
         }
     }

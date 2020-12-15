@@ -1,7 +1,9 @@
 package com.chuzi.android.shared.databinding.view
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.DrawableRes
+import androidx.core.view.forEachIndexed
 import androidx.databinding.BindingAdapter
 import com.chuzi.android.mvvm.databinding.BindingCommand
 import com.jakewharton.rxbinding4.view.clicks
@@ -127,5 +129,37 @@ fun setOnClickDoubleListener(
 fun bindViewColor(view: View, @DrawableRes backgroundId: Int?) {
     backgroundId?.let {
         view.setBackgroundResource(it)
+    }
+}
+
+@BindingAdapter(value = ["displayChild", "displayChild2", "layoutDirection"], requireAll = false)
+fun bindViewGroup(
+    viewGroup: ViewGroup,
+    displayChild: Int?,
+    displayChild2: Int?,
+    layoutDirection: Int?
+) {
+    displayChild?.let {
+        viewGroup.forEachIndexed { index, view ->
+            if (it == index) {
+                view.visibility = View.VISIBLE
+            } else {
+                view.visibility = View.GONE
+            }
+        }
+    }
+
+    displayChild2?.let {
+        viewGroup.forEachIndexed { index, view ->
+            if (it == index) {
+                view.visibility = View.VISIBLE
+            } else {
+                view.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    layoutDirection?.let {
+        viewGroup.layoutDirection = layoutDirection
     }
 }

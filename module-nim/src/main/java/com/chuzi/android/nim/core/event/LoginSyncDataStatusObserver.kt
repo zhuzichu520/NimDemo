@@ -5,9 +5,7 @@ import com.chuzi.android.libs.tool.toLong
 import com.chuzi.android.nim.ext.authServiceObserver
 import com.chuzi.android.shared.global.AppGlobal
 import com.chuzi.android.widget.log.lumberjack.L
-import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
-import com.netease.nimlib.sdk.auth.AuthServiceObserver
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus
 
 /**

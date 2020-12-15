@@ -6,6 +6,7 @@ NIM SDK 只需几行代码即可实现聊天通信功能，所有页面都是以
 
  - [SDK开发环境](SDK开发环境)
  - [依赖方式](依赖方式)
+ - [开发架构说明](开发架构说明)
  - [使用方法](使用方法)
  - [核心类代码](核心类代码)
 
@@ -15,6 +16,26 @@ Android Studio4.1
 targetSdkVersion30
 Gradle6.7.1
 Androidx
+
+## 项目说明
+
+1. 开发语言Kotlin，架构MVVM+JetPack，整个项目架构主要依赖3个库，如下：
+
+```groovy
+dependencies {
+		...
+    //常用类方法封装，各种工具类等等
+		implementation("com.github.zhuzichu520.Developer:library-libs:3.1.9")
+  	//控件封装，Toast，Loading等等
+  	implementation("com.github.zhuzichu520.Developer:library-widget:3.1.9")
+  	//MVVM架构封装，Activitiy，Fragment，DialogFragment，ViewModel等基类封装
+	  implementation("com.github.zhuzichu520.Developer:library-mvvm:3.1.9")
+    ...
+}
+```
+
+2. 项目以Fragment为主，Activity只相当于一个容器，页面跳转是通过Arouter框架，libraray-mvvm已经对Arouter进行了封装，可以统一调用navigate方法，这个方法在BaseFragment，BaseViewModel中，能跳转Fragment，Activitiy，DialogFragment界面。
+
 
 
 ## 依赖方式
@@ -49,7 +70,7 @@ class ApplicationDemo : Application() {
 2. 登录IM
 
 ```kotlin
-AppFactorySDK.loginNim(account, token, object : Callback<String> {
+AppFactorySDK.login(account, token, object : Callback<String> {
 	/**
 	* 登录成功
 	*/
@@ -67,7 +88,7 @@ AppFactorySDK.loginNim(account, token, object : Callback<String> {
 3. 退出IM
 
 ```kotlin
-AppFactorySDK.logoutNim()
+AppFactorySDK.logout()
 ```
 
 4. 获取沟通，通讯录，设置页面

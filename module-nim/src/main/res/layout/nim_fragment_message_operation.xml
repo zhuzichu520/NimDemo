@@ -8,7 +8,7 @@
             type="com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessageOperation" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="310dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginBottom="20dp"
                 android:overScrollMode="never"
                 app:itemBinding="@{viewModel.itemBinding}"
                 app:items="@{viewModel.items}"
@@ -41,6 +42,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </FrameLayout>
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>
 
 </layout>

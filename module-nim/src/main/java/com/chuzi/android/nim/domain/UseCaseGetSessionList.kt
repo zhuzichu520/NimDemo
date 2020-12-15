@@ -19,11 +19,11 @@ import io.reactivex.rxjava3.core.Flowable
 class UseCaseGetSessionList : UseCase<Unit, Flowable<Optional<List<RecentContact>>>>() {
 
     override fun execute(parameters: Unit): Flowable<Optional<List<RecentContact>>> {
-        return createFlowable<Optional<List<RecentContact>>> {
+        return createFlowable {
             msgService().queryRecentContacts().setCallback(
                 NimRequestCallback(this)
             )
-        }.bindToSchedulers().bindToException()
+        }
     }
 
 }

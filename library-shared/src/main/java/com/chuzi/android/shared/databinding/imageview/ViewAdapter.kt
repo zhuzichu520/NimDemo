@@ -1,9 +1,13 @@
 package com.chuzi.android.shared.databinding.imageview
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import coil.load
+import com.chuzi.android.mvvm.ext.className
 import com.chuzi.android.shared.global.AppGlobal
 
 /**
@@ -19,18 +23,38 @@ fun bindImageView(
     crossfade: Boolean?,
     @DrawableRes placeholder: Int?
 ) {
-    (url as? String)?.let {
-        imageView.load(url, imageLoader = AppGlobal.imageLoader) {
-            crossfade?.let {
-                crossfade(it)
-            }
-            placeholder?.let {
-                placeholder(it)
-                error(it)
+    when (url) {
+        is String -> {
+            imageView.load(url, imageLoader = AppGlobal.imageLoader) {
+                crossfade?.let {
+                    crossfade(it)
+                }
+                placeholder?.let {
+                    placeholder(it)
+                    error(it)
+                }
             }
         }
+        is Uri -> {
+            imageView.load(url, imageLoader = AppGlobal.imageLoader) {
+                crossfade?.let {
+                    crossfade(it)
+                }
+                placeholder?.let {
+                    placeholder(it)
+                    error(it)
+                }
+            }
+        }
+        is Int -> {
+            imageView.setImageResource(url)
+        }
+        is Drawable -> {
+            imageView.setImageDrawable(url)
+        }
+        is Bitmap -> {
+            imageView.setImageBitmap(url)
+        }
     }
-    (url as? Int)?.let {
-        imageView.setImageResource(it)
-    }
+
 }

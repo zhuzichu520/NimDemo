@@ -9,11 +9,7 @@ import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.api.NimCallBack
 import com.chuzi.android.nim.domain.UseCaseLogin
 import com.chuzi.android.shared.base.ViewModelBase
-import com.chuzi.android.shared.ext.autoLoading
 import com.chuzi.android.shared.route.RoutePath
-import com.chuzi.android.shared.storage.AppStorage
-import com.netease.nimlib.sdk.auth.LoginInfo
-import com.rxjava.rxlife.life
 
 /**
  * desc 登录ViewModel

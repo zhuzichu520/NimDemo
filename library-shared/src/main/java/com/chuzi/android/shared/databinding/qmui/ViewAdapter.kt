@@ -8,6 +8,8 @@ import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
 import com.chuzi.android.shared.R
 import com.chuzi.android.shared.entity.enumeration.EnumEmptyStatus
 import com.chuzi.android.shared.ext.toStringByResId
+import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout
+import com.qmuiteam.qmui.widget.textview.QMUILinkTextView
 
 /**
  * desc
@@ -67,5 +69,59 @@ fun bindQMUIEmptyView(
         else -> {
             emptyView.hide()
         }
+    }
+}
+
+@BindingAdapter(
+    value = ["onClickLinkTelCommand", "onClickLinkEmailConmmnd", "onClickLinkUrlCommand"],
+    requireAll = false
+)
+fun bindingQmuiTextView(
+    qmuiLinkTextView: QMUILinkTextView,
+    onClickTelCommand: BindingCommand<String>?,
+    onClickEmailConmmnd: BindingCommand<String>?,
+    onClickUrlCommand: BindingCommand<String>?
+) {
+    qmuiLinkTextView.setOnLinkClickListener(object : QMUILinkTextView.OnLinkClickListener {
+
+        override fun onMailLinkClick(mailAddress: String?) {
+            onClickEmailConmmnd?.execute(mailAddress)
+        }
+
+        override fun onWebUrlLinkClick(url: String?) {
+            onClickUrlCommand?.execute(url)
+        }
+
+        override fun onTelLinkClick(phoneNumber: String?) {
+            onClickTelCommand?.execute(phoneNumber)
+        }
+
+    })
+}
+
+@BindingAdapter(value = ["onRefreshCommand", "onLoadMoreCommand"], requireAll = false)
+fun bindQMUIPullLayout(
+    qmuiPullLayout: QMUIPullLayout,
+    onRefreshCommand: BindingCommand<QMUIAction>?,
+    onLoadMoreCommand: BindingCommand<QMUIAction>?
+) {
+    qmuiPullLayout.setActionListener {
+        when (it.pullEdge) {
+            QMUIPullLayout.PULL_EDGE_TOP -> {
+                onRefreshCommand?.execute(QMUIAction(qmuiPullLayout, it))
+            }
+            QMUIPullLayout.PULL_EDGE_BOTTOM -> {
+                onLoadMoreCommand?.execute(QMUIAction(qmuiPullLayout, it))
+            }
+        }
+    }
+}
+
+class QMUIAction(
+    private val pullLayout: QMUIPullLayout,
+    private val action: QMUIPullLayout.PullAction
+) {
+    fun finish() {
+        pullLayout.finishActionRun(action)
     }
 }

@@ -58,6 +58,14 @@ class FragmentSetting : FragmentBase<NimFragmentSettingBinding, ViewModelSetting
         data.add(
             ItemViewModelSettingGroup(
                 viewModel,
+                R.string.settings_language_title
+            ) {
+                navigate(RoutePath.Nim.FRAGMENT_NIM_SETTING_LANGUAGE)
+            }
+        )
+        data.add(
+            ItemViewModelSettingGroup(
+                viewModel,
                 R.string.settings_theme_title
             ) {
                 navigate(RoutePath.Nim.FRAGMENT_NIM_SETTING_THEME)

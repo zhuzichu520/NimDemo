@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelEmojiPage" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:itemBinding="@{item.itemBinding}"
+            app:items="@{item.items}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="8"
+            tools:listitem="@layout/nim_item_emoji" />
+
+        <com.qmuiteam.qmui.layout.QMUIRelativeLayout
+            android:layout_width="64dp"
+            android:layout_height="42dp"
+            android:layout_margin="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:onClickCommand="@{item.onClickCommand}"
+            app:qmui_radius="6dp"
+            app:qmui_shadowAlpha="1.0"
+            app:qmui_shadowElevation="10dp"
+            app:qmui_skin_background="?attr/app_skin_color_background_1">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/nim_ic_emoji_del" />
+
+        </com.qmuiteam.qmui.layout.QMUIRelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

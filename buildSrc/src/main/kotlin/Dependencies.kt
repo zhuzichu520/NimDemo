@@ -32,7 +32,6 @@ object Versions {
     const val MATERIAL = "1.2.0"
 
     const val BINDING_COLLECTION_ADAPTER = "4.0.0"
-    const val BINDING_COLLECTION_ADAPTER_PAGING = "3.1.1"
 
     const val TIMBER = "4.7.1"
     const val LOGBACK = "2.0.0"
@@ -204,8 +203,8 @@ object Libs {
         "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:${Versions.BINDING_COLLECTION_ADAPTER}"
     const val BINDING_COLLECTION_ADAPTER_RECYCLERVIEW =
         "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:${Versions.BINDING_COLLECTION_ADAPTER}"
-    const val BINDING_COLLECTION_ADAPTER_PAGING =
-        "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-paging:${Versions.BINDING_COLLECTION_ADAPTER_PAGING}"
+    const val BINDING_COLLECTION_ADAPTER_VIEWPAGER2 =
+        "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-viewpager2:${Versions.BINDING_COLLECTION_ADAPTER}"
 
     //log
     const val TIMBER =

@@ -10,34 +10,55 @@
 
     <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:qmui_skin_background="?attr/app_skin_color_background">
 
-        <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        <com.chuzi.android.nim.view.LayoutTopBar
             android:id="@+id/topbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:qmuiTopTitle="@{viewModel.title}" />
-
+            app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:topTitle="@{viewModel.title}" />
 
         <LinearLayout
             android:id="@+id/layout_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:alpha="0"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topbar">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler"
+            <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout
+                android:id="@+id/pull_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:onRefreshCommand="@{viewModel.onRefreshCommand}">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    app:itemBinding="@{viewModel.itemBinding}"
+                    app:items="@{viewModel.items}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:qmui_is_target="true" />
+
+                <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLoadMoreView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:qmui_action_view_init_offset="0dp"
+                    app:qmui_can_over_pull="true"
+                    app:qmui_need_receive_fling_from_target_view="true"
+                    app:qmui_pull_edge="top"
+                    app:qmui_pull_rate="0.45"
+                    app:qmui_target_view_trigger_offset="wrap" />
+
+            </com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout>
+
 
             <com.chuzi.android.nim.view.LayoutMessageBottom
                 android:id="@+id/message_bottom"

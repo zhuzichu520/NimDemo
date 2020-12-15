@@ -109,33 +109,33 @@
             android:value="portrait|landscape" />
 
         <activity
-            android:name=".ui.main.ActivityNim"
+            android:name="com.chuzi.android.nim.ui.main.ActivityNim"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
-            android:name=".ui.message.ActivityMessage"
+            android:name="com.chuzi.android.nim.ui.message.ActivityMessage"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
-            android:name=".ui.setting.activity.ActivitySetting"
+            android:name="com.chuzi.android.nim.ui.setting.activity.ActivitySetting"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
-            android:name=".ui.login.ActivityLogin"
+            android:name="com.chuzi.android.nim.ui.login.ActivityLogin"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
-            android:name=".ui.me.activity.ActivityCleanCache"
+            android:name="com.chuzi.android.nim.ui.me.activity.ActivityCleanCache"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
-            android:name=".ui.me.activity.ActivityCleanSession"
+            android:name="com.chuzi.android.nim.ui.me.activity.ActivityCleanSession"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|uiMode"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 

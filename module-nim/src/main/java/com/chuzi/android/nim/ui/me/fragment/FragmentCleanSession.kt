@@ -10,7 +10,6 @@ import com.chuzi.android.nim.ui.me.viewmodel.ViewModelCleanSession
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.databinding.view.setOnClickDoubleListener
 import com.chuzi.android.shared.route.RoutePath
-import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction

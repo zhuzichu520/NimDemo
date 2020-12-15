@@ -8,7 +8,6 @@ import com.chuzi.android.nim.databinding.NimFragmentMessageEmoticonBinding
 import com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessageEmoticon
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.route.RoutePath
-import com.qmuiteam.qmui.arch.QMUIFragment
 
 /**
  * desc
@@ -23,5 +22,17 @@ class FragmentMessageEmoticon :
     override fun bindVariableId(): Int = BR.viewModel
 
     override fun setLayoutId(): Int = R.layout.nim_fragment_message_emoticon
+
+    override fun initViewObservable() {
+        super.initViewObservable()
+        viewModel.tabIndex.observe(viewLifecycleOwner, {
+            viewModel.updateTabs()
+        })
+    }
+
+    override fun initData() {
+        super.initData()
+        viewModel.tabIndex.value = 0
+    }
 
 }

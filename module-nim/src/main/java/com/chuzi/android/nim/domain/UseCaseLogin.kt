@@ -7,8 +7,6 @@ import com.chuzi.android.nim.ext.authService
 import com.chuzi.android.shared.ext.bindToException
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.createFlowable
-import com.netease.nimlib.sdk.NIMClient
-import com.netease.nimlib.sdk.auth.AuthService
 import com.netease.nimlib.sdk.auth.LoginInfo
 import io.reactivex.rxjava3.core.Flowable
 

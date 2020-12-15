@@ -9,7 +9,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="1px"
             app:qmui_skin_background="?attr/app_skin_color_divider" />
 

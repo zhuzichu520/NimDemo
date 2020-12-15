@@ -15,7 +15,6 @@
     <attr name="app_skin_color_font_tertiary" format="color" />
     <attr name="app_skin_color_divider" format="color" />
 
-
     <style name="MyThemeBase" parent="QMUI.Compat.NoActionBar">
         <!--Material type attributes-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MyTheme.Headline1</item>

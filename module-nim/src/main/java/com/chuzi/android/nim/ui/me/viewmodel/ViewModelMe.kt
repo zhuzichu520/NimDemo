@@ -56,7 +56,7 @@ class ViewModelMe : ViewModelBase<ArgDefault>() {
         data.add(
             ItemViewModelMeGroup(
                 this,
-                R.string.me_setting,
+                R.string.setting,
                 R.mipmap.nim_ic_me_setting
             ) {
                 navigate(RoutePath.Nim.ACTIVITY_NIM_SETTING)
@@ -113,7 +113,7 @@ class ViewModelMe : ViewModelBase<ArgDefault>() {
                 .autoLoading(this)
                 .life(this)
                 .subscribe {
-                    userInfo.value = it.get()[0]
+                    userInfo.value = it.get()
                 }
         }
     }

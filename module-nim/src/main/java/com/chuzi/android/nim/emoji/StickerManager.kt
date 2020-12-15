@@ -13,11 +13,6 @@ object StickerManager {
     private const val CATEGORY_XXY = "xxy"
     private const val CATEGORY_LT = "lt"
 
-    init {
-        initStickerOrder()
-        loadStickerCategory()
-    }
-
     /**
      * 数据源
      */
@@ -25,6 +20,10 @@ object StickerManager {
     private val stickerCategoryMap: MutableMap<String, StickerCategory> = HashMap()
     private val stickerOrder: MutableMap<String, Int> = HashMap(3)
 
+    init {
+        initStickerOrder()
+        loadStickerCategory()
+    }
 
     private fun initStickerOrder() {
         // 默认贴图顺序
@@ -56,16 +55,13 @@ object StickerManager {
                     stickerCategoryMap[name] = category
                 }
             }
-            stickerCategories.sortWith(Comparator { l, r -> l.order - r.order })
+            stickerCategories.sortWith { l, r -> l.order - r.order }
         }
     }
 
-    @get:Synchronized
-    val categories: List<StickerCategory>
-        get() = stickerCategories
+    val categories: List<StickerCategory> get() = stickerCategories
 
-    @Synchronized
-    fun getCategory(name: String): StickerCategory? {
+    private fun getCategory(name: String): StickerCategory? {
         return stickerCategoryMap[name]
     }
 

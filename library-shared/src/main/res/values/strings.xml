@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
 
     <string name="contract">Contract</string>
     <string name="session">Session</string>
@@ -11,70 +11,61 @@
     <string name="logout">Logout</string>
     <string name="search">Search</string>
     <string name="back">Back</string>
-
-    <string name="on_sticky_top">置顶</string>
-    <string name="clear_sticky_top">取消置顶</string>
-    <string name="clear_disturb">取消免打扰</string>
-    <string name="on_disturb">免打扰</string>
-    <string name="remove">移除</string>
-
-    <string name="setting_account_safe">账号与安全</string>
-    <string name="setting_font_size">聊天字体大小</string>
-    <string name="setting_new_session">新消息通知</string>
-
-    <string name="me">我的</string>
-    <string name="me_file">我的本地文件</string>
-    <string name="me_setting">设置</string>
-    <string name="me_cache_clear">清理缓存</string>
-    <string name="me_session_clear">会话清理</string>
-    <string name="me_call">在线客服</string>
-    <string name="me_about">关于我们</string>
-    <string name="me_collection">收藏</string>
-
-    <string name="all_select">全选</string>
-    <string name="delete">删除</string>
-    <string name="delete_session_cache_tips">确定要清楚这些缓存吗？</string>
-    <string name="used_space">已用空间</string>
-    <string name="clear_cache">清理缓存</string>
-
-    <string name="settings_theme_title">选择主题</string>
-    <string name="settings_theme_system">系统默认</string>
-    <string name="settings_theme_light">浅色</string>
-    <string name="settings_theme_dark">深色</string>
-
-    <string name="ok">确定</string>
-    <string name="cancel">取消</string>
-    <string name="logout_tips">确认要退出登录吗？</string>
-
+    <string name="on_sticky_top">Topping</string>
+    <string name="clear_sticky_top">Cancel topping</string>
+    <string name="clear_disturb">Cancel no disturb</string>
+    <string name="on_disturb">Don\'t disturb\'</string>
+    <string name="remove">Remove</string>
+    <string name="setting_account_safe">Account number and security</string>
+    <string name="setting_font_size">Chat font size</string>
+    <string name="setting_new_session">New message notification</string>
+    <string name="me">Me</string>
+    <string name="me_file">My local files</string>
+    <string name="me_cache_clear">Clean up cache</string>
+    <string name="me_session_clear">Session cleanup</string>
+    <string name="me_call">Online Service</string>
+    <string name="me_about">About us</string>
+    <string name="me_collection">Collection</string>
+    <string name="save">Save</string>
+    <string name="all_select">Select all</string>
+    <string name="delete">Delete</string>
+    <string name="delete_session_cache_tips">Are you sure you want to know about these caches？</string>
+    <string name="used_space">Ued space</string>
+    <string name="clear_cache">Clean up cache</string>
+    <string name="settings_theme_title">Choose Theme</string>
+    <string name="settings_theme_system">System default</string>
+    <string name="settings_theme_light">Light colour</string>
+    <string name="settings_theme_dark">Dark color</string>
+    <string name="settings_language_title">Choose Language</string>
+    <string name="settings_language_system">Device Language</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout_tips">Are you sure you want to log out？</string>
     <string name="send">Send</string>
-    <string name="record_audio">按住 说话</string>
-    <string name="recording_cancel">手指上滑　取消发送</string>
-    <string name="recording_cancel_tip">松开手指　取消发送</string>
-
-    <string name="message_operation_call">呼 叫</string>
-    <string name="message_operation_album">相 册</string>
-    <string name="message_operation_video">拍 摄</string>
-    <string name="message_operation_file">文 件</string>
-    <string name="message_operation_local">位 置</string>
-
-    <string name="new_frends">新的好友</string>
-    <string name="my_frends">我的好友</string>
-    <string name="team_group">工作群</string>
-    <string name="history_title">历史联系人</string>
-
-    <string name="rich_scan">扫一扫</string>
-    <string name="call_normal_team">发起群聊</string>
-    <string name="add_buddy">添加好友</string>
-
-
-    <string name="team_need_authentication">需要身份验证</string>
-    <string name="team_allow_anyone_join">允许任何人加入</string>
-    <string name="team_not_allow_anyone_join">不允许任何人申请加入</string>
-
+    <string name="record_audio">Hold to talk</string>
+    <string name="recording_cancel">Finger up to cancel sending</string>
+    <string name="recording_cancel_tip">Release the finger to cancel sending</string>
+    <string name="message_operation_call">Call</string>
+    <string name="message_operation_album">Album</string>
+    <string name="message_operation_video">Shooting</string>
+    <string name="message_operation_file">Files</string>
+    <string name="message_operation_local">Location</string>
+    <string name="new_frends">New friends</string>
+    <string name="my_frends">My friend</string>
+    <string name="team_group">Working group</string>
+    <string name="history_title">Historical contacts</string>
+    <string name="rich_scan">Scan</string>
+    <string name="call_normal_team">Initiate group chat</string>
+    <string name="add_buddy">Add friends</string>
+    <string name="team_need_authentication">Authentication required</string>
+    <string name="team_allow_anyone_join">Allow anyone to join</string>
+    <string name="team_not_allow_anyone_join">No one is allowed to apply for admission</string>
     <string name="empty_desc_fail_title">Loading Failed</string>
     <string name="empty_desc_fail_desc">Please check whether the network can connect normally</string>
     <string name="empty_desc_retry">Retry</string>
     <string name="empty_desc_title">Empty</string>
-
+    <string name="news">News</string>
+    <string name="unsupport_title">无法显示该内容</string>
+    <string name="unsupport_desc">客户端版本不支持该内容</string>
 
 </resources>

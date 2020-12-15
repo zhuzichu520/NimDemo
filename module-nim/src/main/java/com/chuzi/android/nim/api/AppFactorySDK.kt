@@ -14,9 +14,11 @@ import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.attachment.NimAttachParser
 import com.chuzi.android.nim.core.config.NimConfigSDKOption
 import com.chuzi.android.nim.core.event.NimEventManager
+import com.chuzi.android.nim.emoji.StickerManager
 import com.chuzi.android.nim.ext.authService
 import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.shared.BuildConfig
+import com.chuzi.android.shared.ext.updateApplicationLanguage
 import com.chuzi.android.shared.global.AppGlobal
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.rxhttp.RxHttpManager
@@ -183,6 +185,7 @@ object AppFactorySDK {
      */
     fun applyConfigurationChanged(newConfig: Configuration) {
         SkinManager.applyConfigurationChanged(newConfig)
+        updateApplicationLanguage(AppStorage.language)
     }
 
 

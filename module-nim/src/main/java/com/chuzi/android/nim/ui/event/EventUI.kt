@@ -1,5 +1,7 @@
 package com.chuzi.android.nim.ui.event
 
+import com.chuzi.android.nim.emoji.StickerItem
+
 /**
  * desc
  * author: 朱子楚
@@ -8,24 +10,27 @@ package com.chuzi.android.nim.ui.event
  */
 class EventUI {
 
+    /**
+     * 消息界面回退事件
+     */
     class OnMessageDestoryEvent
 
+    /**
+     * 点击Emoji删除按钮
+     */
+    class OnClickEmojiDeleteEvent
 
-    companion object {
-        //录制取消
-        const val RECORD_CANCEL = 0
-        //录完可以发送
-        const val RECORD_SEND = 1
-        //正在录制中
-        const val RECORD_RECORDING = 2
-    }
-    data class OnRecordAudioEvent(
-        val recordType: Int,
-        val recordSecond: Int
-    )
-    data class OnRecordCancelChangeEvent(
-        val cancelled: Boolean
+    /**
+     * 点击Emoji事件
+     */
+    data class OnClickEmojiEvent(
+        val text: String
     )
 
-
+    /**
+     * 点击贴图事件
+     */
+    class OnClickStickerEvent(
+        val sticker: StickerItem
+    )
 }

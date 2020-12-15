@@ -5,5 +5,7 @@ rootProject.name = ("NimDemo")
 include(
     "app",
     "library-shared",
-    "module-nim"
+    "module-main",
+    "module-nim",
+    "module-media"
 )

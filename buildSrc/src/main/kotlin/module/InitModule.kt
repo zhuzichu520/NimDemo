@@ -11,6 +11,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByType
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 /**
@@ -20,7 +21,10 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
  * since: v 1.0.0
  */
 
-class InitModule(private val project: Project) {
+class InitModule(
+    private val project: Project,
+    denpencyFunc: (DependencyHandler.() -> Unit)? = null
+) {
 
     init {
 
@@ -56,6 +60,7 @@ class InitModule(private val project: Project) {
             add("implementation", project(mapOf("path" to ":library-shared")))
             add("kapt", Kapts.AROUTER_COMPILER)
             add("kapt", Kapts.QMUI_ARCH_COMPILER)
+            denpencyFunc?.invoke(this)
         }
 
     }

@@ -1,6 +1,7 @@
 package com.chuzi.android.shared.entity.arg
 
 import com.chuzi.android.mvvm.base.BaseArg
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 
 
 /**
@@ -12,4 +13,13 @@ import com.chuzi.android.mvvm.base.BaseArg
 data class ArgMessage(
     val contactId: String,
     val sessionType: Int
-) : BaseArg()
+) : BaseArg() {
+
+    /**
+     * 获取SessionType枚举类型
+     */
+    fun sessionTypeEnum(): SessionTypeEnum {
+        return SessionTypeEnum.typeOfValue(sessionType)
+    }
+
+}

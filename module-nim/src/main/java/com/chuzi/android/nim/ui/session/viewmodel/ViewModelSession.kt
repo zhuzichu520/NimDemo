@@ -14,6 +14,8 @@ import com.chuzi.android.nim.tools.ToolSticky
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSearch
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSession
 import com.chuzi.android.shared.base.ViewModelBase
+import com.chuzi.android.shared.ext.bindToException
+import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.map
 import com.google.common.primitives.Longs
 import com.netease.nimlib.sdk.msg.model.RecentContact
@@ -103,6 +105,8 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
             .map {
                 handleRecentList(it.get())
             }
+            .bindToSchedulers()
+            .bindToException()
             .life(this)
             .subscribe(
                 {

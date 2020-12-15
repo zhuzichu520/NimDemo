@@ -7,7 +7,6 @@ import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.ui.contract.viewmodel.ItemViewModelLine
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.ext.map
-import com.chuzi.android.shared.global.AppGlobal
 import com.chuzi.android.shared.storage.AppStorage
 import me.tatarka.bindingcollectionadapter2.itembindings.OnItemBindClass
 

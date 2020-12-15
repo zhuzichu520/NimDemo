@@ -3,6 +3,7 @@ package com.chuzi.android.shared.storage
 import androidx.appcompat.app.AppCompatDelegate
 import com.netease.nimlib.sdk.auth.LoginInfo
 import com.tencent.mmkv.MMKV
+import java.util.*
 
 object AppStorage {
 
@@ -20,7 +21,7 @@ object AppStorage {
 
     var uiMode by IntPreference(prefs, defaultValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
-    var softKeyboardHeight by IntPreference(prefs, 720)
+    var language by StringPreference(prefs, defaultValue = null)
 
     var isPrivateConfig by BooleanPreference(prefs, false)
 
@@ -31,7 +32,7 @@ object AppStorage {
         token = loginInfo.token
     }
 
-    fun logout(){
+    fun logout() {
         account = null
         token = null
     }

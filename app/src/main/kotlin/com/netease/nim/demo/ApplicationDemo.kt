@@ -25,7 +25,6 @@ class ApplicationDemo : Application() {
         AppFactorySDK.init(this, OpenApiImpl())
     }
 
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         AppFactorySDK.applyConfigurationChanged(newConfig)

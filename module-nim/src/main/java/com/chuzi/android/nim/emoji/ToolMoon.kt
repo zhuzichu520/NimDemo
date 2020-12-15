@@ -113,7 +113,7 @@ object ToolMoon {
             val atagString = value.substring(start, end)
             val tagSpan = getTagSpan(atagString)
             value = value.substring(0, start) + tagSpan.tag + value.substring(end)
-            tagSpan.setRange(start, start + tagSpan.tag!!.length)
+            tagSpan.setRange(start, start + tagSpan.tag.length)
             tagSpans.add(tagSpan)
             aTagMatcher = mATagPattern.matcher(value)
         }
