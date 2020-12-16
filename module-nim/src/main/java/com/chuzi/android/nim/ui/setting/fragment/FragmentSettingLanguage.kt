@@ -13,6 +13,7 @@ import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.entity.arg.ArgNim
 import com.chuzi.android.shared.entity.enumeration.EnumNimType
 import com.chuzi.android.shared.ext.updateApplicationLanguage
+import com.chuzi.android.shared.global.AppGlobal
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.storage.AppStorage
 import java.util.*
@@ -65,8 +66,8 @@ class FragmentSettingLanguage :
         viewModel.localeLiveData.observe(viewLifecycleOwner) {
             if (it == AppStorage.language)
                 return@observe
-            updateApplicationLanguage(AppStorage.language)
             AppStorage.language = it
+            AppGlobal.context.updateApplicationLanguage(it)
             navigate(RoutePath.Nim.ACTIVITY_NIM_MAIN, ArgNim(EnumNimType.RECREATE))
         }
     }

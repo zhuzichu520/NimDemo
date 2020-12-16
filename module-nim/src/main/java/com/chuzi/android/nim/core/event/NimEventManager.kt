@@ -39,9 +39,9 @@ object NimEventManager {
     /**
      * 多端登录监听
      */
-    private val observeOnlineClient =
+    private val observeOtherClients =
         Observer { onlineClients: List<OnlineClient>? ->
-            RxBus.post(NimEvent.OnLienClientEvent(onlineClients))
+            RxBus.post(NimEvent.OnOtherClientsEvent(onlineClients))
         }
 
     /**
@@ -115,14 +115,18 @@ object NimEventManager {
 
         msgServiceObserve().observeRecentContact(observerRecentContact, register)
 
-        authServiceObserver().observeOnlineStatus(observeOnlineStatus, register)
-
-        authServiceObserver().observeOtherClients(observeOnlineClient, register)
-
         userServiceObserve().observeUserInfoUpdate(observerUserInfoUpdate, register)
 
         friendServiceObserve().observeFriendChangedNotify(observerFriendChangedNotify, register)
 
+    }
+
+    fun registObserveOtherClients(register: Boolean) {
+        authServiceObserver().observeOtherClients(observeOtherClients, register)
+    }
+
+    fun registObserveOnlineStatus(register: Boolean) {
+        authServiceObserver().observeOnlineStatus(observeOnlineStatus, register)
     }
 
 }

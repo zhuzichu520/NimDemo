@@ -30,7 +30,6 @@ object CacheGlobal {
     private const val CACHE_LUBAN_FILE_NAME = " cache_luban"
 
 
-
     fun initDir() {
         getCoilCacheDir()
         getMmkvCacheDir()
@@ -99,7 +98,7 @@ object CacheGlobal {
     /**
      * 获取存储目录
      */
-    fun getBaseDiskCacheDir(): File {
+    private fun getBaseDiskCacheDir(): File {
         val file = if (isExternalStorageWriteable()) {
             context.externalCacheDir ?: context.cacheDir
         } else {

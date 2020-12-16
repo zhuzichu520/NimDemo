@@ -14,6 +14,7 @@ import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.nim.ui.session.viewmodel.ViewModelSession
 import com.chuzi.android.shared.base.ItemViewModelBase
 import com.chuzi.android.shared.ext.toColorByResId
+import com.chuzi.android.shared.ext.toStringByResId
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.badge.Badge
 import com.chuzi.android.widget.spanly.Spanly
@@ -80,7 +81,10 @@ data class ItemViewModelSession(
             }
         } else {
             value =
-                Spanly().append("[草稿]", color(R.color.color_ffc107.toColorByResId())).append(draft)
+                Spanly().append(
+                    R.string.draft.toStringByResId(),
+                    color(R.color.color_ffc107.toColorByResId())
+                ).append(draft)
         }
     }
 

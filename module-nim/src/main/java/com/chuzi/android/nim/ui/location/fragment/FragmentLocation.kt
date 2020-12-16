@@ -13,7 +13,6 @@ import com.amap.api.maps.model.*
 import com.amap.api.maps.model.animation.*
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.geocoder.*
-import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.dp2px
 import com.chuzi.android.libs.tool.hideView
 import com.chuzi.android.libs.tool.showView
@@ -79,12 +78,11 @@ class FragmentLocation : FragmentBase<NimFragmentLocationBinding, ViewModelLocat
             )
         }
 
-        amap.setOnMapTouchListener {
+        amap.addOnMapTouchListener {
             if (it.action == MotionEvent.ACTION_UP) {
                 isOpenSearch = true
             }
         }
-
     }
 
     /**
@@ -283,8 +281,10 @@ class FragmentLocation : FragmentBase<NimFragmentLocationBinding, ViewModelLocat
         val animationSet = AnimationSet(true)
         val alphaAnimation = AlphaAnimation(0.5f, 0f)
         alphaAnimation.setDuration(2000)
+        alphaAnimation.repeatCount = Animation.INFINITE
         val scaleAnimation = ScaleAnimation(1.0f, 3.5f, 1.0f, 3.5f)
         scaleAnimation.setDuration(2000)
+        scaleAnimation.repeatCount = Animation.INFINITE
         animationSet.addAnimation(alphaAnimation)
         animationSet.addAnimation(scaleAnimation)
         animationSet.setInterpolator(LinearInterpolator())

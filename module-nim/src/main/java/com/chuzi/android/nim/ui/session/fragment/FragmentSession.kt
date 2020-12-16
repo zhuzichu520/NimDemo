@@ -1,5 +1,6 @@
 package com.chuzi.android.nim.ui.session.fragment
 
+import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.event.NimEvent
+import com.chuzi.android.nim.core.event.NimEventManager
 import com.chuzi.android.nim.databinding.NimFragmentSessionBinding
 import com.chuzi.android.nim.ui.event.EventUI
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSession
@@ -26,10 +28,16 @@ import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.bus.RxBus
 import com.chuzi.android.shared.databinding.view.setOnClickDoubleListener
 import com.chuzi.android.shared.entity.arg.ArgMessage
+import com.chuzi.android.shared.entity.arg.ArgNim
+import com.chuzi.android.shared.entity.enumeration.EnumNimType
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.dp2px
+import com.chuzi.android.shared.ext.toStringByResId
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.skin.SkinManager
+import com.chuzi.android.widget.log.lumberjack.L
+import com.netease.nimlib.sdk.StatusCode
+import com.netease.nimlib.sdk.auth.ClientType
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
@@ -55,6 +63,18 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     override fun initData() {
         super.initData()
         initSyncData()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        NimEventManager.registObserveOnlineStatus(true)
+        NimEventManager.registObserveOtherClients(true)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        NimEventManager.registObserveOnlineStatus(false)
+        NimEventManager.registObserveOtherClients(false)
     }
 
     override fun initListener() {
@@ -146,9 +166,83 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
             )
         }
 
+        /**
+         * 皮肤样式切换事件
+         */
         SkinManager.onSkinChangeListener.observe(viewLifecycleOwner) {
             viewModel.returnItemColor()
         }
+
+        RxBus.toObservable(NimEvent.OnLineStatusEvent::class.java)
+            .life(viewLifecycleOwner)
+            .subscribe {
+                if (it.statusCode.wontAutoLogin()) {
+                    AppFactorySDK.logout()
+                    navigate(RoutePath.Nim.ACTIVITY_NIM_MAIN, ArgNim(EnumNimType.LOGOUT))
+                } else {
+                    when (it.statusCode) {
+                        StatusCode.NET_BROKEN -> {
+                            L.tag("StatusCode").i { "NET_BROKEN" }
+                            viewModel.showNetWorkBar(true)
+                            viewModel.setNetWorkText(R.string.net_broken)
+                        }
+                        StatusCode.UNLOGIN -> {
+                            L.tag("StatusCode").i { "UNLOGIN" }
+                            viewModel.showNetWorkBar(false)
+                            viewModel.setNetWorkText(R.string.nim_status_unlogin)
+                        }
+                        StatusCode.CONNECTING -> {
+                            L.tag("StatusCode").i { "CONNECTING" }
+                            viewModel.showNetWorkBar(false)
+                            viewModel.setNetWorkText(R.string.nim_status_connecting)
+                        }
+                        StatusCode.LOGINING -> {
+                            L.tag("StatusCode").i { "LOGINING" }
+                            viewModel.showNetWorkBar(false)
+                            viewModel.setNetWorkText(R.string.nim_status_logining)
+                        }
+                        else -> {
+                            L.tag("StatusCode").i { "ELSE" }
+                            viewModel.showNetWorkBar(false)
+                        }
+                    }
+                }
+            }
+
+        RxBus.toObservable(NimEvent.OnOtherClientsEvent::class.java)
+            .life(viewLifecycleOwner)
+            .subscribe {
+                val list = it.list
+                if (list.isNullOrEmpty()) {
+                    viewModel.showMultiportBar(false)
+                } else {
+                    val onlineClient = list[0]
+                    val logging = R.string.multiport_logging.toStringByResId(requireContext())
+                    when (onlineClient.clientType) {
+                        ClientType.Windows, ClientType.MAC -> {
+                            viewModel.setMultiportText(
+                                logging + R.string.computer_version.toStringByResId(requireContext())
+                            )
+                            viewModel.showMultiportBar(true)
+                        }
+                        ClientType.Web -> {
+                            viewModel.setMultiportText(
+                                logging + R.string.web_version.toStringByResId(requireContext())
+                            )
+                            viewModel.showMultiportBar(true)
+                        }
+                        ClientType.iOS, ClientType.Android -> {
+                            viewModel.setMultiportText(
+                                logging + R.string.mobile_version.toStringByResId(requireContext())
+                            )
+                            viewModel.showMultiportBar(true)
+                        }
+                        else -> {
+                            viewModel.showMultiportBar(false)
+                        }
+                    }
+                }
+            }
     }
 
     /**

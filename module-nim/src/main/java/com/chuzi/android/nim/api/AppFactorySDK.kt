@@ -14,7 +14,6 @@ import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.attachment.NimAttachParser
 import com.chuzi.android.nim.core.config.NimConfigSDKOption
 import com.chuzi.android.nim.core.event.NimEventManager
-import com.chuzi.android.nim.emoji.StickerManager
 import com.chuzi.android.nim.ext.authService
 import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.shared.BuildConfig
@@ -86,6 +85,8 @@ object AppFactorySDK {
         ARouter.init(context)
         //初始化皮肤
         SkinManager.install(context)
+        //更新语言
+        context.updateApplicationLanguage(AppStorage.language)
         //初始化地图 todo 抽一个地图module
         MapsInitializer.setApiKey(if (BuildConfig.DEBUG) BuildConfig.AMAP_APPKEY_DEBUG else BuildConfig.AMAP_APPKEY_RELEASE)
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
@@ -185,8 +186,6 @@ object AppFactorySDK {
      */
     fun applyConfigurationChanged(newConfig: Configuration) {
         SkinManager.applyConfigurationChanged(newConfig)
-        updateApplicationLanguage(AppStorage.language)
     }
-
 
 }

@@ -28,7 +28,7 @@ class NimEvent {
     /**
      * 多端登录监听
      */
-    data class OnLienClientEvent(val list: List<OnlineClient>?)
+    data class OnOtherClientsEvent(val list: List<OnlineClient>?)
 
     /**
      * 消息状态监听

@@ -1,5 +1,6 @@
 package com.chuzi.android.nim.ui.session.viewmodel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.chuzi.android.libs.tool.replaceAt
@@ -32,6 +33,10 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
 
     private val useCaseGetSessionList by lazy { UseCaseGetSessionList() }
 
+    private val itemViewModelNetwork = ItemViewModelNetwork(this)
+
+    private val itemViewModelMultiport = ItemViewModelMultiport(this)
+
     /**
      * 会话数据
      */
@@ -48,6 +53,8 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     val items: LiveData<List<Any>> =
         Transformations.map(sessionList) { input ->
             val list = ArrayList<Any>()
+            list.add(itemViewModelNetwork)
+            list.add(itemViewModelMultiport)
             list.add(ItemViewModelSearch(this))
             list.addAll(input)
             list
@@ -59,6 +66,8 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     val itemBinding = OnItemBindClass<Any>().apply {
         map<ItemViewModelSession>(BR.item, R.layout.nim_item_session)
         map<ItemViewModelSearch>(BR.item, R.layout.nim_item_search)
+        map<ItemViewModelNetwork>(BR.item, R.layout.nim_item_network)
+        map<ItemViewModelMultiport>(BR.item, R.layout.nim_item_multiport)
     }
 
 //    val diff = object : DiffUtil.ItemCallback<Any>() {
@@ -186,6 +195,36 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
             }
         }
         return -1
+    }
+
+    /**
+     * 修改网络状态栏文案
+     */
+    fun setNetWorkText(@StringRes textId: Int) {
+        itemViewModelNetwork.title.value = textId
+    }
+
+    /**
+     * 是否显示网络状态栏
+     * @param isShown
+     */
+    fun showNetWorkBar(isShown: Boolean) {
+        itemViewModelNetwork.isShown.value = isShown
+    }
+
+    /**
+     * 修改多端登录文案
+     */
+    fun setMultiportText(text: String) {
+        itemViewModelMultiport.title.value = text
+    }
+
+    /**
+     * 是否显示多端登录栏
+     * @param isShown
+     */
+    fun showMultiportBar(isShown: Boolean) {
+        itemViewModelMultiport.isShown.value = isShown
     }
 
     /**

@@ -5,6 +5,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
+import com.chuzi.android.nim.core.event.NimEventManager
 import com.chuzi.android.nim.databinding.NimFragmentLoginBinding
 import com.chuzi.android.nim.ui.login.viewmodel.ViewModelLogin
 import com.chuzi.android.shared.base.FragmentBase

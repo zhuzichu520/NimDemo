@@ -65,11 +65,20 @@
     <string name="empty_desc_retry">Retry</string>
     <string name="empty_desc_title">Empty</string>
     <string name="news">News</string>
-    <string name="unsupport_title">无法显示该内容</string>
-    <string name="unsupport_desc">客户端版本不支持该内容</string>
+    <string name="unsupport_title">The content cannot be displayed</string>
+    <string name="unsupport_desc">The content is not supported by the client version</string>
     <string name="copy">Copy</string>
     <string name="go_setting">Go Setting</string>
     <string name="permissions_tips">This function requires your %s permission. Please go to the settings Center for authorization</string>
     <string name="reload">Reload</string>
+    <string name="draft">[Draft]</string>
+    <string name="net_broken">The current network is not available. Please check your network settings</string>
+    <string name="nim_status_unlogin">Not logged in</string>
+    <string name="nim_status_connecting">Connecting…</string>
+    <string name="nim_status_logining">Logging in…</string>
+    <string name="computer_version">Computer version</string>
+    <string name="web_version">Web version</string>
+    <string name="mobile_version">Mobile version</string>
+    <string name="multiport_logging">In use</string>
 
 </resources>
