@@ -171,14 +171,4 @@ open class ItemViewModelMessageBase(
         return message.fromAccount == AppStorage.account
     }
 
-    override fun equals(other: Any?): Boolean {
-        other as ItemViewModelMessageBase
-        return uuid == other.uuid
-    }
-
-    override fun hashCode(): Int {
-        return uuid.hashCode()
-    }
-
-
 }

@@ -1,6 +1,7 @@
 package com.chuzi.android.nim.ui.event
 
 import com.chuzi.android.nim.emoji.StickerItem
+import com.chuzi.android.nim.ui.location.viewmodel.ItemViewModelPoi
 
 /**
  * desc
@@ -39,5 +40,9 @@ class EventUI {
      */
     class OnClickOperationEvent(
         val titleId: Int
+    )
+
+    data class OnSendLocationEvent(
+        val item: ItemViewModelPoi
     )
 }

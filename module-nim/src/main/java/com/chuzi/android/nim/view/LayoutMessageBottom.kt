@@ -20,6 +20,7 @@ import com.chuzi.android.nim.databinding.NimLayoutMessageBottomBinding
 import com.chuzi.android.nim.emoji.ToolMoon
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.changeWidth
+import com.chuzi.android.shared.ext.toString2
 import com.jakewharton.rxbinding4.view.touches
 import com.rxjava.rxlife.life
 import io.reactivex.rxjava3.core.Flowable
@@ -461,6 +462,21 @@ class LayoutMessageBottom @JvmOverloads constructor(
      */
     fun dropText() {
         binding.centerInput.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
+    }
+
+    /**
+     * 获取输入框字符串
+     */
+    fun getText(): String? {
+        val editable = binding.centerInput.text ?: return null
+        return editable.toString()
+    }
+
+    /**
+     * 输入框设置字符串
+     */
+    fun setText(text: String?) {
+        binding.centerInput.setText(text)
     }
 
     /**

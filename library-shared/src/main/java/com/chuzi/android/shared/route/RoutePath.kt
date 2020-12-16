@@ -56,6 +56,14 @@ object RoutePath {
         const val FRAGMENT_NIM_ME_CLEAN_SESSION = "/nim/fragment/me/clean_session"
     }
 
+    /**
+     * 地图模块
+     */
+    object Map {
+        const val ACTIVITY_MAP_LOCATION = "/map/activity/location"
+        const val FRAGMENT_MAP_LOCATION = "/map/fragment/location"
+    }
+
 
     /**
      * Media 模块

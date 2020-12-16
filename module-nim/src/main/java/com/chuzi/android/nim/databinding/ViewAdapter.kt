@@ -17,7 +17,7 @@ import com.chuzi.android.widget.badge.Badge
 @BindingAdapter(value = ["moonText"], requireAll = false)
 fun bindMoonTextView(
     textView: TextView,
-    moonText: String?
+    moonText: CharSequence?
 ) {
     moonText?.let {
         ToolMoon.identifyFaceExpression(textView.context, textView, it)

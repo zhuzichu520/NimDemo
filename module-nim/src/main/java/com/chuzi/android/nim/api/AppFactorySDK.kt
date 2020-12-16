@@ -87,7 +87,7 @@ object AppFactorySDK {
         //初始化皮肤
         SkinManager.install(context)
         //初始化地图 todo 抽一个地图module
-        MapsInitializer.setApiKey(BuildConfig.AMAP_APPKEY_RELEASE)
+        MapsInitializer.setApiKey(if (BuildConfig.DEBUG) BuildConfig.AMAP_APPKEY_DEBUG else BuildConfig.AMAP_APPKEY_RELEASE)
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
         if (NIMUtil.isMainProcess(context)) {
             //开启数据同步监听

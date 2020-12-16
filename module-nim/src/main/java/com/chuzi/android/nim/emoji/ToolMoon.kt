@@ -22,7 +22,7 @@ object ToolMoon {
      */
     private const val EMOJIICON_SCALE = 1.2f
 
-    fun identifyFaceExpression(context: Context, textView: TextView, value: String) {
+    fun identifyFaceExpression(context: Context, textView: TextView, value: CharSequence) {
         identifyFaceExpression(
             context,
             textView,
@@ -31,7 +31,7 @@ object ToolMoon {
         )
     }
 
-    fun identifyFaceExpressionAndATags(context: Context, textView: TextView, value: String) {
+    fun identifyFaceExpressionAndATags(context: Context, textView: TextView, value: CharSequence) {
         val mSpannableString = makeSpannableStringTags(
             context,
             value,
@@ -51,7 +51,7 @@ object ToolMoon {
         tv.text = mSpannableString
     }
 
-    fun identifyFaceExpression(context: Context, textView: View, value: String, size: Int) {
+    fun identifyFaceExpression(context: Context, textView: View, value: CharSequence, size: Int) {
         val mSpannableString = replaceEmoticons(context, value, size)
         viewSetText(textView, mSpannableString)
     }
@@ -70,12 +70,12 @@ object ToolMoon {
     /**
      * lstmsgviewholder类使用,只需显示a标签对应的文本
      */
-    fun identifyFaceExpressionAndTags(context: Context, textView: View, value: String, size: Int) {
+    fun identifyFaceExpressionAndTags(context: Context, textView: View, value: CharSequence, size: Int) {
         val mSpannableString = makeSpannableStringTags(context, value, size, false)
         viewSetText(textView, mSpannableString)
     }
 
-    private fun replaceEmoticons(context: Context, text: String, size: Int): SpannableString {
+    private fun replaceEmoticons(context: Context, text: CharSequence, size: Int): SpannableString {
         val mSpannableString = SpannableString(text)
         val matcher = EmojiManager.pattern.matcher(text)
         while (matcher.find()) {
@@ -95,7 +95,7 @@ object ToolMoon {
     @JvmOverloads
     fun makeSpannableStringTags(
         context: Context,
-        text: String,
+        text: CharSequence,
         size: Int,
         bTagClickable: Boolean = true
     ): SpannableString {

@@ -8,13 +8,17 @@ import com.chuzi.android.nim.R
 import com.chuzi.android.nim.core.attachment.AttachmentSticker
 import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.nim.tools.ToolDate
-import com.chuzi.android.nim.tools.ToolSticky
+import com.chuzi.android.nim.tools.ToolNimExtension
 import com.chuzi.android.nim.tools.ToolTeam
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.nim.ui.session.viewmodel.ViewModelSession
 import com.chuzi.android.shared.base.ItemViewModelBase
+import com.chuzi.android.shared.ext.toColorByResId
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.badge.Badge
+import com.chuzi.android.widget.spanly.Spanly
+import com.chuzi.android.widget.spanly.color
+import com.chuzi.android.widget.spanly.font
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum.P2P
@@ -56,21 +60,27 @@ data class ItemViewModelSession(
      * todo 可优化
      * 会话内容
      */
-    val content = MutableLiveData<String>().apply {
-        val attachment = contact.attachment
-        value = when (attachment) {
-            is AttachmentSticker -> {
-                "[贴图]"
+    val content = MutableLiveData<CharSequence>().apply {
+        val draft = ToolNimExtension.getDraft(contact)
+        if (draft == null) {
+            val attachment = contact.attachment
+            value = when (attachment) {
+                is AttachmentSticker -> {
+                    "[贴图]"
+                }
+                is ImageAttachment -> {
+                    "[图片]"
+                }
+                is FileAttachment -> {
+                    "[文件]"
+                }
+                else -> {
+                    contact.content ?: ""
+                }
             }
-            is ImageAttachment -> {
-                "[图片]"
-            }
-            is FileAttachment -> {
-                "[文件]"
-            }
-            else -> {
-                contact.content ?: ""
-            }
+        } else {
+            value =
+                Spanly().append("[草稿]", color(R.color.color_ffc107.toColorByResId())).append(draft)
         }
     }
 
@@ -85,7 +95,7 @@ data class ItemViewModelSession(
      * 置顶标记
      */
     val isStick = MutableLiveData<Boolean>().apply {
-        value = ToolSticky.isStickyTagSet(contact)
+        value = ToolNimExtension.isStickyTagSet(contact)
     }
 
     /**
@@ -172,16 +182,14 @@ data class ItemViewModelSession(
      * 置顶
      */
     fun addSticky() {
-        ToolSticky.addStickyTag(contact)
-        msgService().updateRecentAndNotify(contact)
+        ToolNimExtension.addStickyTag(contact)
     }
 
     /**
      * 取消置顶
      */
     fun removeStick() {
-        ToolSticky.removeStickTag(contact)
-        msgService().updateRecentAndNotify(contact)
+        ToolNimExtension.removeStickTag(contact)
     }
 
 

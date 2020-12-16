@@ -10,7 +10,7 @@ import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.domain.UseCaseGetSessionList
 import com.chuzi.android.nim.ext.msgService
-import com.chuzi.android.nim.tools.ToolSticky
+import com.chuzi.android.nim.tools.ToolNimExtension
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSearch
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSession
 import com.chuzi.android.shared.base.ViewModelBase
@@ -192,8 +192,8 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
      * 比较器
      */
     private val comparator: Comparator<RecentContact> = Comparator { left, right ->
-        val longRight: Long = ToolSticky.getStickyLong(right)
-        val longLeft: Long = ToolSticky.getStickyLong(left)
+        val longRight: Long = ToolNimExtension.getStickyLong(right)
+        val longLeft: Long = ToolNimExtension.getStickyLong(left)
         //先比较置顶 后 比较时间
         if (longLeft != Long.MIN_VALUE && longRight == Long.MIN_VALUE) {
             -1

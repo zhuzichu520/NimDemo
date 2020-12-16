@@ -2,6 +2,7 @@ package com.chuzi.android.nim.ui.message.viewmodel
 
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.MutableLiveData
+import com.chuzi.android.libs.tool.toCast
 import com.chuzi.android.mvvm.event.SingleLiveEvent
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
@@ -69,6 +70,7 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
     val itemBinding = OnItemBindClass<Any>().apply {
         map<ItemViewModelMessageText>(BR.item, R.layout.nim_item_message_text)
         map<ItemViewModelMessageImage>(BR.item, R.layout.nim_item_message_image)
+        map<ItemViewModelMessageLocation>(BR.item, R.layout.nim_item_message_location)
         map<ItemViewModelMessageSticker>(BR.item, R.layout.nim_item_message_sticker)
         map<ItemViewModelMessageUnknown>(BR.item, R.layout.nim_item_message_unknown)
     }
@@ -202,8 +204,8 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
      */
     private fun addItemViewModel(data: List<ItemViewModelMessageBase>, isEvent: Boolean) {
         data.forEach { item ->
-            val index = items.indexOf(item)
-            if (index != -1) {
+            val index = getIndexByUuid(item.uuid)
+            if (index != null) {
                 //已经存在
                 items[index] = item
             } else {
@@ -227,6 +229,9 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
                 MsgTypeEnum.text -> {
                     ItemViewModelMessageText(this, item)
                 }
+                MsgTypeEnum.location -> {
+                    ItemViewModelMessageLocation(this, item)
+                }
                 MsgTypeEnum.image -> {
                     ItemViewModelMessageImage(this, item)
                 }
@@ -243,6 +248,31 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
                 }
             }
         }
+    }
+
+    /**
+     * 通过Message获取下标位置
+     */
+    fun getIndexByUuid(uuid: String): Int? {
+        items.forEachIndexed { index, item ->
+            if ((item as ItemViewModelMessageBase).uuid == uuid) {
+                return index
+            }
+        }
+        return null
+    }
+
+    /**
+     * 通过下标获取ItemViewModel
+     */
+    fun getItemViewModelByIndex(index: Int): ItemViewModelMessageBase? {
+        if (index < 0) {
+            return null
+        }
+        if (index >= items.size) {
+            return null
+        }
+        return items[index].toCast()
     }
 
 }

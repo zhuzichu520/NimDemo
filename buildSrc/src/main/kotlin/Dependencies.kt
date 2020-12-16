@@ -52,7 +52,9 @@ object Versions {
     const val UMSDK_ASMS = "1.1.3"
     const val UMSDK_CRASH = "0.0.4"
     const val NIM = "8.1.2"
-    const val AMAP = "latest.integration"
+    const val AMAP = "5.8.0"
+    const val AMAP_SEARCH = "6.9.2"
+    const val AMAP_LOCATION = "4.7.2"
     const val MATISSE = "0.5.3-beta3"
     const val LUBAN = "1.1.8"
     const val GLIDE = "4.11.0"
@@ -64,8 +66,8 @@ object Versions {
  */
 object AmapLibs {
     const val AMAP_3D = "com.amap.api:3dmap:${Versions.AMAP}"
-    const val AMAP_LOCATION = "com.amap.api:location:${Versions.AMAP}"
-    const val AMAP_SEARCH = "com.amap.api:search:${Versions.AMAP}"
+    const val AMAP_LOCATION = "com.amap.api:location:${Versions.AMAP_LOCATION}"
+    const val AMAP_SEARCH = "com.amap.api:search:${Versions.AMAP_SEARCH}"
 }
 
 /**
@@ -112,8 +114,6 @@ object SupportLibs {
     const val ANDROIDX_CORE_KTX = "androidx.core:core-ktx:${Versions.CORE_KTX}"
     const val ANDROIDX_FRAGMENT = "androidx.fragment:fragment:${Versions.FRAGMENT}"
     const val ANDROIDX_FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT}"
-
-    //exifinterface
     const val ANDROIDX_EXIFINTERFACE =
         "androidx.exifinterface:exifinterface:${Versions.EXIFINTERFACE}"
     const val ANDROIDX_RECYCLERVIEW = "androidx.recyclerview:recyclerview:${Versions.RECYCLERVIEW}"
@@ -153,15 +153,8 @@ object UmSdkLibs {
  * 第三方其他库
  */
 object Libs {
-
-    //material
     const val MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
-
-    //okhttp
-    const val OKHTTP =
-        "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
-
-    //rx
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
     const val RXHTTP = "com.ljx.rxhttp:rxhttp:${Versions.RXHTTP}"
     const val RXLIFE = "com.ljx.rxlife3:rxlife-rxjava:${Versions.RXLIFE}"
     const val RXJAVA = "io.reactivex.rxjava3:rxjava:${Versions.RXJAVA}"
@@ -170,65 +163,34 @@ object Libs {
     const val RXBINDING_VIEWPAGER =
         "com.jakewharton.rxbinding4:rxbinding-viewpager:${Versions.RXBINDING}"
     const val RXPERMISSIONS = "com.github.tbruyelle:rxpermissions:${Versions.RXPERMISSIONS}"
-
-    //adapter
     const val BINDING_COLLECTION_ADAPTER =
         "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:${Versions.BINDING_COLLECTION_ADAPTER}"
     const val BINDING_COLLECTION_ADAPTER_RECYCLERVIEW =
         "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:${Versions.BINDING_COLLECTION_ADAPTER}"
     const val BINDING_COLLECTION_ADAPTER_VIEWPAGER2 =
         "me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-viewpager2:${Versions.BINDING_COLLECTION_ADAPTER}"
-
-    //log
     const val TIMBER =
         "com.jakewharton.timber:timber:${Versions.TIMBER}"
     const val LOGBACK_ANDROID = "com.github.tony19:logback-android:${Versions.LOGBACK}"
     const val SLF4J = "org.slf4j:slf4j-api:${Versions.SLF4J}"
-
-    //ui
     const val FLEXBOX = "com.google.android:flexbox:${Versions.FLEXBOX}"
-
-    //autosize
     const val AUTOSZIE = "me.jessyan:autosize:${Versions.AUTOSIZE}"
-
-    //once
     const val ONCE = "com.jonathanfinerty.once:once:${Versions.ONCE}"
-
-    //multidex
     const val MULTIDEX = "androidx.multidex:multidex:${Versions.MULTIDEX}"
-
-    //mmkv
     const val MMKV = "com.tencent:mmkv-static:${Versions.MMKV}"
-
-    //guava
     const val GUAVA = "com.google.guava:guava:${Versions.GUAVA}"
-
     const val EASYFLOAT = "com.github.princekin-f:EasyFloat:${Versions.EASYFLOAT}"
-
     const val GSON = "com.google.code.gson:gson:${Versions.GSON}"
-
     const val FASTJSON = "com.alibaba:fastjson:${Versions.FASTJSON}"
-
     const val AROUTER_API = "com.alibaba:arouter-api:${Versions.AROUTE_API}"
-
     const val QMUI = "com.qmuiteam:qmui:${Versions.QMUI}"
-
     const val QMUI_ARCH = "com.qmuiteam:arch:${Versions.QMUI}"
-
     const val JSOUP = "org.jsoup:jsoup:${Versions.JSOUP}"
-
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
-
     const val ROOM_KTX = "androidx.room:room-ktx:${Versions.ROOM}"
-
     const val RECYCLICAL = "com.afollestad:recyclical:${Versions.RECYCLICAL}"
-
-    //matisse
     const val MATISSE = "com.zhihu.android:matisse:${Versions.MATISSE}"
-
-    //Luban
     const val LUBAN = "top.zibin:Luban:${Versions.LUBAN}"
-    //glide
     const val GLIDE_OKHTTP =
         "com.github.bumptech.glide:okhttp3-integration:${Versions.GLIDE}"
     const val GLIDE =
@@ -237,20 +199,14 @@ object Libs {
         "jp.wasabeef:glide-transformations:${Versions.GLIDE_TRANSFORMATIONS}"
 }
 
-
 /**
  * 注解库
  */
 object Kapts {
-    //rx
     const val RXHTTP_COMPILER = "com.ljx.rxhttp:rxhttp-compiler:${Versions.RXHTTP}"
-
     const val AROUTER_COMPILER = "com.alibaba:arouter-compiler:${Versions.AROUTE_COMPILER}"
-
     const val QMUI_ARCH_COMPILER = "com.qmuiteam:arch-compiler:${Versions.QMUI}"
-
     const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
-    //glide
     const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler:${Versions.GLIDE}"
 }
 
@@ -260,10 +216,8 @@ object Kapts {
 object MyLibs {
     const val DEVELOPER_WIDGET =
         "com.github.zhuzichu520.Developer:library-widget:${Versions.DEVELOPER}"
-
     const val DEVELOPER_LIBS =
         "com.github.zhuzichu520.Developer:library-libs:${Versions.DEVELOPER}"
-
     const val DEVELOPER_MVVM =
         "com.github.zhuzichu520.Developer:library-mvvm:${Versions.DEVELOPER}"
 }

@@ -26,6 +26,7 @@ import com.chuzi.android.nim.core.event.NimEvent
 import com.chuzi.android.nim.databinding.NimFragmentMessageBinding
 import com.chuzi.android.nim.emoji.StickerItem
 import com.chuzi.android.nim.ext.msgService
+import com.chuzi.android.nim.tools.ToolNimExtension
 import com.chuzi.android.nim.ui.event.EventUI
 import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageBase
 import com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessage
@@ -43,6 +44,7 @@ import com.netease.nimlib.sdk.msg.MessageBuilder
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
+import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
@@ -96,6 +98,10 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         binding.messageBottom.attachContentView(binding.layoutContent, binding.recycler)
         binding.messageBottom.setInputType(TYPE_DEFAULT)
         recordAnima = binding.viewRecord.background as AnimationDrawable
+        getRecentContract()?.let {
+            binding.messageBottom.setText(ToolNimExtension.getDraft(it))
+        }
+
     }
 
     override fun initLazyData() {
@@ -108,6 +114,7 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 0
             )
         ) {
+            initViewDelayedObservable()
             scrollToBottom()
             MainHandler.postDelayed {
                 alpha(binding.layoutContent, 300, f = floatArrayOf(0f, 1f))
@@ -207,7 +214,7 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         }
     }
 
-    override fun initViewObservable() {
+    private fun initViewDelayedObservable() {
         super.initViewObservable()
 
         binding.messageBottom.onShowOperationFunc = {
@@ -272,6 +279,23 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 }
             }
 
+        /**
+         * 发送地图消息
+         */
+        RxBus.toObservable(EventUI.OnSendLocationEvent::class.java)
+            .life(viewLifecycleOwner)
+            .subscribe {
+                val latLon = it.item.latLonPoint
+                val message = MessageBuilder.createLocationMessage(
+                    arg.contactId,
+                    arg.sessionTypeEnum(),
+                    latLon.latitude,
+                    latLon.longitude,
+                    it.item.poiItem.title
+                )
+                viewModel.sendMessage(message)
+            }
+
         RxBus.toObservable(EventUI.OnClickOperationEvent::class.java)
             .life(viewLifecycleOwner)
             .subscribe {
@@ -283,12 +307,23 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                     R.string.message_operation_video -> {
                     }
                     R.string.message_operation_local -> {
+                        navigate(RoutePath.Map.ACTIVITY_MAP_LOCATION)
                     }
                     R.string.message_operation_file -> {
                     }
                     R.string.message_operation_call -> {
                     }
                 }
+            }
+
+        RxBus.toObservable(NimEvent.OnAttachmentProgressEvent::class.java)
+            .life(viewLifecycleOwner)
+            .subscribe {
+                val attachment = it.attachment
+                val index = viewModel.getIndexByUuid(attachment.uuid) ?: return@subscribe
+                val itemViewModel = viewModel.getItemViewModelByIndex(index) ?: return@subscribe
+                val percent = attachment.transferred.toFloat() / attachment.total.toFloat()
+                itemViewModel.progress.value = String.format("%d%%", (percent * 100).toInt())
             }
 
         /**
@@ -478,6 +513,32 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
 
                 }
             }).launch()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handleDraft()
+    }
+
+    /**
+     * 获取当前会话
+     */
+    private fun getRecentContract(): RecentContact? {
+        return msgService().queryRecentContact(arg.contactId, arg.sessionTypeEnum())
+    }
+
+    /**
+     * 处理会话草稿
+     */
+    private fun handleDraft() {
+        getRecentContract()?.let {
+            val text = binding.messageBottom.getText()
+            if (text.isNullOrBlank()) {
+                ToolNimExtension.removeDraft(it)
+                return
+            }
+            ToolNimExtension.addDraft(it, text)
+        }
     }
 
 
