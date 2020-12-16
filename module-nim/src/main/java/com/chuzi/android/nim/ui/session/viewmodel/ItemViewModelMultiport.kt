@@ -15,7 +15,7 @@ class ItemViewModelMultiport(
     viewModel: BaseViewModel<*>
 ) : ItemViewModelBase(viewModel) {
 
-    val title = MutableLiveData<String>()
+    val title = MutableLiveData<Int>()
 
     val isShown = MutableLiveData(false)
 

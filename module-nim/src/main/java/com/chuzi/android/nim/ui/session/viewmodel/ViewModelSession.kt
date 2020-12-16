@@ -215,7 +215,7 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     /**
      * 修改多端登录文案
      */
-    fun setMultiportText(text: String) {
+    fun setMultiportText(text: Int) {
         itemViewModelMultiport.title.value = text
     }
 

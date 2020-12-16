@@ -217,24 +217,17 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
                     viewModel.showMultiportBar(false)
                 } else {
                     val onlineClient = list[0]
-                    val logging = R.string.multiport_logging.toStringByResId(requireContext())
                     when (onlineClient.clientType) {
                         ClientType.Windows, ClientType.MAC -> {
-                            viewModel.setMultiportText(
-                                logging + R.string.computer_version.toStringByResId(requireContext())
-                            )
+                            viewModel.setMultiportText(R.string.computer_version)
                             viewModel.showMultiportBar(true)
                         }
                         ClientType.Web -> {
-                            viewModel.setMultiportText(
-                                logging + R.string.web_version.toStringByResId(requireContext())
-                            )
+                            viewModel.setMultiportText(R.string.web_version)
                             viewModel.showMultiportBar(true)
                         }
                         ClientType.iOS, ClientType.Android -> {
-                            viewModel.setMultiportText(
-                                logging + R.string.mobile_version.toStringByResId(requireContext())
-                            )
+                            viewModel.setMultiportText(R.string.mobile_version)
                             viewModel.showMultiportBar(true)
                         }
                         else -> {
