@@ -307,7 +307,7 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                     R.string.message_operation_video -> {
                     }
                     R.string.message_operation_local -> {
-                        navigate(RoutePath.Map.ACTIVITY_MAP_LOCATION)
+                        startLocation()
                     }
                     R.string.message_operation_file -> {
                     }
@@ -482,6 +482,23 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
             }
         }
     }
+
+    /**
+     * 跳转到地图界面
+     */
+    private fun startLocation() {
+        RxPermissions(requireActivity()).request(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ).life(viewLifecycleOwner).subscribe {
+            if (it) {
+                navigate(RoutePath.Map.ACTIVITY_MAP_LOCATION)
+            } else {
+                navigate(RoutePath.DIALOG_PERMISSIONS_MAIN, arg = ArgPermissions("定位"))
+            }
+        }
+    }
+
 
     /**
      * 发送图片消息

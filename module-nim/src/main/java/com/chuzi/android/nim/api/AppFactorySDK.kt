@@ -6,7 +6,9 @@ import android.content.res.Configuration
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
+import com.amap.api.location.AMapLocationClient
 import com.amap.api.maps.MapsInitializer
+import com.amap.api.services.core.ServiceSettings
 import com.chuzi.android.libs.tool.toCast
 import com.chuzi.android.mvvm.Mvvm
 import com.chuzi.android.nim.R
@@ -87,8 +89,13 @@ object AppFactorySDK {
         SkinManager.install(context)
         //更新语言
         context.updateApplicationLanguage(AppStorage.language)
-        //初始化地图 todo 抽一个地图module
-        MapsInitializer.setApiKey(if (BuildConfig.DEBUG) BuildConfig.AMAP_APPKEY_DEBUG else BuildConfig.AMAP_APPKEY_RELEASE)
+        //初始化地图
+        val mapKey =
+            if (BuildConfig.DEBUG) BuildConfig.AMAP_APPKEY_DEBUG else BuildConfig.AMAP_APPKEY_RELEASE
+        MapsInitializer.setApiKey(mapKey)
+        ServiceSettings.getInstance().setApiKey(mapKey)
+        AMapLocationClient.setApiKey(mapKey)
+
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
         if (NIMUtil.isMainProcess(context)) {
             //开启数据同步监听

@@ -303,9 +303,14 @@ class FragmentLocation : FragmentBase<NimFragmentLocationBinding, ViewModelLocat
             showBottomLoading()
         }.doFinally {
             hideBottomLoading()
-        }.life(this).subscribe {
-            viewModel.updatePois(it.get(), latLonPoint)
-        }
+        }.life(this).subscribe(
+            {
+                viewModel.updatePois(it.get(), latLonPoint)
+            },
+            {
+                viewModel.handleThrowable(it)
+            }
+        )
     }
 
 
