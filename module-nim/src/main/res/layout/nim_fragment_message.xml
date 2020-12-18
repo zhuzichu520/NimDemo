@@ -21,6 +21,23 @@
             app:onClickBackCommand="@{viewModel.onBackCommand}"
             app:topTitle="@{viewModel.title}" />
 
+        <RelativeLayout
+            android:id="@+id/more"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/topbar"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/nim_ic_more" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/layout_content"
             android:layout_width="match_parent"

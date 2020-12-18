@@ -79,5 +79,6 @@
     <string name="computer_version">正在使用电脑版</string>
     <string name="web_version">正在使用网页版</string>
     <string name="mobile_version">正在使用移动版</string>
+    <string name="remove_message_tips">确定删除该条消息？</string>
 
 </resources>

@@ -13,6 +13,7 @@ import com.chuzi.android.nim.domain.UseCaseGetMessageList
 import com.chuzi.android.nim.domain.UseCaseGetTeamInfo
 import com.chuzi.android.nim.domain.UseCaseGetUserInfo
 import com.chuzi.android.nim.domain.UseCaseSendMessage
+import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.databinding.qmui.QMUIAction
@@ -239,6 +240,15 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
         }
         return item
     }
+
+    /**
+     * 移除某一条消息
+     */
+    fun removeMessageItem(item: ItemViewModelMessageBase) {
+        items.remove(item)
+        msgService().deleteChattingHistory(item.message)
+    }
+
 
     /**
      * 消息下载附件处理

@@ -16,12 +16,38 @@
         android:padding="14dp"
         app:layoutDirection="@{item.layoutDirection}">
 
+        <FrameLayout
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            app:isShown="@{item.showDate}"
+            app:layout_constraintBottom_toTopOf="@+id/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:textDirection="anyRtl"
+                android:textSize="14sp"
+                app:qmui_radius="15dp"
+                app:qmui_skin_background="?attr/app_skin_color_divider"
+                app:qmui_skin_text_color="?attr/app_skin_color_background_1"
+                app:text="@{item.date}" />
+
+        </FrameLayout>
+
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
             android:id="@+id/header"
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/time"
             app:placeholder="@{item.placeholder}"
             app:qmui_is_circle="true"
             app:url="@{item.avatar}"
@@ -50,10 +76,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/header"
             app:layout_constraintTop_toBottomOf="@+id/name"
+            app:onLongClickViewCommand="@{item.onLongClickCommand}"
             app:qmui_radius="8dp"
             app:qmui_shadowAlpha="1.0"
             app:qmui_shadowElevation="5dp">
-
 
             <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                 android:layout_width="200dp"

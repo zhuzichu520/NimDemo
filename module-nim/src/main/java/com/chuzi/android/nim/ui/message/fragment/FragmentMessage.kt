@@ -19,6 +19,7 @@ import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.alpha
+import com.chuzi.android.libs.tool.copy
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.api.AppFactorySDK
@@ -30,14 +31,18 @@ import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.nim.tools.ToolNimExtension
 import com.chuzi.android.nim.ui.event.EventUI
 import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageBase
+import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageImage
+import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageText
 import com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessage
 import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_DEFAULT
 import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_EMOJI
 import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_MORE
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.bus.RxBus
+import com.chuzi.android.shared.databinding.view.setOnClickDoubleListener
 import com.chuzi.android.shared.entity.arg.ArgMessage
 import com.chuzi.android.shared.entity.arg.ArgPermissions
+import com.chuzi.android.shared.ext.copyClipboard
 import com.chuzi.android.shared.global.CacheGlobal
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.skin.SkinManager
@@ -49,6 +54,8 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
 import com.qmuiteam.qmui.widget.popup.QMUIPopups
 import com.rxjava.rxlife.life
@@ -69,7 +76,8 @@ import java.util.*
  */
 
 @Route(path = RoutePath.Nim.FRAGMENT_NIM_MESSAGE_P2P)
-class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage, ArgMessage>() {
+class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage, ArgMessage>(),
+    View.OnClickListener {
 
     companion object {
         private const val REQUEST_CODE_CHOOSE = 0x11
@@ -153,6 +161,8 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
     override fun initListener() {
         super.initListener()
 
+        setOnClickDoubleListener(this, binding.more)
+
         /**
          * 录音时间监听
          */
@@ -198,6 +208,7 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         binding.messageBottom.onTextSendFunc = {
             sendTextMessage(it)
         }
+
 
     }
 
@@ -366,17 +377,29 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
     }
 
     /**
+     * todo 代码可优化 方法太长
      * 消息长按弹窗
      */
     private fun showItemPopup(item: ItemViewModelMessageBase) {
         val recycler = RecyclerView(requireContext())
-        recycler.layoutManager = LinearLayoutManager(requireContext())
-        recycler.setup {
-            withDataSource(
+        val dataSource = when (item) {
+            is ItemViewModelMessageText -> {
                 dataSourceTypedOf(
                     MessageOptionModel(R.string.copy),
                     MessageOptionModel(R.string.delete),
                 )
+            }
+            else -> {
+                dataSourceTypedOf(
+                    MessageOptionModel(R.string.delete)
+                )
+            }
+        }
+
+        recycler.layoutManager = LinearLayoutManager(requireContext())
+        recycler.setup {
+            withDataSource(
+                dataSource
             )
             withItem<MessageOptionModel, MessageOptionHolder>(R.layout.nim_layout_message_options) {
                 onBind(::MessageOptionHolder) { _, item ->
@@ -385,6 +408,10 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 onClick {
                     when (this.item.textId) {
                         R.string.copy -> {
+                            item.message.content.copyClipboard(requireContext())
+                        }
+                        R.string.delete -> {
+                            showRemoveMessageDialog(item)
                         }
                     }
                     normalPopup?.dismiss()
@@ -399,6 +426,20 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 .arrow(true)
                 .show(it)
         }
+    }
+
+    /**
+     * 删除消息确认框
+     */
+    private fun showRemoveMessageDialog(item: ItemViewModelMessageBase) {
+        QMUIDialog.MessageDialogBuilder(requireContext())
+            .setMessage(R.string.remove_message_tips)
+            .setSkinManager(QMUISkinManager.defaultInstance(context))
+            .addAction(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            .addAction(0, R.string.ok, QMUIDialogAction.ACTION_PROP_NEGATIVE) { dialog, _ ->
+                dialog.dismiss()
+                viewModel.removeMessageItem(item)
+            }.create(R.style.MyTheme_QMUI_Dialog).show()
     }
 
     /**
@@ -591,6 +632,16 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
 
     class MessageOptionHolder(itemView: View) : ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.text)
+    }
+
+    override fun onClick(view: View?) {
+        when (view) {
+            binding.more -> {
+
+            }
+            else -> {
+            }
+        }
     }
 
 }
