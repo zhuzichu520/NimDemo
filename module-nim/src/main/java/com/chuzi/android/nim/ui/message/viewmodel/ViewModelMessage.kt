@@ -8,21 +8,21 @@ import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.core.attachment.AttachmentSticker
+import com.chuzi.android.nim.core.callback.NimRequestCallback
 import com.chuzi.android.nim.domain.UseCaseGetMessageList
 import com.chuzi.android.nim.domain.UseCaseGetTeamInfo
 import com.chuzi.android.nim.domain.UseCaseGetUserInfo
 import com.chuzi.android.nim.domain.UseCaseSendMessage
-import com.chuzi.android.nim.tools.ToolImage
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.databinding.qmui.QMUIAction
 import com.chuzi.android.shared.entity.arg.ArgMessage
-import com.chuzi.android.shared.ext.bindToException
-import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.map
-import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
+import com.chuzi.android.shared.storage.AppStorage
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
+import com.netease.nimlib.sdk.team.model.Team
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.rxjava.rxlife.life
 import me.tatarka.bindingcollectionadapter2.itembindings.OnItemBindClass
 
@@ -118,42 +118,36 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
         action: QMUIAction? = null,
         onCompleteFunc: (() -> Unit)? = null
     ) {
-        useCaseGetMessageList.execute(UseCaseGetMessageList.Parameters(anchor, pageSize))
-            .map {
-                handleMessageList(it.get())
-            }
-            .bindToSchedulers()
-            .bindToException()
-            .life(this)
-            .subscribe(
+        useCaseGetMessageList.execute(UseCaseGetMessageList.Parameters(anchor, pageSize,
+            NimRequestCallback(
                 {
-                    items.addAll(0, it)
+                    val messages = it ?: return@NimRequestCallback
+                    val data = handleMessageList(messages)
+                    addItemViewModel(data, false, true)
                     action?.finish()
                     onCompleteFunc?.invoke()
-                },
-                {
-                    it.printStackTrace()
-                    handleThrowable(it)
                 }
-            )
+            )))
     }
 
     /**
      * 加载用户详情信息
      */
     fun loadUserInfo() {
-        useCaseGetUserInfo.execute(arg.contactId)
-            .life(this)
-            .subscribe(
-                {
-                    title.value = ToolUserInfo.getUserDisplayName(it.get().account)
-                },
-                {
-                    handleThrowable(it)
-                }
+        ToolUserInfo.getUserInfo(AppStorage.account)?.let {
+            updateInfoData(it, null)
+        } ?: run {
+            useCaseGetUserInfo.execute(
+                UseCaseGetUserInfo.Parameters(
+                    listOf(AppStorage.account),
+                    NimRequestCallback({
+                        updateInfoData(it?.get(0), null)
+                    })
+                )
             )
-
+        }
     }
+
 
     /**
      * 加载群组详情信息
@@ -163,7 +157,7 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
             .life(this)
             .subscribe(
                 {
-                    title.value = it.get().name
+                    updateInfoData(null, it.get())
                 },
                 {
                     handleThrowable(it)
@@ -172,29 +166,35 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
     }
 
     /**
-     * 发送消息
+     * 更新用户或者群组数据UI
      */
-    fun sendMessage(message: IMMessage, resend: Boolean = false) {
-        addMessage(listOf(message), true)
-        useCaseSendMessage.execute(UseCaseSendMessage.Parameters(message, resend))
-            .life(this)
-            .subscribe(
-                {},
-                {
-                    handleThrowable(it)
-                }
-            )
+    private fun updateInfoData(userInfo: NimUserInfo?, team: Team?) {
+        userInfo?.let {
+            title.value = ToolUserInfo.getUserDisplayName(userInfo.account)
+        }
+        team?.let {
+            title.value = it.name
+        }
     }
 
     /**
-     * 添加新消息
-     *
-     * @param list 消息集合
-     * @param isEvent 是否开启添加完成事件
+     * 发送消息
      */
-    fun addMessage(list: List<IMMessage>, isEvent: Boolean) {
-        val data = handleMessageList(list)
-        addItemViewModel(data, isEvent)
+    fun sendMessage(message: IMMessage, resend: Boolean = false) {
+        //如果是重发，则删除当前Message然后重新添加
+        if (resend) {
+            getIndexByUuid(message.uuid)?.let {
+                items.removeAt(it)
+            }
+        }
+        addItemViewModel(handleMessageList(listOf(message)), true)
+        useCaseSendMessage.execute(UseCaseSendMessage.Parameters(message, resend,
+            NimRequestCallback(
+                {
+
+                }
+            )
+        ))
     }
 
     /**
@@ -202,19 +202,54 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
      * @param data itemViewModel集合
      * @param isEvent 是否开启添加完成事件
      */
-    private fun addItemViewModel(data: List<ItemViewModelMessageBase>, isEvent: Boolean) {
-        data.forEach { item ->
+    fun addItemViewModel(
+        data: List<ItemViewModelMessageBase>,
+        isEvent: Boolean,
+        isLoad: Boolean? = null
+    ) {
+        (if (isLoad == true) data.reversed() else data).forEach { item ->
             val index = getIndexByUuid(item.uuid)
             if (index != null) {
                 //已经存在
-                items[index] = item
+                items[index] = handleMessageItem(item, index - 1)
             } else {
                 //不存在
-                items.add(item)
+                if (isLoad == true) {
+                    items.add(0, handleMessageItem(item, 0))
+                } else {
+                    items.add(handleMessageItem(item, items.size - 1))
+                }
             }
         }
+        checkLoadAttachment(data)
         if (isEvent) {
             onAddMessageCompletedEvent.value = items
+        }
+    }
+
+    /**
+     * 处理Item的anchorMessage一些操作
+     */
+    private fun handleMessageItem(
+        item: ItemViewModelMessageBase,
+        previousIndex: Int
+    ): ItemViewModelMessageBase {
+        (items.getOrNull(previousIndex) as? ItemViewModelMessageBase)?.let {
+            item.anchorMessage = it.message
+        }
+        return item
+    }
+
+    /**
+     * 消息下载附件处理
+     */
+    private fun checkLoadAttachment(list: List<ItemViewModelMessageBase>) {
+        list.forEach { item ->
+            when (item) {
+                is ItemViewModelMessageImage -> {
+                    item.checkDownLoadAttachment()
+                }
+            }
         }
     }
 
@@ -223,7 +258,7 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
      * 处理消息集合返回数据模型集合
      * @param list 消息集合
      */
-    private fun handleMessageList(list: List<IMMessage>): List<ItemViewModelMessageBase> {
+    fun handleMessageList(list: List<IMMessage>): List<ItemViewModelMessageBase> {
         return list.map { item ->
             when (item.msgType) {
                 MsgTypeEnum.text -> {

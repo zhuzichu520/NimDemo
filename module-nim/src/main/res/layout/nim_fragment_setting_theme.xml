@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:qmui_skin_background="?attr/app_skin_color_background_1"
             app:topTitle="@{@string/settings_theme_title}" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,21 +1,16 @@
 package com.chuzi.android.nim.ui.message.viewmodel
 
-import android.app.Activity
-import android.view.View
 import android.widget.ImageView
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.app.SharedElementCallback
 import androidx.lifecycle.MutableLiveData
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
+import com.chuzi.android.nim.core.callback.NimRequestCallback
 import com.chuzi.android.nim.domain.UseCaseDowloadAttachment
 import com.chuzi.android.nim.domain.UseCaseGetImageAndVideoMessage
 import com.chuzi.android.nim.tools.ToolImage
 import com.chuzi.android.shared.tools.Weak
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
-import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.rxjava.rxlife.life
 
@@ -26,22 +21,37 @@ import com.rxjava.rxlife.life
  * since: v 1.0.0
  */
 open class ItemViewModelMessageImage(
-    viewModel: ViewModelMessage,
+    val viewModel: ViewModelMessage,
     message: IMMessage
 ) : ItemViewModelMessageBase(viewModel, message) {
 
+    /**
+     * 下载附件UseCase
+     */
     private val useCaseDowloadAttachment by lazy {
         UseCaseDowloadAttachment()
     }
 
+    /**
+     *
+     */
     private val useCaseGetImageAndVideoMessage by lazy {
         UseCaseGetImageAndVideoMessage()
     }
 
-    var photoView by Weak<ImageView>()
+    /**
+     * ImageView 软引用
+     */
+    var imageRef by Weak<ImageView>()
 
-    var attachment = (message.attachment as ImageAttachment)
+    /**
+     * 附件
+     */
+    var attachment = message.attachment as ImageAttachment
 
+    /**
+     * 图片Size
+     */
     private val imageSize = ToolImage.getThumbnailDisplaySize(
         attachment.width.toFloat(),
         attachment.height.toFloat(),
@@ -67,28 +77,53 @@ open class ItemViewModelMessageImage(
      * 缩略图地址（下载到本地缩略图片）
      */
     val imageUrl = MutableLiveData<Any>().apply {
+        value = getSdImagePath() ?: R.drawable.nim_bg_message_image
+    }
+
+    /**
+     * 获取本地图片地址 原始图》缩略图
+     */
+    private fun getSdImagePath(): String? {
         val thumbPath = attachment.thumbPath
         val path = attachment.path
-        value = if (!path.isNullOrEmpty()) {
+        return if (!path.isNullOrEmpty()) {
             path
         } else if (!thumbPath.isNullOrEmpty()) {
             thumbPath
         } else {
-            if (message.attachStatus == AttachStatusEnum.transferred || message.attachStatus == AttachStatusEnum.def) {
-                useCaseDowloadAttachment.execute(UseCaseDowloadAttachment.Parameters(message, true))
-                    .life(viewModel).subscribe { }
-            }
-            R.drawable.nim_bg_message_image
+            null
         }
     }
 
+    /**
+     * 图片加载占位图
+     */
     val imagePlaceholder = MutableLiveData(R.drawable.nim_bg_message_image)
 
+    /**
+     * 点击附加下载失败按钮，重新进行下载
+     */
     val onClickAttachFailedCommand = createCommand {
-        useCaseDowloadAttachment.execute(UseCaseDowloadAttachment.Parameters(message, true))
-            .life(viewModel).subscribe { }
+        loadIamgeData()
     }
 
+    /**
+     * IM下载Image资源
+     */
+    private fun loadIamgeData() {
+        useCaseDowloadAttachment.execute(
+            UseCaseDowloadAttachment.Parameters(
+                message, true,
+                NimRequestCallback({
+
+                })
+            )
+        )
+    }
+
+    /**
+     * 点击图片跳转到图片详情
+     */
     val onClickImageCommand = createTypeCommand<ImageView> {
         useCaseGetImageAndVideoMessage.execute(message).life(viewModel)
             .subscribe {
@@ -96,5 +131,12 @@ open class ItemViewModelMessageImage(
             }
     }
 
+    /**
+     * 判断是否去下载附件
+     */
+    fun checkDownLoadAttachment() {
+        if (getSdImagePath() == null)
+            loadIamgeData()
+    }
 
 }

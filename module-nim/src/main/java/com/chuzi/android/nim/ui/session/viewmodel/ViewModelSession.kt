@@ -19,6 +19,7 @@ import com.chuzi.android.shared.ext.bindToException
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.map
 import com.google.common.primitives.Longs
+import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.rxjava.rxlife.life
 import me.tatarka.bindingcollectionadapter2.itembindings.OnItemBindClass
@@ -70,32 +71,6 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
         map<ItemViewModelMultiport>(BR.item, R.layout.nim_item_multiport)
     }
 
-//    val diff = object : DiffUtil.ItemCallback<Any>() {
-//
-//        override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-//            if (oldItem is ItemViewModelSearch && newItem is ItemViewModelSearch) {
-//                return true
-//            }
-//            if (oldItem == newItem) {
-//                return true
-//            }
-//            return false
-//        }
-//
-//        override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-//            if (oldItem is ItemViewModelSession && newItem is ItemViewModelSession) {
-//                return oldItem.content.value == newItem.content.value &&
-//                        oldItem.isStick.value == newItem.isStick.value &&
-//                        oldItem.name.value == newItem.name.value &&
-//                        oldItem.number.value == newItem.number.value &&
-//                        oldItem.avatar.value.diffEquals(newItem.avatar.value) &&
-//                        oldItem.date.value == newItem.date.value &&
-//                        oldItem.background.value == newItem.background.value
-//            }
-//            return true
-//        }
-//    }
-
     /**
      * Item长点击事件
      */
@@ -107,9 +82,14 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     val onItemClickEvent = SingleLiveEvent<ItemViewModelSession>()
 
     /**
+     * 第一次加载数据完成
+     */
+    val onLoadCompleteEvent = SingleLiveEvent<Unit>()
+
+    /**
      * 加载会话数据
      */
-    fun loadData() {
+    fun loadSessionList() {
         useCaseGetSessionList.execute(Unit)
             .map {
                 handleRecentList(it.get())
@@ -120,6 +100,7 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
             .subscribe(
                 {
                     AppFactorySDK.sessionLiveData.value = it
+                    onLoadCompleteEvent.call()
                 },
                 {
                     handleThrowable(it)
@@ -228,6 +209,30 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     }
 
     /**
+     * 通过消息uuid获取该最近会话的下标位置
+     */
+    private fun getRecentContactByUuid(data: List<RecentContact>, uuid: String?): Int? {
+        data.forEachIndexed { index, recentContact ->
+            if (recentContact.recentMessageId == uuid) {
+                return index
+            }
+        }
+        return null
+    }
+
+    /**
+     * 处理状态改变的消息
+     */
+    fun handleRecentMessage(message: IMMessage) {
+        val data = AppFactorySDK.sessionLiveData.value ?: return
+        val index = getRecentContactByUuid(data, message.uuid) ?: return
+        AppFactorySDK.sessionLiveData.value = data.replaceAt(index) {
+            it.msgStatus = message.status
+            it
+        }.sortedWith(comparator)
+    }
+
+    /**
      * 比较器
      */
     private val comparator: Comparator<RecentContact> = Comparator { left, right ->
@@ -242,5 +247,32 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
             Longs.compare(right.time.coerceAtLeast(longRight), left.time.coerceAtLeast(longLeft))
         }
     }
+
+
+//    val diff = object : DiffUtil.ItemCallback<Any>() {
+//
+//        override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+//            if (oldItem is ItemViewModelSearch && newItem is ItemViewModelSearch) {
+//                return true
+//            }
+//            if (oldItem == newItem) {
+//                return true
+//            }
+//            return false
+//        }
+//
+//        override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+//            if (oldItem is ItemViewModelSession && newItem is ItemViewModelSession) {
+//                return oldItem.content.value == newItem.content.value &&
+//                        oldItem.isStick.value == newItem.isStick.value &&
+//                        oldItem.name.value == newItem.name.value &&
+//                        oldItem.number.value == newItem.number.value &&
+//                        oldItem.avatar.value.diffEquals(newItem.avatar.value) &&
+//                        oldItem.date.value == newItem.date.value &&
+//                        oldItem.background.value == newItem.background.value
+//            }
+//            return true
+//        }
+//    }
 
 }

@@ -100,7 +100,7 @@ object EmojiManager {
         return null
     }
 
-    private class Entry internal constructor(var text: String, var assetPath: String)
+    private class Entry(var text: String, var assetPath: String)
 
     private class EntryLoader : DefaultHandler() {
         private var catalog = ""

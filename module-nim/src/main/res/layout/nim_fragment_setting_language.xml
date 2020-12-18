@@ -20,14 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:qmui_skin_background="?attr/app_skin_color_background_1"
             app:topTitle="@{@string/settings_language_title}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="@+id/topbar"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/save"
             app:layout_constraintTop_toTopOf="@+id/topbar" />
 
         <androidx.recyclerview.widget.RecyclerView

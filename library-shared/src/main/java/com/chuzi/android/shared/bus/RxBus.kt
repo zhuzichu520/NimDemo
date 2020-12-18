@@ -22,7 +22,4 @@ object RxBus {
         return mBus.ofType(eventType)
     }
 
-    fun hasObservers(): Boolean {
-        return mBus.hasObservers()
-    }
 }

@@ -4,15 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
+import com.chuzi.android.nim.core.callback.NimRequestCallback
 import com.chuzi.android.nim.domain.UseCaseGetUserInfo
+import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.nim.ui.contract.viewmodel.ItemViewModelLine
 import com.chuzi.android.shared.base.ViewModelBase
-import com.chuzi.android.shared.ext.autoLoading
 import com.chuzi.android.shared.ext.map
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.storage.AppStorage
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
-import com.rxjava.rxlife.life
 import me.tatarka.bindingcollectionadapter2.itembindings.OnItemBindClass
 
 /**
@@ -107,14 +107,21 @@ class ViewModelMe : ViewModelBase<ArgDefault>() {
         map<ItemViewModelMeUser>(BR.item, R.layout.nim_item_me_user)
     }
 
+    /**
+     * 加载用户信息
+     */
     fun loadData() {
-        AppStorage.account?.let { account ->
-            useCaseGetUserInfo.execute(account)
-                .autoLoading(this)
-                .life(this)
-                .subscribe {
-                    userInfo.value = it.get()
-                }
+        ToolUserInfo.getUserInfo(AppStorage.account)?.let {
+            userInfo.value = it
+        } ?: run {
+            useCaseGetUserInfo.execute(
+                UseCaseGetUserInfo.Parameters(
+                    listOf(AppStorage.account),
+                    NimRequestCallback({
+                        userInfo.value = it?.get(0)
+                    })
+                )
+            )
         }
     }
 

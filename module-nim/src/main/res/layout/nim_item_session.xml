@@ -46,18 +46,48 @@
             app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
             tools:text="强安小助手强安小助手强安小助手强安小助手强安小助手强安小助手强安小助手强手强手强安小助手强安小助手" />
 
+        <FrameLayout
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:displayChild="@{item.messageStatus}"
+            app:layout_constraintBottom_toBottomOf="@+id/content"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toTopOf="@+id/content">
+
+            <com.qmuiteam.qmui.widget.QMUILoadingView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:color="@color/color_999999"
+                android:visibility="gone"
+                app:qmui_loading_view_size="18dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="3dp"
+                android:src="@mipmap/nim_ic_message_warn"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="50dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/header"
+            app:layout_constraintStart_toEndOf="@+id/status"
             app:layout_constraintTop_toBottomOf="@+id/name"
             app:moonText="@{item.content}"
             app:qmui_skin_text_color="?attr/app_skin_color_font_tertiary"

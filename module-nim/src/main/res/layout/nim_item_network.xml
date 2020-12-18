@@ -35,11 +35,11 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="14dp"
                 android:singleLine="true"
+                android:textColor="?attr/app_skin_color_font_secondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:qmui_skin_text_color="?attr/app_skin_color_font_secondary"
                 app:textId="@{item.title}"
                 tools:text="@string/net_broken" />
 

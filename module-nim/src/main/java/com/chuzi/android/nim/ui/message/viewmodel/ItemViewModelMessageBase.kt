@@ -7,6 +7,7 @@ import com.chuzi.android.mvvm.event.SingleLiveEvent
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
+import com.chuzi.android.nim.tools.ToolDate
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.shared.base.ItemViewModelBase
 import com.chuzi.android.shared.storage.AppStorage
@@ -15,6 +16,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import java.lang.ref.WeakReference
+import kotlin.math.abs
 
 /**
  * desc
@@ -50,6 +52,15 @@ open class ItemViewModelMessageBase(
     private val userInfo = ToolUserInfo.getUserInfo(message.fromAccount)
 
     /**
+     * 用户计算两条相邻消息的时间间隔
+     */
+    var anchorMessage: IMMessage? = null
+        set(value) {
+            field = value
+            updateShowDate()
+        }
+
+    /**
      * 会话id
      */
     val uuid: String = message.uuid
@@ -68,6 +79,21 @@ open class ItemViewModelMessageBase(
         value = userInfo?.avatar
     }
 
+    /**
+     * 消息时间
+     */
+    val date = MutableLiveData<String>().apply {
+        value = ToolDate.getTimeShowString(message.time, false)
+    }
+
+    /**
+     * 是否显示时间
+     */
+    val showDate = MutableLiveData(false)
+
+    private fun updateShowDate() {
+        showDate.value = abs((message.time - (anchorMessage?.time ?: 0L))) > 60000
+    }
 
     /**
      * 头像占位图
@@ -107,7 +133,7 @@ open class ItemViewModelMessageBase(
     /**
      * 发送状态
      */
-    val messageStatus = MutableLiveData(STATE_SEND_LOADING).apply {
+    val messageStatus = MutableLiveData<Int>().apply {
         value = when (message.status) {
             MsgStatusEnum.fail -> {
                 STATE_SEND_FAILED

@@ -2,11 +2,9 @@ package com.chuzi.android.nim.domain
 
 import com.google.common.base.Optional
 import com.chuzi.android.mvvm.domain.UseCase
-import com.chuzi.android.nim.core.callback.NimRequestCallback
 import com.chuzi.android.nim.ext.msgService
-import com.chuzi.android.shared.ext.bindToException
-import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.createFlowable
+import com.chuzi.android.shared.ext.onNextComplete
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import io.reactivex.rxjava3.core.Flowable
 
@@ -20,9 +18,7 @@ class UseCaseGetSessionList : UseCase<Unit, Flowable<Optional<List<RecentContact
 
     override fun execute(parameters: Unit): Flowable<Optional<List<RecentContact>>> {
         return createFlowable {
-            msgService().queryRecentContacts().setCallback(
-                NimRequestCallback(this)
-            )
+            onNextComplete(Optional.fromNullable(msgService().queryRecentContactsBlock()))
         }
     }
 

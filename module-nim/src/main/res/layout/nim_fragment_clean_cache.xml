@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:qmui_skin_background="?attr/app_skin_color_background_1"
             app:topTitle="@{@string/me_cache_clear}" />
 
         <LinearLayout

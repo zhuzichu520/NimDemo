@@ -59,6 +59,7 @@ object Versions {
     const val LUBAN = "1.1.8"
     const val GLIDE = "4.11.0"
     const val GLIDE_TRANSFORMATIONS = "4.1.0"
+    const val EXOPLAYER = "2.12.0"
 }
 
 /**
@@ -197,6 +198,7 @@ object Libs {
         "com.github.bumptech.glide:glide:${Versions.GLIDE}"
     const val GLIDE_TRANSFORMATIONS =
         "jp.wasabeef:glide-transformations:${Versions.GLIDE_TRANSFORMATIONS}"
+    const val EXOPLAYER = "com.google.android.exoplayer:exoplayer:${Versions.EXOPLAYER}"
 }
 
 /**

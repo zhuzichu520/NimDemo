@@ -7,9 +7,9 @@ import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.api.NimCallBack
-import com.chuzi.android.nim.domain.UseCaseLogin
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.route.RoutePath
+import com.chuzi.android.widget.toast.toast
 
 /**
  * desc 登录ViewModel
@@ -18,10 +18,6 @@ import com.chuzi.android.shared.route.RoutePath
  * since: v 1.0.0
  */
 class ViewModelLogin : ViewModelBase<ArgDefault>() {
-
-    private val useCaseLogin by lazy {
-        UseCaseLogin()
-    }
 
     val username = MutableLiveData<String>("a7711451")
 
@@ -51,6 +47,7 @@ class ViewModelLogin : ViewModelBase<ArgDefault>() {
 
             override fun onFail(code: Int, message: String?) {
                 hideLoading()
+                toast(message.toString())
             }
         })
 

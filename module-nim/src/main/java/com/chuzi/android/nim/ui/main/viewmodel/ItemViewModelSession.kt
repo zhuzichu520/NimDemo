@@ -22,6 +22,7 @@ import com.chuzi.android.widget.spanly.color
 import com.chuzi.android.widget.spanly.font
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum.P2P
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum.Team
 import com.netease.nimlib.sdk.msg.model.RecentContact
@@ -38,9 +39,34 @@ data class ItemViewModelSession(
     val contact: RecentContact
 ) : ItemViewModelBase(viewModel) {
 
+    companion object {
+        //发送中
+        private const val STATE_SEND_LOADING = 0
+
+        //发送失败
+        private const val STATE_SEND_FAILED = 1
+
+        //发送完成
+        private const val STATE_SEND_NORMAL = 2
+    }
+
     val contactId: String = contact.contactId
 
     val time = contact.time
+
+    val messageStatus = MutableLiveData<Int>().apply {
+        value = when (contact.msgStatus) {
+            MsgStatusEnum.fail -> {
+                STATE_SEND_FAILED
+            }
+            MsgStatusEnum.sending -> {
+                STATE_SEND_LOADING
+            }
+            else -> {
+                STATE_SEND_NORMAL
+            }
+        }
+    }
 
     /**
      * 头像

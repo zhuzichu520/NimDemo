@@ -13,6 +13,8 @@ import com.afollestad.recyclical.datasource.dataSourceTypedOf
 import com.afollestad.recyclical.setup
 import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.chuzi.android.libs.internal.MainHandler
+import com.chuzi.android.libs.tool.alpha
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
@@ -21,6 +23,7 @@ import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.event.NimEvent
 import com.chuzi.android.nim.core.event.NimEventManager
 import com.chuzi.android.nim.databinding.NimFragmentSessionBinding
+import com.chuzi.android.nim.emoji.EmojiManager
 import com.chuzi.android.nim.ui.event.EventUI
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSession
 import com.chuzi.android.nim.ui.session.viewmodel.ViewModelSession
@@ -31,8 +34,9 @@ import com.chuzi.android.shared.entity.arg.ArgMessage
 import com.chuzi.android.shared.entity.arg.ArgNim
 import com.chuzi.android.shared.entity.enumeration.EnumNimType
 import com.chuzi.android.shared.ext.bindToSchedulers
+import com.chuzi.android.shared.ext.createFlowable
 import com.chuzi.android.shared.ext.dp2px
-import com.chuzi.android.shared.ext.toStringByResId
+import com.chuzi.android.shared.ext.onNextComplete
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.log.lumberjack.L
@@ -62,7 +66,8 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
 
     override fun initData() {
         super.initData()
-        initSyncData()
+        initNimSyncData()
+        initGlobalSyncData()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +90,21 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     override fun initViewObservable() {
         super.initViewObservable()
 
+        RxBus.toObservable(NimEvent.OnMessageStatusEvent::class.java)
+            .life(viewLifecycleOwner)
+            .subscribe {
+                viewModel.handleRecentMessage(it.message)
+            }
+
+        /**
+         * 第一次加载数据完成
+         */
+        viewModel.onLoadCompleteEvent.observe(viewLifecycleOwner) {
+            MainHandler.postDelayed {
+                alpha(binding.recycler, 300, f = floatArrayOf(0f, 1f))
+            }
+        }
+
         /**
          * 用户资料发生变化
          */
@@ -94,8 +114,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
                     userInfo.account
                 })
             }
-            .bindToSchedulers()
-            .life(viewModel)
+            .life(viewLifecycleOwner)
             .subscribe {
                 AppFactorySDK.sessionLiveData.value = it
             }
@@ -109,8 +128,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
                     friend.account
                 })
             }
-            .bindToSchedulers()
-            .life(viewModel)
+            .life(viewLifecycleOwner)
             .subscribe {
                 AppFactorySDK.sessionLiveData.value = it
             }
@@ -122,7 +140,6 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
             .map {
                 viewModel.handleRecentList(it.list)
             }
-            .bindToSchedulers()
             .life(viewModel)
             .subscribe {
                 AppFactorySDK.sessionLiveData.value = it
@@ -132,7 +149,6 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
          * 监听Message销毁事件
          */
         RxBus.toObservable(EventUI.OnMessageDestoryEvent::class.java)
-            .bindToSchedulers()
             .life(viewModel)
             .subscribe {
                 viewModel.returnItemColor()
@@ -294,10 +310,10 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     /**
      * 同步数据监听
      */
-    private fun initSyncData() {
+    private fun initNimSyncData() {
         val syncCompleted: Boolean = LoginSyncDataStatusObserver
             .observeSyncDataCompletedEvent {
-                viewModel.loadData()
+                viewModel.loadSessionList()
                 hideLoading()
             }
         if (!syncCompleted) {
@@ -305,7 +321,19 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
             showLoading()
         } else {
             //数据同步完成，直接加载数据
-            viewModel.loadData()
+            viewModel.loadSessionList()
+        }
+    }
+
+    /**
+     * 异步初始化全局数据
+     */
+    private fun initGlobalSyncData() {
+        createFlowable<Unit> {
+            EmojiManager.initLoad(requireContext())
+            onNextComplete(Unit)
+        }.bindToSchedulers().subscribe {
+
         }
     }
 

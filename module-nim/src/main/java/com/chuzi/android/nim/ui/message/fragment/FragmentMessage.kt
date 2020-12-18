@@ -21,6 +21,7 @@ import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.alpha
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
+import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.core.attachment.AttachmentSticker
 import com.chuzi.android.nim.core.event.NimEvent
 import com.chuzi.android.nim.databinding.NimFragmentMessageBinding
@@ -43,6 +44,7 @@ import com.chuzi.android.shared.skin.SkinManager
 import com.netease.nimlib.sdk.msg.MessageBuilder
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.qmuiteam.qmui.skin.QMUISkinManager
@@ -54,7 +56,6 @@ import com.tbruyelle.rxpermissions3.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
-import com.zhihu.matisse.filter.Filter
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -114,7 +115,6 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 0
             )
         ) {
-            initViewDelayedObservable()
             scrollToBottom()
             MainHandler.postDelayed {
                 alpha(binding.layoutContent, 300, f = floatArrayOf(0f, 1f))
@@ -214,7 +214,8 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         }
     }
 
-    private fun initViewDelayedObservable() {
+
+    override fun initViewObservable() {
         super.initViewObservable()
 
         binding.messageBottom.onShowOperationFunc = {
@@ -262,21 +263,30 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                     item.sessionId == arg.contactId
                 }
             }
+            .map {
+                viewModel.handleMessageList(it)
+            }
             .life(viewLifecycleOwner)
             .subscribe {
-                viewModel.addMessage(it, true)
+                viewModel.addItemViewModel(it, true)
             }
 
         /**
          * 消息状态监听
          */
         RxBus.toObservable(NimEvent.OnMessageStatusEvent::class.java)
+            .map {
+                it.message
+            }
+            .filter {
+                it.sessionId == arg.contactId
+            }
+            .map {
+                viewModel.handleMessageList(listOf(it))
+            }
             .life(viewLifecycleOwner)
             .subscribe {
-                val message = it.message
-                if (message.sessionId == arg.contactId) {
-                    viewModel.addMessage(listOf(it.message), false)
-                }
+                viewModel.addItemViewModel(it, false)
             }
 
         /**
@@ -532,16 +542,22 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
             }).launch()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
         handleDraft()
+        super.onDestroyView()
     }
 
     /**
      * 获取当前会话
      */
     private fun getRecentContract(): RecentContact? {
-        return msgService().queryRecentContact(arg.contactId, arg.sessionTypeEnum())
+        val data = AppFactorySDK.sessionLiveData.value ?: return null
+        data.forEach {
+            if (it.contactId == arg.contactId) {
+                return it
+            }
+        }
+        return null
     }
 
     /**
@@ -559,6 +575,7 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
     }
 
 
+    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         data?.let {

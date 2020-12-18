@@ -15,6 +15,8 @@ import com.chuzi.android.nim.R
 import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.attachment.NimAttachParser
 import com.chuzi.android.nim.core.config.NimConfigSDKOption
+import com.chuzi.android.nim.core.error.NimError
+import com.chuzi.android.nim.core.error.NimThrowable
 import com.chuzi.android.nim.core.event.NimEventManager
 import com.chuzi.android.nim.ext.authService
 import com.chuzi.android.nim.ext.msgService
@@ -105,7 +107,6 @@ object AppFactorySDK {
             LoginSyncDataStatusObserver.registerLoginSyncDataStatus(true)
             NimEventManager.registerObserves(true)
         }
-
     }
 
     /**
@@ -152,7 +153,8 @@ object AppFactorySDK {
                 }
 
                 override fun onFailed(code: Int) {
-                    nimCallBack.onFail(code, "IM错误")
+                    val throwable = NimThrowable(code, NimError.toMessage(code))
+                    nimCallBack.onFail(code, throwable.message)
                 }
 
                 override fun onException(exception: Throwable?) {

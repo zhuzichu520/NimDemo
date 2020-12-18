@@ -6,6 +6,7 @@ import com.chuzi.android.nim.ext.teamService
 import com.chuzi.android.shared.ext.bindToException
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.createFlowable
+import com.chuzi.android.shared.ext.onNextComplete
 import com.google.common.base.Optional
 import com.netease.nimlib.sdk.team.model.Team
 import io.reactivex.rxjava3.core.Flowable
@@ -20,7 +21,7 @@ class UseCaseGetTeamInfo : UseCase<String, Flowable<Optional<Team>>>() {
 
     override fun execute(parameters: String): Flowable<Optional<Team>> {
         return createFlowable<Optional<Team>> {
-            teamService().queryTeam(parameters).setCallback(NimRequestCallback(this))
+            onNextComplete(Optional.fromNullable(teamService().queryTeamBlock(parameters)))
         }.bindToSchedulers().bindToException()
     }
 

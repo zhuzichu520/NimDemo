@@ -2,9 +2,8 @@ package com.chuzi.android.nim.core.callback
 
 import com.chuzi.android.nim.core.error.NimError
 import com.chuzi.android.nim.core.error.NimThrowable
-import com.google.common.base.Optional
+import com.chuzi.android.widget.log.lumberjack.L
 import com.netease.nimlib.sdk.RequestCallback
-import io.reactivex.rxjava3.core.FlowableEmitter
 
 /**
  * desc IM请求封装
@@ -13,27 +12,29 @@ import io.reactivex.rxjava3.core.FlowableEmitter
  * since: v 1.0.0
  */
 class NimRequestCallback<T>(
-    private val emitter: FlowableEmitter<Optional<T>>
+    private val onSuccessFunc: (T?) -> Unit,
+    private val onErrorFunc: ((NimThrowable) -> Unit)? = null,
+    private val onFinishFunc: (() -> Unit)? = null
 ) : RequestCallback<T> {
 
     override fun onSuccess(any: T?) {
-        emitter.onNext(Optional.fromNullable(any))
-        emitter.onComplete()
+        onSuccessFunc.invoke(any)
+        onFinishFunc?.invoke()
     }
 
     override fun onFailed(code: Int) {
-        emitter.onError(
+        onErrorFunc?.invoke(
             NimThrowable(
                 code,
                 NimError.toMessage(code)
             )
         )
-        emitter.onComplete()
+        onFinishFunc?.invoke()
     }
 
     override fun onException(throwable: Throwable) {
-        emitter.onError(throwable)
-        emitter.onComplete()
+        L.tag("NimRequestCallback").e(throwable) { "IM发生异常" }
+        onFinishFunc?.invoke()
     }
 
 }

@@ -16,7 +16,7 @@ object ToolUserInfo {
     /**
      * 获取NIM托管用户信息，如果本地没有就会直接去服务端拉去用户资料，然后触发observeUserInfoUpdate回调
      */
-    fun getUserInfo(account: String): NimUserInfo? {
+    fun getUserInfo(account: String?): NimUserInfo? {
         return userService().getUserInfo(account)
     }
 
@@ -30,7 +30,7 @@ object ToolUserInfo {
     /**
      * 获取别名
      */
-    fun getAlias(account: String): String? {
+    fun getAlias(account: String?): String? {
         val friend = NIMClient.getService(FriendService::class.java).getFriendByAccount(account)
             ?: return null
         return friend.alias
@@ -39,7 +39,7 @@ object ToolUserInfo {
     /**
      * 先获取别名，没有别名就获取用户名
      */
-    fun getUserDisplayName(account: String): String? {
+    fun getUserDisplayName(account: String?): String? {
         val name = getUserInfo(account)?.name
         val alias: String? = getAlias(account)
         if (alias.isNullOrEmpty())
