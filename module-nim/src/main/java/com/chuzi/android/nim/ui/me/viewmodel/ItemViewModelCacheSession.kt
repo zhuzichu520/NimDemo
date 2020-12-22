@@ -1,8 +1,11 @@
 package com.chuzi.android.nim.ui.me.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.nim.R
+import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.core.attachment.AttachmentSticker
 import com.chuzi.android.nim.tools.ToolDate
 import com.chuzi.android.nim.tools.ToolTeam
@@ -30,6 +33,8 @@ data class ItemViewModelCacheSession(
     val time = contact.time
 
     val isSelected = MutableLiveData(false)
+
+    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
 
     /**
      * 头像

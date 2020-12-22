@@ -23,6 +23,8 @@ object AppStorage {
 
     var language by StringPreference(prefs, defaultValue = null)
 
+    var isGray by BooleanPreference(prefs, false)
+
     var isPrivateConfig by BooleanPreference(prefs, false)
 
     var privateConfigJson by StringPreference(prefs, null)

@@ -9,11 +9,13 @@ import com.chuzi.android.nim.databinding.NimFragmentSettingBinding
 import com.chuzi.android.nim.ui.contract.viewmodel.ItemViewModelLine
 import com.chuzi.android.nim.ui.setting.viewmodel.ItemViewModelSettingGroup
 import com.chuzi.android.nim.ui.setting.viewmodel.ItemViewModelSettingLogout
+import com.chuzi.android.nim.ui.setting.viewmodel.ItemViewModelSettingSwitch
 import com.chuzi.android.nim.ui.setting.viewmodel.ViewModelSetting
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.entity.arg.ArgNim
 import com.chuzi.android.shared.entity.enumeration.EnumNimType
 import com.chuzi.android.shared.route.RoutePath
+import com.chuzi.android.shared.storage.AppStorage
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
@@ -69,6 +71,16 @@ class FragmentSetting : FragmentBase<NimFragmentSettingBinding, ViewModelSetting
                 R.string.settings_theme_title
             ) {
                 navigate(RoutePath.Nim.FRAGMENT_NIM_SETTING_THEME)
+            }
+        )
+        data.add(
+            ItemViewModelSettingSwitch(
+                viewModel,
+                R.string.settings_one_button_gray
+            ) {
+                val isGray = AppFactorySDK.isGrayImage.value != true
+                AppStorage.isGray = isGray
+                AppFactorySDK.isGrayImage.value = isGray
             }
         )
         data.add(ItemViewModelLine(viewModel))

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.chuzi.android.nim.ui.contract.viewmodel.ViewModelTeamGroups" />
+    </data>
+
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qmui_skin_background="?attr/app_skin_color_background">
+
+        <com.chuzi.android.nim.view.LayoutTopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:qmui_skin_background="?attr/app_skin_color_background_1"
+            app:topTitle="@{@string/my_team_groups}" />
+
+        <RelativeLayout
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/topbar"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="end"
+                android:maxWidth="100dp"
+                android:text="@string/call_normal_team"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textSize="18sp"
+                app:qmui_skin_text_color="?attr/app_skin_color_primary" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topbar">
+
+            <include layout="@layout/nim_item_search" />
+
+            <com.qmuiteam.qmui.widget.tab.QMUITabSegment
+                android:id="@+id/tab"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/qmui_config_color_white"
+                app:qmui_bottomDividerColor="?attr/qmui_skin_support_color_separator"
+                app:qmui_bottomDividerHeight="1px"
+                app:qmui_tab_has_indicator="true"
+                app:qmui_tab_normal_text_size="18sp"
+                app:qmui_tab_selected_text_size="18sp" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
+
+</layout>

@@ -44,7 +44,7 @@ object Versions {
     const val AROUTE_API = "1.5.1"
     const val AROUTE_COMPILER = "1.5.1"
     const val QMUI = "2.0.0-alpha10"
-    const val DEVELOPER = "3.1.9"
+    const val DEVELOPER = "3.2.4"
     const val JSOUP = "1.12.1"
     const val ROOM = "2.2.5"
     const val RECYCLICAL = "1.1.1"
@@ -60,6 +60,7 @@ object Versions {
     const val GLIDE = "4.11.0"
     const val GLIDE_TRANSFORMATIONS = "4.1.0"
     const val EXOPLAYER = "2.12.0"
+    const val TINYPINYIN = "3.0.0"
 }
 
 /**
@@ -88,7 +89,7 @@ object NimLibs {
  * 插件版本
  */
 object BuildPluginsVersion {
-    const val AGP = "4.2.0-alpha16"
+    const val AGP = "4.2.0-beta02"
     const val KOTLIN = "1.4.20"
     const val VERSIONS_PLUGIN = "0.29.0"
     const val ANDROID_MAVEN = "2.1"
@@ -199,6 +200,7 @@ object Libs {
     const val GLIDE_TRANSFORMATIONS =
         "jp.wasabeef:glide-transformations:${Versions.GLIDE_TRANSFORMATIONS}"
     const val EXOPLAYER = "com.google.android.exoplayer:exoplayer:${Versions.EXOPLAYER}"
+    const val TINYPINYIN = "com.github.promeg:tinypinyin:${Versions.TINYPINYIN}"
 }
 
 /**

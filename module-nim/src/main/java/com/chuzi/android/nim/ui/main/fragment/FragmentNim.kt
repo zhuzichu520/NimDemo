@@ -2,10 +2,9 @@ package com.chuzi.android.nim.ui.main.fragment
 
 import android.graphics.Typeface
 import android.view.Gravity
-import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.chuzi.android.mvvm.base.ArgDefault
+import com.chuzi.android.mvvm.ext.toPostcard
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.api.AppFactorySDK
@@ -40,11 +39,11 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
 
     override fun initView() {
         super.initView()
-        val postcards = listOf<Postcard>(
-            ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_SESSION),
-            ARouter.getInstance().build(RoutePath.Media.FRAGMENT_MEDIA_STYLE),
-            ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_CONTRACT),
-            ARouter.getInstance().build(RoutePath.Nim.FRAGMENT_NIM_ME)
+        val postcards = listOf(
+            RoutePath.Nim.FRAGMENT_NIM_SESSION.toPostcard(),
+            RoutePath.Media.FRAGMENT_MEDIA_STYLE.toPostcard(),
+            RoutePath.Nim.FRAGMENT_NIM_CONTRACT.toPostcard(),
+            RoutePath.Nim.FRAGMENT_NIM_ME.toPostcard()
         )
         initTabs()
         initBadge()

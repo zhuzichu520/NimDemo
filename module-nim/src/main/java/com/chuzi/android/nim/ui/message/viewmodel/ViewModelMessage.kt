@@ -135,12 +135,12 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
      * 加载用户详情信息
      */
     fun loadUserInfo() {
-        ToolUserInfo.getUserInfo(AppStorage.account)?.let {
+        ToolUserInfo.getUserInfo(arg.contactId)?.let {
             updateInfoData(it, null)
         } ?: run {
             useCaseGetUserInfo.execute(
                 UseCaseGetUserInfo.Parameters(
-                    listOf(AppStorage.account),
+                    listOf(arg.contactId),
                     NimRequestCallback({
                         updateInfoData(it?.get(0), null)
                     })

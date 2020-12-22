@@ -45,6 +45,12 @@ import jonathanfinerty.once.Once
 object AppFactorySDK {
 
     /**
+     * 是否所有图片置灰
+     */
+    @JvmField
+    val isGrayImage = MutableLiveData<Boolean>()
+
+    /**
      * 消息未读数
      */
     private val unReadNumber: MutableLiveData<Int> = MutableLiveData(0)
@@ -97,6 +103,8 @@ object AppFactorySDK {
         MapsInitializer.setApiKey(mapKey)
         ServiceSettings.getInstance().setApiKey(mapKey)
         AMapLocationClient.setApiKey(mapKey)
+
+        isGrayImage.value = AppStorage.isGray
 
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
         if (NIMUtil.isMainProcess(context)) {
@@ -196,5 +204,6 @@ object AppFactorySDK {
     fun applyConfigurationChanged(newConfig: Configuration) {
         SkinManager.applyConfigurationChanged(newConfig)
     }
+
 
 }

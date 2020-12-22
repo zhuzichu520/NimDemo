@@ -34,6 +34,7 @@
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_marginStart="14dp"
+            app:isGray="@{item.isGray()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/checkbox"
             app:layout_constraintTop_toTopOf="parent"

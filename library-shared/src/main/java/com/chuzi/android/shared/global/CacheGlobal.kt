@@ -98,7 +98,7 @@ object CacheGlobal {
     /**
      * 获取存储目录
      */
-    private fun getBaseDiskCacheDir(): File {
+    fun getBaseDiskCacheDir(): File {
         val file = if (isExternalStorageWriteable()) {
             context.externalCacheDir ?: context.cacheDir
         } else {
@@ -124,17 +124,6 @@ object CacheGlobal {
      */
     fun clear() {
         forceDelete(getBaseDiskCacheDir())
-    }
-
-    private fun getCacheSize(): Long {
-        return sizeOf(getBaseDiskCacheDir())
-    }
-
-    /**
-     * 获取文件内容大小，保留两位小数
-     */
-    fun getCacheSizeString(): String {
-        return byteCountToDisplaySizeTwo(getCacheSize())
     }
 
 }

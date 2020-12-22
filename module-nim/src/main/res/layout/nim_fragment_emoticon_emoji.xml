@@ -4,11 +4,11 @@
     <data>
 
         <variable
-            name="item"
-            type="com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelEmojiPage" />
+            name="viewModel"
+            type="com.chuzi.android.nim.ui.message.viewmodel.ViewModelEmoticonEmoji" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,9 +20,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical"
-            android:overScrollMode="never"
-            app:itemBinding="@{item.itemBinding}"
-            app:items="@{item.items}"
+            app:itemBinding="@{viewModel.itemBinding}"
+            app:items="@{viewModel.items}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="8"
             tools:listitem="@layout/nim_item_emoji" />
@@ -33,7 +32,7 @@
             android:layout_margin="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:onClickCommand="@{item.onClickCommand}"
+            app:onClickCommand="@{viewModel.onClickCommand}"
             app:qmui_radius="6dp"
             app:qmui_shadowAlpha="1.0"
             app:qmui_shadowElevation="10dp"
@@ -47,5 +46,5 @@
 
         </com.qmuiteam.qmui.layout.QMUIRelativeLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
 </layout>

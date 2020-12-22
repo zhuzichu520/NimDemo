@@ -3,6 +3,7 @@ package com.chuzi.android.nim.ext
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.auth.AuthService
 import com.netease.nimlib.sdk.auth.AuthServiceObserver
+import com.netease.nimlib.sdk.friend.FriendService
 import com.netease.nimlib.sdk.friend.FriendServiceObserve
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.MsgServiceObserve
@@ -33,6 +34,10 @@ fun teamService(): TeamService {
 
 fun authService(): AuthService {
     return NIMClient.getService(AuthService::class.java)
+}
+
+fun friendService(): FriendService {
+    return NIMClient.getService(FriendService::class.java)
 }
 
 fun userService(): UserService {

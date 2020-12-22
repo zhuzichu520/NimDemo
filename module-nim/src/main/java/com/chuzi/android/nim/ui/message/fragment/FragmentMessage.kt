@@ -19,7 +19,6 @@ import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.alpha
-import com.chuzi.android.libs.tool.copy
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.api.AppFactorySDK
@@ -31,7 +30,6 @@ import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.nim.tools.ToolNimExtension
 import com.chuzi.android.nim.ui.event.EventUI
 import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageBase
-import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageImage
 import com.chuzi.android.nim.ui.message.viewmodel.ItemViewModelMessageText
 import com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessage
 import com.chuzi.android.nim.view.LayoutMessageBottom.Companion.TYPE_DEFAULT
@@ -49,7 +47,6 @@ import com.chuzi.android.shared.skin.SkinManager
 import com.netease.nimlib.sdk.msg.MessageBuilder
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
-import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.qmuiteam.qmui.skin.QMUISkinManager
@@ -104,13 +101,18 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
     override fun initView() {
         super.initView()
         binding.recycler.itemAnimator = null
-        binding.messageBottom.attachContentView(binding.layoutContent, binding.recycler)
-        binding.messageBottom.setInputType(TYPE_DEFAULT)
         recordAnima = binding.viewRecord.background as AnimationDrawable
         getRecentContract()?.let {
             binding.messageBottom.setText(ToolNimExtension.getDraft(it))
         }
-
+        binding.messageBottom.post {
+            binding.messageBottom.attachContentView(
+                binding.layoutContent,
+                binding.recycler,
+                binding.pullLayout
+            )
+            binding.messageBottom.setInputType(TYPE_DEFAULT)
+        }
     }
 
     override fun initLazyData() {
@@ -626,6 +628,16 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         }
     }
 
+    override fun onClick(view: View?) {
+        when (view) {
+            binding.more -> {
+                navigate(RoutePath.Nim.ACTIVITY_NIM_MESSAGE_SETTING)
+            }
+            else -> {
+            }
+        }
+    }
+
     data class MessageOptionModel(
         @StringRes val textId: Int
     )
@@ -634,14 +646,5 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         val name: TextView = itemView.findViewById(R.id.text)
     }
 
-    override fun onClick(view: View?) {
-        when (view) {
-            binding.more -> {
-
-            }
-            else -> {
-            }
-        }
-    }
 
 }

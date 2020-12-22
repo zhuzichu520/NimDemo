@@ -50,11 +50,10 @@
     <string name="message_operation_file">Files</string>
     <string name="message_operation_local">Location</string>
     <string name="new_frends">New friends</string>
-    <string name="my_frends">My friend</string>
     <string name="team_group">Working group</string>
     <string name="history_title">Historical contacts</string>
     <string name="rich_scan">Scan</string>
-    <string name="call_normal_team">Initiate group chat</string>
+    <string name="call_normal_team">Create Group</string>
     <string name="add_buddy">Add friends</string>
     <string name="team_need_authentication">Authentication required</string>
     <string name="team_allow_anyone_join">Allow anyone to join</string>
@@ -79,5 +78,11 @@
     <string name="web_version">In use Web version</string>
     <string name="mobile_version">In use Mobile version</string>
     <string name="remove_message_tips">Are you sure you want to delete this message？</string>
+    <string name="message_setting">Message Setting</string>
+    <string name="my_friends">My Friends</string>
+    <string name="my_team_groups">My Team Groups</string>
+    <string name="settings_one_button_gray">One Buttonn Gray</string>
+    <string name="team_group_my_created">My Created</string>
+    <string name="team_group_my_joined">My Joined</string>
 
 </resources>

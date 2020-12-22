@@ -51,7 +51,6 @@
     <string name="message_operation_file">文 件</string>
     <string name="message_operation_local">位 置</string>
     <string name="new_frends">新的好友</string>
-    <string name="my_frends">我的好友</string>
     <string name="team_group">工作群</string>
     <string name="history_title">历史联系人</string>
     <string name="rich_scan">扫一扫</string>
@@ -80,5 +79,11 @@
     <string name="web_version">正在使用网页版</string>
     <string name="mobile_version">正在使用移动版</string>
     <string name="remove_message_tips">确定删除该条消息？</string>
+    <string name="message_setting">聊天设置</string>
+    <string name="my_friends">我的好友</string>
+    <string name="my_team_groups">我的群组</string>
+    <string name="settings_one_button_gray">一键置灰</string>
+    <string name="team_group_my_created">我创建的</string>
+    <string name="team_group_my_joined">我加入的</string>
 
 </resources>

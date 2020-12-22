@@ -2,6 +2,7 @@ package com.chuzi.android.nim.ui.session.viewmodel
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.chuzi.android.libs.tool.replaceAt
 import com.chuzi.android.mvvm.base.ArgDefault
@@ -37,6 +38,8 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     private val itemViewModelNetwork = ItemViewModelNetwork(this)
 
     private val itemViewModelMultiport = ItemViewModelMultiport(this)
+
+    val isLoading = MutableLiveData(true)
 
     /**
      * 会话数据

@@ -1,10 +1,13 @@
 package com.chuzi.android.shared.databinding.imageview
 
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.request.RequestOptions
 import com.chuzi.android.shared.tools.GlideApp
+
 
 /**
  * desc
@@ -29,3 +32,22 @@ fun bindImageView(
         glide.into(imageView)
     }
 }
+
+@BindingAdapter(value = ["isGray"], requireAll = false)
+fun bindImageView2(
+    imageView: ImageView,
+    isGray: Boolean?
+) {
+    isGray?.let {
+        if (it) {
+            val cm = ColorMatrix()
+            cm.setSaturation(0f) // 设置饱和度
+            val grayColorFilter = ColorMatrixColorFilter(cm)
+            imageView.colorFilter = grayColorFilter
+        } else {
+            imageView.colorFilter = null
+        }
+
+    }
+}
+

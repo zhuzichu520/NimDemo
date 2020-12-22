@@ -41,15 +41,32 @@
                 android:textSize="20sp"
                 app:qmui_skin_text_color="?attr/app_skin_color_font_tertiary" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@{viewModel.cacheSize}"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
-                tools:text="6.22M" />
+                android:animateLayoutChanges="true"
+                app:displayChild2="@{viewModel.displayChild}">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@{viewModel.cacheSize}"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
+                    tools:text="6.22M" />
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
 
             <Button
                 android:id="@+id/clear"

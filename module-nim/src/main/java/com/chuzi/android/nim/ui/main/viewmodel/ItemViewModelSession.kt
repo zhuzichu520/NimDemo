@@ -1,10 +1,13 @@
 package com.chuzi.android.nim.ui.main.viewmodel
 
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
+import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.core.attachment.AttachmentSticker
 import com.chuzi.android.nim.ext.msgService
 import com.chuzi.android.nim.tools.ToolDate
@@ -49,6 +52,8 @@ data class ItemViewModelSession(
         //发送完成
         private const val STATE_SEND_NORMAL = 2
     }
+
+    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
 
     val contactId: String = contact.contactId
 

@@ -28,6 +28,7 @@ class ViewModelSetting : ViewModelBase<ArgDefault>() {
     val itemBinding = OnItemBindClass<Any>().apply {
         map<ItemViewModelLine>(BR.item, R.layout.nim_item_line)
         map<ItemViewModelSettingGroup>(BR.item, R.layout.nim_item_setting_group)
+        map<ItemViewModelSettingSwitch>(BR.item, R.layout.nim_item_setting_switch)
         map<ItemViewModelSettingLogout>(BR.item, R.layout.nim_item_setting_logout)
     }
 

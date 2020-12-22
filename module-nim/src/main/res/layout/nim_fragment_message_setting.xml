@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.chuzi.android.nim.ui.message.viewmodel.ViewModelMessageSetting" />
+    </data>
+
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qmui_skin_background="?attr/app_skin_color_background">
+
+        <com.chuzi.android.nim.view.LayoutTopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:qmui_skin_background="?attr/app_skin_color_background_1"
+            app:topTitle="@{@string/message_setting}" />
+
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
+
+</layout>

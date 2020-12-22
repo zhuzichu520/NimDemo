@@ -108,6 +108,7 @@ dependencies {
     api(Libs.MATISSE)
     api(Libs.LUBAN)
     api(Libs.EXOPLAYER)
+    api(Libs.TINYPINYIN)
     api(MyLibs.DEVELOPER_LIBS)
     api(MyLibs.DEVELOPER_MVVM)
     api(MyLibs.DEVELOPER_WIDGET)

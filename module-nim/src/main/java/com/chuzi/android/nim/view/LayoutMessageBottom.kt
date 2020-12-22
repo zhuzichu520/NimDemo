@@ -1,15 +1,16 @@
 package com.chuzi.android.nim.view
 
+import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
+import android.graphics.Rect
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.animation.AccelerateInterpolator
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +21,9 @@ import com.chuzi.android.nim.databinding.NimLayoutMessageBottomBinding
 import com.chuzi.android.nim.emoji.ToolMoon
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.changeWidth
-import com.chuzi.android.shared.ext.toString2
+import com.chuzi.android.widget.log.lumberjack.L
 import com.jakewharton.rxbinding4.view.touches
+import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout
 import com.rxjava.rxlife.life
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -48,7 +50,7 @@ class LayoutMessageBottom @JvmOverloads constructor(
     /**
      * 动画时间
      */
-    private val duration = 50L
+    private val duration = 150L
 
     /**
      * 类型
@@ -59,6 +61,28 @@ class LayoutMessageBottom @JvmOverloads constructor(
      * 消息列表的RecyclerView
      */
     private lateinit var recyclerView: RecyclerView
+
+    /**
+     * recyclerview父布局
+     */
+    private lateinit var pullLayout: QMUIPullLayout
+
+    /**
+     * contentView 的高度，当键盘弹起来，高度会变
+     */
+    private var contentViewHeight: Int = 0
+
+    private var softKeyboardHeight: Int? = null
+
+    /**
+     * 底部emoji页面高度
+     */
+    private val emojiHeight = dp2px(context, 380f)
+
+    /**
+     * 底部更多页面高度
+     */
+    private val operationHeight = dp2px(context, 310f)
 
     /**
      * 显示底部Emoji界面事件
@@ -153,6 +177,35 @@ class LayoutMessageBottom @JvmOverloads constructor(
         initListener()
     }
 
+    private fun initKeyboardListener() {
+        val screenHeight = context.resources.displayMetrics.heightPixels
+        val screenHeight6 = screenHeight / 6
+        val rootView = (context as Activity).window.decorView
+        val virtualKeyboardHeight = getStatusBarHeight(context)
+        var isKeyboardShow = false
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val heightDifference = screenHeight - rect.bottom
+            if (heightDifference < screenHeight6) {
+                if (isKeyboardShow) {
+                    isKeyboardShow = false
+                }
+            } else {
+                val softKeyboardHeight = heightDifference + virtualKeyboardHeight
+                if (!isKeyboardShow) {
+                    isKeyboardShow = true
+                    this.softKeyboardHeight = softKeyboardHeight
+                    L.tag("朱子楚").i { "键盘高度:${softKeyboardHeight}" }
+                }
+                //切换键盘高度发生变化
+                if (this.softKeyboardHeight != softKeyboardHeight) {
+                    this.softKeyboardHeight = softKeyboardHeight
+                }
+            }
+        }
+    }
+
     /**
      * 初始化各种事件
      */
@@ -212,6 +265,8 @@ class LayoutMessageBottom @JvmOverloads constructor(
         }.subscribe {
 
         }
+
+
     }
 
     /**
@@ -310,40 +365,54 @@ class LayoutMessageBottom @JvmOverloads constructor(
     fun setInputType(inputType: Int) {
         when (inputType) {
             TYPE_DEFAULT -> {// 1969   160   771
-                hideSoftKeyboard()
-                showBottom(false)
                 showView(binding.startVoice, binding.centerEmoji, binding.centerInput)
                 hideView(binding.startKeyboard, binding.centerKeyboard, binding.centerAudio)
+                lockRecyclerViewHeight(contentViewHeight - getInputHeight())
+                hideSoftKeyboard()
+                showBottom(false)
+                unlockRecyclerViewHeight()
             }
             TYPE_INPUT -> {
-                showBottom(false)
                 hideView(binding.startKeyboard, binding.centerKeyboard, binding.centerAudio)
                 showView(binding.startVoice, binding.centerEmoji, binding.centerInput)
+                softKeyboardHeight?.let {
+                    lockRecyclerViewHeight(contentViewHeight - it - getInputHeight())
+                }
+                showBottom(false)
                 showSoftKeyboard()
+                softKeyboardHeight?.let {
+                    unlockRecyclerViewHeight()
+                }
             }
             TYPE_EMOJI -> {
-                hideSoftKeyboard()
                 showView(binding.startVoice, binding.centerKeyboard, binding.centerInput)
                 hideView(binding.startKeyboard, binding.centerEmoji, binding.centerAudio)
+                lockRecyclerViewHeight(contentViewHeight - emojiHeight - getInputHeight())
                 showBottom(true)
+                hideSoftKeyboard()
                 onShowEmoticonFunc?.invoke(R.id.layout_bottom)
+                unlockRecyclerViewHeight()
             }
             TYPE_MORE -> {
                 if (this.inputType == TYPE_MORE) {
                     setInputType(TYPE_INPUT)
                     return
                 }
-                hideSoftKeyboard()
                 showView(binding.startVoice, binding.centerEmoji, binding.centerInput)
                 hideView(binding.startKeyboard, binding.centerKeyboard, binding.centerAudio)
+                lockRecyclerViewHeight(contentViewHeight - operationHeight - getInputHeight())
+                hideSoftKeyboard()
                 showBottom(true)
                 onShowOperationFunc?.invoke(R.id.layout_bottom)
+                unlockRecyclerViewHeight()
             }
             TYPE_VOICE -> {
-                hideSoftKeyboard()
-                showBottom(false)
                 showView(binding.startKeyboard, binding.centerEmoji, binding.centerAudio)
                 hideView(binding.startVoice, binding.centerKeyboard, binding.centerInput)
+                lockRecyclerViewHeight(contentViewHeight - getInputHeight())
+                hideSoftKeyboard()
+                showBottom(false)
+                unlockRecyclerViewHeight()
             }
         }
         checkSendButtonEnable()
@@ -410,8 +479,8 @@ class LayoutMessageBottom @JvmOverloads constructor(
             isFocusableInTouchMode = true
             requestFocus()
         }
+        showKeyboard(context, binding.centerInput)
         MainHandler.postDelayed(duration) {
-            showKeyboard(context, binding.centerInput)
             scrollToBottom()
         }
     }
@@ -420,11 +489,14 @@ class LayoutMessageBottom @JvmOverloads constructor(
      * @param isShown 是否显示底部页面
      */
     private fun showBottom(isShown: Boolean) {
+        alpha(
+            binding.layoutBottom,
+            duration,
+            f = if (isShown) floatArrayOf(0f, 1f) else floatArrayOf(1f, 0f)
+        )
         if (isShown) {
-            MainHandler.postDelayed(duration) {
-                showView(binding.layoutBottom)
-                scrollToBottom()
-            }
+            showView(binding.layoutBottom)
+            scrollToBottom()
         } else {
             hideView(binding.layoutBottom)
         }
@@ -433,9 +505,23 @@ class LayoutMessageBottom @JvmOverloads constructor(
     /**
      * 初始化View
      */
-    fun attachContentView(contentView: View, recyclerView: RecyclerView) {
+    fun attachContentView(
+        contentView: View,
+        recyclerView: RecyclerView,
+        pullLayout: QMUIPullLayout
+    ) {
         this.contentView = contentView
         this.recyclerView = recyclerView
+        this.pullLayout = pullLayout
+        this.contentViewHeight = contentView.height
+        initKeyboardListener()
+    }
+
+    /**
+     * 获取输入框界面高度
+     */
+    private fun getInputHeight(): Int {
+        return binding.layoutInput.height
     }
 
     /**
@@ -483,10 +569,34 @@ class LayoutMessageBottom @JvmOverloads constructor(
      * 滑动到置顶位置
      */
     private fun scrollToBottom() {
-        MainHandler.postDelayed(50) {
-            recyclerView.scrollBy(0, Int.MAX_VALUE)
-        }
+        recyclerView.scrollBy(0, Int.MAX_VALUE)
     }
 
+
+    /**
+     * 锁定RecyclerView的高度
+     */
+    private fun lockRecyclerViewHeight(height: Int) {
+        val layoutParams = pullLayout.layoutParams as LinearLayout.LayoutParams
+        layoutParams.weight = 0f
+        val valueAnimator = ValueAnimator.ofInt(pullLayout.height, height)
+        valueAnimator.addUpdateListener {
+            layoutParams.height = toInt(it.animatedValue)
+            pullLayout.layoutParams = layoutParams
+            scrollToBottom()
+        }
+        valueAnimator.duration = duration
+        valueAnimator.start()
+    }
+
+    /**
+     * 释放锁定的RecyclerView的高度
+     */
+    private fun unlockRecyclerViewHeight() {
+        MainHandler.postDelayed(200) {
+            val layoutParams = pullLayout.layoutParams as LinearLayout.LayoutParams
+            layoutParams.weight = 1f
+        }
+    }
 
 }

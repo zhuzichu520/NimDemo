@@ -51,13 +51,31 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:alpha="0"
             app:itemBinding="@{viewModel.itemBinding}"
             app:items="@{viewModel.items}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:listitem="@layout/nim_item_session" />
+
+        <RelativeLayout
+            android:id="@+id/loading"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:isShown="@{viewModel.isLoading}"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler"
+            app:layout_constraintEnd_toEndOf="@+id/recycler"
+            app:layout_constraintStart_toStartOf="@+id/recycler"
+            app:layout_constraintTop_toTopOf="@+id/recycler"
+            app:qmui_skin_background="?attr/app_skin_color_background">
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
 
     </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
 

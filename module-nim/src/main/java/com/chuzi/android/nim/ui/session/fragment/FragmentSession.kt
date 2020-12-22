@@ -15,6 +15,8 @@ import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.libs.internal.MainHandler
 import com.chuzi.android.libs.tool.alpha
+import com.chuzi.android.libs.tool.hideView
+import com.chuzi.android.libs.tool.showView
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
@@ -101,7 +103,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
          */
         viewModel.onLoadCompleteEvent.observe(viewLifecycleOwner) {
             MainHandler.postDelayed {
-                alpha(binding.recycler, 300, f = floatArrayOf(0f, 1f))
+                viewModel.isLoading.value = false
             }
         }
 
@@ -314,11 +316,10 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
         val syncCompleted: Boolean = LoginSyncDataStatusObserver
             .observeSyncDataCompletedEvent {
                 viewModel.loadSessionList()
-                hideLoading()
             }
         if (!syncCompleted) {
             //如果数据没有同步完成，弹个进度Dialog
-            showLoading()
+            showView(binding.loading)
         } else {
             //数据同步完成，直接加载数据
             viewModel.loadSessionList()
