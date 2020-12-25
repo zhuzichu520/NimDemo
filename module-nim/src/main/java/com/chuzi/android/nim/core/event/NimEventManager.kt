@@ -41,7 +41,9 @@ object NimEventManager {
      */
     private val observeOtherClients =
         Observer { onlineClients: List<OnlineClient>? ->
-            RxBus.post(NimEvent.OnOtherClientsEvent(onlineClients))
+            if (!onlineClients.isNullOrEmpty()) {
+                RxBus.post(NimEvent.OnOtherClientsEvent(onlineClients))
+            }
         }
 
     /**

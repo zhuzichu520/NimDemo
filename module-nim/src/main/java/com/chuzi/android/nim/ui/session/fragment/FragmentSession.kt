@@ -13,9 +13,6 @@ import com.afollestad.recyclical.datasource.dataSourceTypedOf
 import com.afollestad.recyclical.setup
 import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.chuzi.android.libs.internal.MainHandler
-import com.chuzi.android.libs.tool.alpha
-import com.chuzi.android.libs.tool.hideView
 import com.chuzi.android.libs.tool.showView
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
@@ -42,6 +39,7 @@ import com.chuzi.android.shared.ext.onNextComplete
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.log.lumberjack.L
+import com.google.common.base.Optional
 import com.netease.nimlib.sdk.StatusCode
 import com.netease.nimlib.sdk.auth.ClientType
 import com.qmuiteam.qmui.skin.QMUISkinManager
@@ -49,6 +47,8 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
 import com.qmuiteam.qmui.widget.popup.QMUIPopups
 import com.rxjava.rxlife.life
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * desc 会话列表页面
@@ -65,6 +65,11 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     override fun bindVariableId(): Int = BR.viewModel
 
     override fun setLayoutId(): Int = R.layout.nim_fragment_session
+
+    override fun initView() {
+        super.initView()
+        binding.recycler.itemAnimator = null
+    }
 
     override fun initData() {
         super.initData()
@@ -92,30 +97,40 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     override fun initViewObservable() {
         super.initViewObservable()
 
+        /**
+         * 消息状态
+         */
         RxBus.toObservable(NimEvent.OnMessageStatusEvent::class.java)
+            .observeOn(Schedulers.io())
+            .map {
+                Optional.fromNullable(viewModel.handleRecentMessage(it.message))
+            }
+            .observeOn(AndroidSchedulers.mainThread())
             .life(viewLifecycleOwner)
             .subscribe {
-                viewModel.handleRecentMessage(it.message)
+                if (it.isPresent) {
+                    AppFactorySDK.sessionLiveData.value = it.get()
+                }
             }
 
         /**
          * 第一次加载数据完成
          */
         viewModel.onLoadCompleteEvent.observe(viewLifecycleOwner) {
-            MainHandler.postDelayed {
-                viewModel.isLoading.value = false
-            }
+            viewModel.isLoading.value = false
         }
 
         /**
          * 用户资料发生变化
          */
         RxBus.toObservable(NimEvent.OnUserInfoUpdateEvent::class.java)
+            .observeOn(Schedulers.io())
             .map {
                 viewModel.refreshData(it.list.map { userInfo ->
                     userInfo.account
                 })
             }
+            .observeOn(AndroidSchedulers.mainThread())
             .life(viewLifecycleOwner)
             .subscribe {
                 AppFactorySDK.sessionLiveData.value = it
@@ -125,11 +140,13 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
          * 监听好友关系变化
          */
         RxBus.toObservable(NimEvent.OnAddedOrUpdatedFriendsEvent::class.java)
+            .observeOn(Schedulers.io())
             .map {
                 viewModel.refreshData(it.list.map { friend ->
                     friend.account
                 })
             }
+            .observeOn(AndroidSchedulers.mainThread())
             .life(viewLifecycleOwner)
             .subscribe {
                 AppFactorySDK.sessionLiveData.value = it
@@ -139,9 +156,11 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
          * 监听最近会话变换
          */
         RxBus.toObservable(NimEvent.OnRecentContactEvent::class.java)
+            .observeOn(Schedulers.io())
             .map {
                 viewModel.handleRecentList(it.list)
             }
+            .observeOn(AndroidSchedulers.mainThread())
             .life(viewModel)
             .subscribe {
                 AppFactorySDK.sessionLiveData.value = it

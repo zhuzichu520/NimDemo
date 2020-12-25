@@ -10,8 +10,10 @@
 
     <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:alpha="0">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -27,8 +29,8 @@
             tools:listitem="@layout/nim_item_emoji" />
 
         <com.qmuiteam.qmui.layout.QMUIRelativeLayout
-            android:layout_width="64dp"
-            android:layout_height="42dp"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
             android:layout_margin="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

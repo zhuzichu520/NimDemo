@@ -17,12 +17,13 @@ import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSearch
 import com.chuzi.android.nim.ui.main.viewmodel.ItemViewModelSession
 import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.ext.bindToException
-import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.map
 import com.google.common.primitives.Longs
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.rxjava.rxlife.life
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import me.tatarka.bindingcollectionadapter2.itembindings.OnItemBindClass
 
 /**
@@ -94,10 +95,11 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
      */
     fun loadSessionList() {
         useCaseGetSessionList.execute(Unit)
+            .observeOn(Schedulers.io())
             .map {
                 handleRecentList(it.get())
             }
-            .bindToSchedulers()
+            .observeOn(AndroidSchedulers.mainThread())
             .bindToException()
             .life(this)
             .subscribe(
@@ -226,10 +228,10 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
     /**
      * 处理状态改变的消息
      */
-    fun handleRecentMessage(message: IMMessage) {
-        val data = AppFactorySDK.sessionLiveData.value ?: return
-        val index = getRecentContactByUuid(data, message.uuid) ?: return
-        AppFactorySDK.sessionLiveData.value = data.replaceAt(index) {
+    fun handleRecentMessage(message: IMMessage): List<RecentContact>? {
+        val data = AppFactorySDK.sessionLiveData.value ?: return null
+        val index = getRecentContactByUuid(data, message.uuid) ?: return null
+        return data.replaceAt(index) {
             it.msgStatus = message.status
             it
         }.sortedWith(comparator)
@@ -251,7 +253,7 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
         }
     }
 
-
+//
 //    val diff = object : DiffUtil.ItemCallback<Any>() {
 //
 //        override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -266,7 +268,7 @@ class ViewModelSession : ViewModelBase<ArgDefault>() {
 //
 //        override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
 //            if (oldItem is ItemViewModelSession && newItem is ItemViewModelSession) {
-//                return oldItem.content.value == newItem.content.value &&
+//                return oldItem.content.value.diffEquals(newItem.content.value) &&
 //                        oldItem.isStick.value == newItem.isStick.value &&
 //                        oldItem.name.value == newItem.name.value &&
 //                        oldItem.number.value == newItem.number.value &&

@@ -2,6 +2,7 @@ package com.chuzi.android.shared.databinding.imageview
 
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
@@ -21,16 +22,29 @@ fun bindImageView(
     url: Any?,
     @DrawableRes placeholder: Int?
 ) {
-    url?.apply {
-        val requestOptions = RequestOptions()
-        val glide = GlideApp.with(imageView).load(url)
-        placeholder?.let {
-            requestOptions.placeholder(it)
-            requestOptions.error(it)
+    when (url) {
+        null -> {
+            placeholder?.let { imageView.setImageResource(it) }
         }
-        glide.apply(requestOptions)
-        glide.into(imageView)
+        is Drawable -> {
+            imageView.setImageDrawable(url)
+        }
+        is Int -> {
+            imageView.setImageResource(url)
+        }
+        else -> {
+            val requestOptions = RequestOptions()
+            val glide = GlideApp.with(imageView).load(url)
+            placeholder?.let {
+                requestOptions.placeholder(it)
+                requestOptions.error(it)
+            }
+            glide.apply(requestOptions)
+            glide.into(imageView)
+        }
     }
+
+
 }
 
 @BindingAdapter(value = ["isGray"], requireAll = false)

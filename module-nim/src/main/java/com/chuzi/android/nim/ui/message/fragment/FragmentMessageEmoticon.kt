@@ -30,11 +30,11 @@ class FragmentMessageEmoticon :
 
     override fun setLayoutId(): Int = R.layout.nim_fragment_message_emoticon
 
-    override fun initLazyData() {
-        super.initLazyData()
+
+    override fun initData() {
+        super.initData()
         loadData()
     }
-
 
     override fun initViewObservable() {
         super.initViewObservable()

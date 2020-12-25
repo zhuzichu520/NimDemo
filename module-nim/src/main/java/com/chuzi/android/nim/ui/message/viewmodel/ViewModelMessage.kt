@@ -19,7 +19,6 @@ import com.chuzi.android.shared.base.ViewModelBase
 import com.chuzi.android.shared.databinding.qmui.QMUIAction
 import com.chuzi.android.shared.entity.arg.ArgMessage
 import com.chuzi.android.shared.ext.map
-import com.chuzi.android.shared.storage.AppStorage
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.team.model.Team
@@ -124,7 +123,7 @@ class ViewModelMessage : ViewModelBase<ArgMessage>() {
                 {
                     val messages = it ?: return@NimRequestCallback
                     val data = handleMessageList(messages)
-                    addItemViewModel(data, false, true)
+                    addItemViewModel(data, isEvent = false, isLoad = true)
                     action?.finish()
                     onCompleteFunc?.invoke()
                 }

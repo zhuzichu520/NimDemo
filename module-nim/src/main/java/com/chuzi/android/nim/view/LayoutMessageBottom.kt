@@ -1,5 +1,6 @@
 package com.chuzi.android.nim.view
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
@@ -10,6 +11,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.*
 import android.view.animation.AccelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -153,7 +155,6 @@ class LayoutMessageBottom @JvmOverloads constructor(
         )
     }
 
-
     companion object {
         //默认状态 无键盘
         const val TYPE_DEFAULT = 0
@@ -170,7 +171,6 @@ class LayoutMessageBottom @JvmOverloads constructor(
         //显示语言 无键盘
         const val TYPE_VOICE = 4
     }
-
 
     init {
         initView()
@@ -196,7 +196,6 @@ class LayoutMessageBottom @JvmOverloads constructor(
                 if (!isKeyboardShow) {
                     isKeyboardShow = true
                     this.softKeyboardHeight = softKeyboardHeight
-                    L.tag("朱子楚").i { "键盘高度:${softKeyboardHeight}" }
                 }
                 //切换键盘高度发生变化
                 if (this.softKeyboardHeight != softKeyboardHeight) {
@@ -388,9 +387,9 @@ class LayoutMessageBottom @JvmOverloads constructor(
                 showView(binding.startVoice, binding.centerKeyboard, binding.centerInput)
                 hideView(binding.startKeyboard, binding.centerEmoji, binding.centerAudio)
                 lockRecyclerViewHeight(contentViewHeight - emojiHeight - getInputHeight())
+                onShowEmoticonFunc?.invoke(R.id.layout_bottom)
                 showBottom(true)
                 hideSoftKeyboard()
-                onShowEmoticonFunc?.invoke(R.id.layout_bottom)
                 unlockRecyclerViewHeight()
             }
             TYPE_MORE -> {
@@ -401,9 +400,9 @@ class LayoutMessageBottom @JvmOverloads constructor(
                 showView(binding.startVoice, binding.centerEmoji, binding.centerInput)
                 hideView(binding.startKeyboard, binding.centerKeyboard, binding.centerAudio)
                 lockRecyclerViewHeight(contentViewHeight - operationHeight - getInputHeight())
+                onShowOperationFunc?.invoke(R.id.layout_bottom)
                 hideSoftKeyboard()
                 showBottom(true)
-                onShowOperationFunc?.invoke(R.id.layout_bottom)
                 unlockRecyclerViewHeight()
             }
             TYPE_VOICE -> {
@@ -489,11 +488,6 @@ class LayoutMessageBottom @JvmOverloads constructor(
      * @param isShown 是否显示底部页面
      */
     private fun showBottom(isShown: Boolean) {
-        alpha(
-            binding.layoutBottom,
-            duration,
-            f = if (isShown) floatArrayOf(0f, 1f) else floatArrayOf(1f, 0f)
-        )
         if (isShown) {
             showView(binding.layoutBottom)
             scrollToBottom()
@@ -582,7 +576,7 @@ class LayoutMessageBottom @JvmOverloads constructor(
         val valueAnimator = ValueAnimator.ofInt(pullLayout.height, height)
         valueAnimator.addUpdateListener {
             layoutParams.height = toInt(it.animatedValue)
-            pullLayout.layoutParams = layoutParams
+            pullLayout.requestLayout()
             scrollToBottom()
         }
         valueAnimator.duration = duration

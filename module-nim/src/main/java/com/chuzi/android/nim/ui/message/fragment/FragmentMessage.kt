@@ -44,6 +44,7 @@ import com.chuzi.android.shared.ext.copyClipboard
 import com.chuzi.android.shared.global.CacheGlobal
 import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.skin.SkinManager
+import com.google.common.base.Optional
 import com.netease.nimlib.sdk.msg.MessageBuilder
 import com.netease.nimlib.sdk.msg.MsgService
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
@@ -60,6 +61,8 @@ import com.tbruyelle.rxpermissions3.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -271,11 +274,13 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
          * 消息接收监听
          */
         RxBus.toObservable(NimEvent.OnReceiveMessageEvent::class.java)
+            .observeOn(Schedulers.io())
             .map {
                 it.list.filter { item ->
                     item.sessionId == arg.contactId
                 }
             }
+            .observeOn(AndroidSchedulers.mainThread())
             .map {
                 viewModel.handleMessageList(it)
             }
@@ -284,16 +289,19 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
                 viewModel.addItemViewModel(it, true)
             }
 
+
         /**
          * 消息状态监听
          */
         RxBus.toObservable(NimEvent.OnMessageStatusEvent::class.java)
+            .observeOn(Schedulers.io())
             .map {
                 it.message
             }
             .filter {
                 it.sessionId == arg.contactId
             }
+            .observeOn(AndroidSchedulers.mainThread())
             .map {
                 viewModel.handleMessageList(listOf(it))
             }
@@ -340,13 +348,30 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
             }
 
         RxBus.toObservable(NimEvent.OnAttachmentProgressEvent::class.java)
+            .observeOn(Schedulers.io())
+            .map {
+                val attachment = it.attachment
+                val index = viewModel.getIndexByUuid(attachment.uuid)
+                val tempProgress: TempProgress? = if (index == null)
+                    null
+                else {
+                    val itemViewModel = viewModel.getItemViewModelByIndex(index)
+                    if (itemViewModel == null) {
+                        null
+                    } else {
+                        val percent = attachment.transferred.toFloat() / attachment.total.toFloat()
+                        TempProgress(itemViewModel, percent)
+                    }
+                }
+                Optional.fromNullable(tempProgress)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
             .life(viewLifecycleOwner)
             .subscribe {
-                val attachment = it.attachment
-                val index = viewModel.getIndexByUuid(attachment.uuid) ?: return@subscribe
-                val itemViewModel = viewModel.getItemViewModelByIndex(index) ?: return@subscribe
-                val percent = attachment.transferred.toFloat() / attachment.total.toFloat()
-                itemViewModel.progress.value = String.format("%d%%", (percent * 100).toInt())
+                if (it.isPresent) {
+                    it.get().itemViewModel.progress.value =
+                        String.format("%d%%", (it.get().percent * 100).toInt())
+                }
             }
 
         /**
@@ -646,5 +671,9 @@ class FragmentMessage : FragmentBase<NimFragmentMessageBinding, ViewModelMessage
         val name: TextView = itemView.findViewById(R.id.text)
     }
 
+    data class TempProgress(
+        val itemViewModel: ItemViewModelMessageBase,
+        val percent: Float
+    )
 
 }
