@@ -7,6 +7,7 @@ import com.chuzi.android.nim.databinding.NimFragmentGroupListBinding
 import com.chuzi.android.nim.ui.contract.viewmodel.ViewModelGroupList
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.entity.arg.ArgGroupList
+import com.chuzi.android.shared.ext.showScrollBar
 import com.chuzi.android.shared.route.RoutePath
 
 /**
@@ -22,6 +23,11 @@ class FragmentGroupList :
     override fun setLayoutId(): Int = R.layout.nim_fragment_group_list
 
     override fun bindVariableId(): Int = BR.viewModel
+
+    override fun initView() {
+        super.initView()
+        binding.recycler.showScrollBar()
+    }
 
     override fun initData() {
         super.initData()

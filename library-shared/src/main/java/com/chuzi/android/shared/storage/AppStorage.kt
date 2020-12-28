@@ -23,6 +23,8 @@ object AppStorage {
 
     var language by StringPreference(prefs, defaultValue = null)
 
+    var fontLevel by IntPreference(prefs, defaultValue = 1)
+
     var isGray by BooleanPreference(prefs, false)
 
     var isPrivateConfig by BooleanPreference(prefs, false)

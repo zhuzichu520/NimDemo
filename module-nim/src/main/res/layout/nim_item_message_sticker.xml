@@ -29,12 +29,14 @@
 
             <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="14dp"
+                android:paddingTop="5dp"
                 android:paddingEnd="14dp"
+                android:paddingBottom="5dp"
                 android:textDirection="anyRtl"
-                android:textSize="14sp"
+                android:textSize="@{item.dateTextSize}"
                 app:qmui_radius="15dp"
                 app:qmui_skin_background="?attr/app_skin_color_divider"
                 app:qmui_skin_text_color="?attr/app_skin_color_background_1"

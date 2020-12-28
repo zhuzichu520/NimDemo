@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.chuzi.android.nim.ui.setting.viewmodel.ViewModelSettingFont" />
+    </data>
+
+    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2 xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qmui_skin_background="?attr/app_skin_color_background">
+
+        <com.chuzi.android.nim.view.LayoutTopBar
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:onClickBackCommand="@{viewModel.onBackCommand}"
+            app:qmui_skin_background="?attr/app_skin_color_background_1"
+            app:topTitle="@{@string/setting_font_size}" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/bottom"
+            app:layout_constraintTop_toBottomOf="@id/topbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/avatar1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/nim_avatar_chatfont"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/nickname1" />
+
+                <TextView
+                    android:id="@+id/nickname1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="安逸"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@id/avatar1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/content1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/nim_chat_from_bg_selector"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="12dp"
+                    android:paddingBottom="8dp"
+                    android:text="预览字体大小"
+                    android:textColor="@android:color/black"
+                    android:textSize="@{viewModel.textSize}"
+                    app:layout_constraintLeft_toLeftOf="@id/nickname1"
+                    app:layout_constraintTop_toBottomOf="@id/nickname1"
+                    app:layout_constraintWidth_max="250dp" />
+
+                <ImageView
+                    android:id="@+id/avatar2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/nim_avatar_chatfont"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/nickname2" />
+
+                <TextView
+                    android:id="@+id/nickname2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="end"
+                    android:text="逍遥"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/avatar2"
+                    app:layout_constraintTop_toBottomOf="@id/content1" />
+
+                <TextView
+                    android:id="@+id/content2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/nim_chat_to_bg_selector"
+                    android:gravity="start"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="12dp"
+                    android:paddingBottom="8dp"
+                    android:text="拖动下面的滑块，可设置字体大小。设置后，会改变聊天页面的字体大小"
+                    android:textSize="@{viewModel.textSize}"
+                    app:layout_constraintRight_toRightOf="@id/nickname2"
+                    app:layout_constraintTop_toBottomOf="@id/nickname2"
+                    app:layout_constraintWidth_max="250dp" />
+
+                <TextView
+                    android:id="@+id/content3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/nim_chat_to_bg_selector"
+                    android:gravity="start"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="12dp"
+                    android:paddingBottom="8dp"
+                    android:text="沟通无界，安全无忧，欢迎使用航空人自己的移动办公平台！"
+                    android:textSize="@{viewModel.textSize}"
+                    app:layout_constraintRight_toRightOf="@id/content2"
+                    app:layout_constraintTop_toBottomOf="@id/content2"
+                    app:layout_constraintWidth_max="250dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:qmui_skin_background="?attr/app_skin_color_background_1">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@mipmap/nim_ic_chatfont_t1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="16dp"
+                android:src="@mipmap/nim_ic_chatfont_t2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.chuzi.android.nim.view.NimSeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="39dp"
+                android:max="5"
+                android:maxHeight="1dp"
+                android:minHeight="1dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:progress="@={viewModel.progress}"
+                android:progressDrawable="@drawable/bg_chatfont_seekbar"
+                android:thumb="@drawable/thumb_chatfont"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="@string/standard"
+                app:qmui_skin_text_color="?attr/app_skin_color_font_primary"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
+
+</layout>

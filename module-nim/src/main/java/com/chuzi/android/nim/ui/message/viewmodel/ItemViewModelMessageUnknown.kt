@@ -11,6 +11,4 @@ import com.netease.nimlib.sdk.msg.model.IMMessage
 class ItemViewModelMessageUnknown(
     viewModel: ViewModelMessage,
     message: IMMessage
-) : ItemViewModelMessageBase(viewModel, message) {
-
-}
+) : ItemViewModelMessageBase(viewModel, message)

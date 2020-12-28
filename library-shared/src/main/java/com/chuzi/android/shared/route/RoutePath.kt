@@ -45,6 +45,8 @@ object RoutePath {
         const val ACTIVITY_NIM_SETTING = "/nim/activity/setting"
         const val FRAGMENT_NIM_SETTING = "/nim/fragment/setting"
         const val FRAGMENT_NIM_SETTING_THEME = "/nim/fragment/setting/theme"
+        const val FRAGMENT_NIM_SETTING_FONT = "/nim/fragment/setting/font"
+        const val FRAGMENT_NIM_SETTING_NOTIFICATION = "/nim/fragment/setting/notification"
         const val FRAGMENT_NIM_SETTING_LANGUAGE = "/nim/fragment/setting/language"
 
         /**

@@ -4,11 +4,15 @@ import android.app.Activity
 import android.app.Application
 import android.content.res.Configuration
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.alibaba.android.arouter.launcher.ARouter
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.maps.MapsInitializer
 import com.amap.api.services.core.ServiceSettings
+import com.chuzi.android.libs.tool.dp2px
+import com.chuzi.android.libs.tool.sp2px
 import com.chuzi.android.libs.tool.toCast
 import com.chuzi.android.mvvm.Mvvm
 import com.chuzi.android.nim.R
@@ -53,13 +57,24 @@ object AppFactorySDK {
     /**
      * 消息未读数
      */
-    private val unReadNumber: MutableLiveData<Int> = MutableLiveData(0)
+    @JvmField
+    val unReadNumber: MutableLiveData<Int> = MutableLiveData()
 
     /**
      * 最近会话livedata对象，在会话列表中维护该集合
      * @see com.chuzi.android.nim.ui.session.fragment.FragmentSession
      */
     val sessionLiveData = MutableLiveData<List<RecentContact>>(listOf())
+
+    /**
+     * 聊天界面字体大小 单位ps
+     */
+    val fontSizeOffset = MutableLiveData<Float>()
+
+    /**
+     * 字体偏移大小集合
+     */
+    val fontSizeOffsetList = listOf(-2f, 0f, 3f, 6f, 10f, 14f)
 
     /**
      * 开放接口，SDK调用总集
@@ -105,6 +120,7 @@ object AppFactorySDK {
         AMapLocationClient.setApiKey(mapKey)
 
         isGrayImage.value = AppStorage.isGray
+        fontSizeOffset.value = fontSizeOffsetList[AppStorage.fontLevel]
 
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
         if (NIMUtil.isMainProcess(context)) {
@@ -184,13 +200,6 @@ object AppFactorySDK {
     }
 
     /**
-     * 获取未读数的LiveData对象
-     */
-    fun getUnReadNumberLiveData(): MutableLiveData<Int> {
-        return unReadNumber
-    }
-
-    /**
      * 使用SDK中登录
      */
     fun startLoginActivity(activity: Activity) {
@@ -205,5 +214,13 @@ object AppFactorySDK {
         SkinManager.applyConfigurationChanged(newConfig)
     }
 
+    /**
+     * 获取字体大小，当前默认字体
+     */
+    fun getFontSizeLiveData(standard: Float): LiveData<Int> {
+        return Transformations.map(fontSizeOffset) {
+            sp2px(context, standard) + sp2px(context, it)
+        }
+    }
 
 }

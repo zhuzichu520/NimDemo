@@ -85,5 +85,6 @@
     <string name="settings_one_button_gray">一键置灰</string>
     <string name="team_group_my_created">我创建的</string>
     <string name="team_group_my_joined">我加入的</string>
+    <string name="standard">标准</string>
 
 </resources>

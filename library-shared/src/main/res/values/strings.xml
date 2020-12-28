@@ -85,5 +85,6 @@
     <string name="settings_one_button_gray">One Buttonn Gray</string>
     <string name="team_group_my_created">My Created</string>
     <string name="team_group_my_joined">My Joined</string>
+    <string name="standard">Standard</string>
 
 </resources>

@@ -7,6 +7,7 @@ import com.chuzi.android.mvvm.event.SingleLiveEvent
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
+import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.tools.ToolDate
 import com.chuzi.android.nim.tools.ToolUserInfo
 import com.chuzi.android.shared.base.ItemViewModelBase
@@ -90,6 +91,11 @@ open class ItemViewModelMessageBase(
      * 是否显示时间
      */
     val showDate = MutableLiveData(false)
+
+    /**
+     * 日期字体大小
+     */
+    val dateTextSize = AppFactorySDK.getFontSizeLiveData(14f)
 
     private fun updateShowDate() {
         showDate.value = abs((message.time - (anchorMessage?.time ?: 0L))) > 60000

@@ -1,6 +1,5 @@
 package com.chuzi.android.nim.view
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
@@ -11,7 +10,6 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.*
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -23,7 +21,6 @@ import com.chuzi.android.nim.databinding.NimLayoutMessageBottomBinding
 import com.chuzi.android.nim.emoji.ToolMoon
 import com.chuzi.android.shared.ext.bindToSchedulers
 import com.chuzi.android.shared.ext.changeWidth
-import com.chuzi.android.widget.log.lumberjack.L
 import com.jakewharton.rxbinding4.view.touches
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout
 import com.rxjava.rxlife.life

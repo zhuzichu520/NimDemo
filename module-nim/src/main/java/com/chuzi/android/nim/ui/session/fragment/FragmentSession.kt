@@ -183,7 +183,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
             it.forEach { item ->
                 number += item.number.value ?: 0
             }
-            AppFactorySDK.getUnReadNumberLiveData().value = number
+            AppFactorySDK.unReadNumber.value = number
         }
 
         /**

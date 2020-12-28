@@ -69,7 +69,7 @@ class FragmentNim : FragmentBase<NimFragmentNimBinding, ViewModelNim, ArgDefault
     override fun initViewObservable() {
         super.initViewObservable()
 
-        AppFactorySDK.getUnReadNumberLiveData().observe(viewLifecycleOwner) {
+        AppFactorySDK.unReadNumber.observe(viewLifecycleOwner) {
             badge.badgeNumber = it
         }
 

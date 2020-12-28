@@ -48,13 +48,17 @@ class FragmentSetting : FragmentBase<NimFragmentSettingBinding, ViewModelSetting
             ItemViewModelSettingGroup(
                 viewModel,
                 R.string.setting_font_size
-            )
+            ) {
+                navigate(RoutePath.Nim.FRAGMENT_NIM_SETTING_FONT)
+            }
         )
         data.add(
             ItemViewModelSettingGroup(
                 viewModel,
                 R.string.setting_new_session
-            )
+            ) {
+                navigate(RoutePath.Nim.FRAGMENT_NIM_SETTING_NOTIFICATION)
+            }
         )
         data.add(ItemViewModelLine(viewModel))
         data.add(

@@ -4,8 +4,10 @@ import android.animation.ValueAnimator
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
+import androidx.recyclerview.widget.RecyclerView
 import com.chuzi.android.libs.tool.dp2px
 import com.chuzi.android.libs.tool.toInt
+import com.qmuiteam.qmui.recyclerView.QMUIRVDraggableScrollBar
 
 /**
  * desc
@@ -37,4 +39,10 @@ fun View.changeHight(startHight: Float, endHight: Float, duration: Long = 300) {
         this.layoutParams = layoutParams
     }
     valueAnimator.start()
+}
+
+fun RecyclerView.showScrollBar() {
+    val scrollBar = QMUIRVDraggableScrollBar(0, 0, 0)
+    scrollBar.isEnableScrollBarFadeInOut = true
+    scrollBar.attachToRecyclerView(this)
 }
