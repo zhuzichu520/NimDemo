@@ -3,7 +3,6 @@ package com.chuzi.android.nim.ui.main.viewmodel
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.mvvm.ext.createTypeCommand
 import com.chuzi.android.nim.R
@@ -22,7 +21,6 @@ import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.badge.Badge
 import com.chuzi.android.widget.spanly.Spanly
 import com.chuzi.android.widget.spanly.color
-import com.chuzi.android.widget.spanly.font
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
@@ -53,7 +51,7 @@ data class ItemViewModelSession(
         private const val STATE_SEND_NORMAL = 2
     }
 
-    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
+    val isGray: LiveData<Boolean> = AppFactorySDK.getGrayImageLiveData()
 
     val contactId: String = contact.contactId
 

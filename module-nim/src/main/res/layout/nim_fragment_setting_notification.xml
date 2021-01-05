@@ -23,6 +23,16 @@
             app:qmui_skin_background="?attr/app_skin_color_background_1"
             app:topTitle="@{@string/setting_new_session}" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:itemBinding="@{viewModel.itemBinding}"
+            app:items="@{viewModel.items}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topbar"
+            tools:listitem="@layout/nim_item_setting_switch" />
 
     </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
 

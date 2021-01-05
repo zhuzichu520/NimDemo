@@ -55,7 +55,7 @@
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:background="@drawable/nim_selecter_checkbox"
+                    android:background="@drawable/nim_selector_checkbox"
                     android:button="@null"
                     android:checked="@{viewModel.all}"
                     android:clickable="false" />

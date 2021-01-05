@@ -4,9 +4,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
-import com.chuzi.android.nim.databinding.NimFragmentSettingFontBinding
 import com.chuzi.android.nim.databinding.NimFragmentSettingNotificationBinding
-import com.chuzi.android.nim.ui.setting.viewmodel.ViewModelSettingFont
 import com.chuzi.android.nim.ui.setting.viewmodel.ViewModelSettingNotification
 import com.chuzi.android.shared.base.FragmentBase
 import com.chuzi.android.shared.route.RoutePath
@@ -24,6 +22,5 @@ class FragmentSettingNotification :
     override fun bindVariableId(): Int = BR.viewModel
 
     override fun setLayoutId(): Int = R.layout.nim_fragment_setting_notification
-
 
 }

@@ -23,7 +23,7 @@ class ItemViewModelMeGroup(
     onClickFunc: (() -> Unit)? = null
 ) : ItemViewModelBase(viewModel) {
 
-    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
+    val isGray: LiveData<Boolean> = AppFactorySDK.getGrayImageLiveData()
 
     val iconId = MutableLiveData(iconId)
 

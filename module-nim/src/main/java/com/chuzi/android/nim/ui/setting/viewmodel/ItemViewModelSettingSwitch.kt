@@ -18,12 +18,11 @@ import com.chuzi.android.shared.base.ItemViewModelBase
 class ItemViewModelSettingSwitch(
     viewModel: BaseViewModel<*>,
     @StringRes textId: Int,
+    val checked: LiveData<Boolean>,
     onClickFunc: (() -> Unit)? = null
 ) : ItemViewModelBase(viewModel) {
 
     val textId = MutableLiveData(textId)
-
-    val checked: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
 
     val onClickCommand = createCommand {
         onClickFunc?.invoke()

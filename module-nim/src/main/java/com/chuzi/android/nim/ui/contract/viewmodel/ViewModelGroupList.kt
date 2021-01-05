@@ -33,7 +33,9 @@ class ViewModelGroupList : ViewModelBase<ArgGroupList>() {
         map<ItemViewModelTeamGroup>(BR.item, R.layout.nim_item_team_group)
     }
 
-
+    /**
+     * 获取群组列表
+     */
     fun loadTeamList() {
         useCaseGetTeams.execute(Unit).map {
             if (arg.isOwner) {

@@ -1,11 +1,20 @@
 package com.chuzi.android.nim.core.config
 
 import android.content.Context
-import com.chuzi.android.nim.ui.main.ActivityNim
+import android.graphics.Color
+import com.chuzi.android.nim.R
 import com.chuzi.android.nim.core.provider.NimUserInfoProvider
 import com.chuzi.android.nim.tools.ToolImage.getImageMaxEdge
+import com.chuzi.android.nim.ui.main.ActivityNim
 import com.chuzi.android.shared.BuildConfig
+import com.chuzi.android.shared.ext.toColorByResId
+import com.chuzi.android.shared.global.AppGlobal.context
 import com.chuzi.android.shared.global.CacheGlobal
+import com.chuzi.android.shared.storage.AppStorage
+import com.chuzi.android.shared.storage.UserStorage
+import com.chuzi.android.widget.log.lumberjack.L
+import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.NotificationFoldStyle
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
 import com.netease.nimlib.sdk.mixpush.MixPushConfig
@@ -25,7 +34,7 @@ object NimConfigSDKOption {
             /**
              * 如果将新消息通知提醒托管给SDK完成，需要添加以下配置。
              */
-            initStatusBarNotificationConfig(this)
+            statusBarNotificationConfig = getStatusBarNotificationConfig()
             /**
              * 配置 APP 保存图片/语音/文件/log等数据的目录
              */
@@ -96,6 +105,7 @@ object NimConfigSDKOption {
              */
             mixPushConfig = buildMixPushConfig()
             loginCustomTag = "登录自定义字段"
+            useXLog = false
         }
     }
 
@@ -113,47 +123,49 @@ object NimConfigSDKOption {
     /**
      * 如果将新消息通知提醒托管给SDK完成，需要添加以下配置。
      */
-    private fun initStatusBarNotificationConfig(options: SDKOptions) {
-        val config = loadStatusBarNotificationConfig()
-        options.statusBarNotificationConfig = config
+    fun getStatusBarNotificationConfig(): StatusBarNotificationConfig {
+
+        return StatusBarNotificationConfig().apply {
+            notificationEntrance = ActivityNim::class.java
+            notificationSmallIconId = R.mipmap.ic_launcher
+            notificationColor = R.color.color_408bf7.toColorByResId()
+            notificationSound = "android.resource://${context.packageName}/raw/msg"
+            notificationFoldStyle = NotificationFoldStyle.ALL
+            downTimeEnableNotification = true
+            ledARGB = Color.GREEN
+            ledOnMs = 1000
+            ledOffMs = 1500
+            showBadge = true
+            AppStorage.account?.let {
+                ring = UserStorage.ring
+                vibrate = UserStorage.vibrate
+            }
+        }
     }
 
-    private fun loadStatusBarNotificationConfig(): StatusBarNotificationConfig {
-        val config = StatusBarNotificationConfig()
-        config.notificationEntrance = ActivityNim::class.java
-        return config
+    fun updateStatusBarNotificationConfig() {
+        NIMClient.updateStatusBarNotificationConfig(getStatusBarNotificationConfig())
     }
 
     private fun buildMixPushConfig(): MixPushConfig { // 第三方推送配置
+        // 第三方推送配置
         val config = MixPushConfig()
-        /**
-         * 小米推送
-         */
+        // 小米推送
         config.xmAppId = "2882303761517502883"
         config.xmAppKey = "5671750254883"
         config.xmCertificateName = "DEMO_MI_PUSH"
-        /**
-         * 华为推送
-         */
+        // 华为推送
         config.hwAppId = "101420927"
         config.hwCertificateName = "DEMO_HW_PUSH"
-        /**
-         *  魅族推送
-         */
+        // 魅族推送
         config.mzAppId = "111710"
         config.mzAppKey = "282bdd3a37ec4f898f47c5bbbf9d2369"
         config.mzCertificateName = "DEMO_MZ_PUSH"
-        /**
-         * fcm 推送，适用于海外用户，不使用fcm请不要配置
-         */
+        // fcm 推送，适用于海外用户，不使用fcm请不要配置
         config.fcmCertificateName = "DEMO_FCM_PUSH"
-        /**
-         *  vivo推送
-         */
+        // vivo推送
         config.vivoCertificateName = "DEMO_VIVO_PUSH"
-        /**
-         * oppo推送
-         */
+        // oppo推送
         config.oppoAppId = "3477155"
         config.oppoAppKey = "6clw0ue1oZ8cCOogKg488o0os"
         config.oppoAppSercet = "e163705Bd018bABb3e2362C440A94673"

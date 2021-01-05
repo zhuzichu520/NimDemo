@@ -2,6 +2,10 @@ package com.chuzi.android.nim.core.provider
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import androidx.core.content.ContextCompat
+import com.chuzi.android.nim.R
+import com.chuzi.android.nim.tools.ToolUserInfo
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider
 import com.netease.nimlib.sdk.uinfo.model.UserInfo
@@ -17,14 +21,17 @@ class NimUserInfoProvider(
 ) : UserInfoProvider {
 
     override fun getUserInfo(account: String?): UserInfo? {
-        return null
+        return ToolUserInfo.getUserInfo(account)
     }
 
     override fun getAvatarForMessageNotifier(
         sessionType: SessionTypeEnum?,
         sessionId: String?
     ): Bitmap? {
-        return null
+        return (ContextCompat.getDrawable(
+            context,
+            R.mipmap.nim_avatar_default
+        ) as? BitmapDrawable)?.bitmap
     }
 
     override fun getDisplayNameForMessageNotifier(
@@ -32,7 +39,7 @@ class NimUserInfoProvider(
         sessionId: String?,
         sessionType: SessionTypeEnum?
     ): String? {
-        return null
+        return ToolUserInfo.getUserName(account)
     }
 
 }

@@ -2,7 +2,6 @@ package com.chuzi.android.nim.ui.contract.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.chuzi.android.mvvm.base.BaseViewModel
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.nim.R
@@ -22,7 +21,7 @@ class ItemViewModelTeamGroup(
     onClickFunc: (() -> Unit)? = null
 ) : ItemViewModelBase(viewModel) {
 
-    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
+    val isGray: LiveData<Boolean> = AppFactorySDK.getGrayImageLiveData()
 
     /**
      * 头像占位图

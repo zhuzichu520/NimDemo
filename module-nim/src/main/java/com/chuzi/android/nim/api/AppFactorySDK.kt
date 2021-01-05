@@ -11,19 +11,19 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.maps.MapsInitializer
 import com.amap.api.services.core.ServiceSettings
-import com.chuzi.android.libs.tool.dp2px
 import com.chuzi.android.libs.tool.sp2px
 import com.chuzi.android.libs.tool.toCast
 import com.chuzi.android.mvvm.Mvvm
 import com.chuzi.android.nim.R
-import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.attachment.NimAttachParser
 import com.chuzi.android.nim.core.config.NimConfigSDKOption
 import com.chuzi.android.nim.core.error.NimError
 import com.chuzi.android.nim.core.error.NimThrowable
+import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.event.NimEventManager
 import com.chuzi.android.nim.ext.authService
 import com.chuzi.android.nim.ext.msgService
+import com.chuzi.android.nim.push.NimMixPushMessageHandler
 import com.chuzi.android.shared.BuildConfig
 import com.chuzi.android.shared.ext.updateApplicationLanguage
 import com.chuzi.android.shared.global.AppGlobal
@@ -32,13 +32,16 @@ import com.chuzi.android.shared.rxhttp.RxHttpManager
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.shared.storage.AppStorage
 import com.chuzi.android.widget.crash.CrashConfig
+import com.heytap.msp.push.HeytapPushManager
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.auth.LoginInfo
+import com.netease.nimlib.sdk.mixpush.NIMPushClient
 import com.netease.nimlib.sdk.msg.model.RecentContact
 import com.netease.nimlib.sdk.util.NIMUtil
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
 import jonathanfinerty.once.Once
+
 
 /**
  * desc 总集调用的Api
@@ -124,8 +127,10 @@ object AppFactorySDK {
 
         NIMClient.init(context, getLoginInfo(), NimConfigSDKOption.getSDKOptions(context))
         if (NIMUtil.isMainProcess(context)) {
+            HeytapPushManager.init(context, true)
             //开启数据同步监听
             NIMClient.toggleNotification(AppStorage.notifyToggle)
+            NIMPushClient.registerMixPushMessageHandler(NimMixPushMessageHandler())
             // 注册自定义消息附件解析器
             msgService().registerCustomAttachmentParser(NimAttachParser())
             LoginSyncDataStatusObserver.registerLoginSyncDataStatus(true)
@@ -221,6 +226,13 @@ object AppFactorySDK {
         return Transformations.map(fontSizeOffset) {
             sp2px(context, standard) + sp2px(context, it)
         }
+    }
+
+    /**
+     * 获取图片颜色是否置灰
+     */
+    fun getGrayImageLiveData(): LiveData<Boolean> {
+        return Transformations.map(isGrayImage) { it }
     }
 
 }

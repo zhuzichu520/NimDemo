@@ -37,27 +37,25 @@ class FragmentTeamGroups :
         initTabAndViewPager()
     }
 
+    /**
+     * 初始化Tab与ViewPager
+     */
     private fun initTabAndViewPager() {
-
         val builder = binding.tab.tabBuilder()
-
         repeat(titles.size) {
             binding.tab.addTab(builder.build(context))
         }
-
         val postcards = listOf(
             RoutePath.Nim.FRAGMENT_NIM_CONTRACT_TEAMGROUPS_LIST.toPostcard()
                 .withArg(ArgGroupList(true)),
             RoutePath.Nim.FRAGMENT_NIM_CONTRACT_TEAMGROUPS_LIST.toPostcard()
                 .withArg(ArgGroupList(false)),
         )
-
         binding.content.adapter = DefaultIntFragmentPagerAdapter(
             titles = titles,
             list = postcards,
             fm = childFragmentManager
         )
-
         binding.tab.setupWithViewPager(binding.content, true)
     }
 

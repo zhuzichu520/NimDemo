@@ -98,6 +98,7 @@ dependencies {
     implementation(SupportLibs.ANDROIDX_SWIPEREFRESHLAYOUT)
     implementation(SupportLibs.ANDROIDX_FRAGMENT)
     implementation(SupportLibs.ANDROIDX_FRAGMENT_KTX)
+    implementation(files("libs/com.heytap.msp_push_2.1.0.aar"))
     Config.denpendModules(project)
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
 }

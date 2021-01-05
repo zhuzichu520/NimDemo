@@ -24,7 +24,7 @@ class ItemViewModelContractHistory(
     contact: RecentContact
 ) : ItemViewModelBase(viewModel) {
 
-    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
+    val isGray: LiveData<Boolean> = AppFactorySDK.getGrayImageLiveData()
 
     /**
      * 头像

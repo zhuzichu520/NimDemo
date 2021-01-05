@@ -100,6 +100,7 @@
             android:name="android.notch_support"
             android:value="true" />
 
+        <!-- 全面屏配置 -->
         <meta-data
             android:name="android.max_aspect"
             android:value="2.34" />
@@ -185,9 +186,7 @@
             android:process=":core">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action
-                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
@@ -201,9 +200,15 @@
         <!-- android:authorities="{包名}.ipc.provider", 请将com.netease.nim.demo替换为自己的包名 -->
         <provider
             android:name="com.netease.nimlib.ipc.NIMContentProvider"
-            android:authorities="${applicationId}.ipc.provider"
+            android:authorities="com.netease.nim.demo.ipc.provider"
             android:exported="false"
             android:process=":core" />
+
+        <!-- 云信内部使用的进程间通信provider -->
+        <provider
+            android:name="com.netease.nimlib.ipc.cp.provider.PreferenceContentProvider"
+            android:authorities="com.netease.nim.demo.ipc.provider.preference"
+            android:exported="false" />
 
         <!-- 小米推送配置 -->
         <service
@@ -231,9 +236,7 @@
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
             <intent-filter>
-                <action
-                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -241,8 +244,7 @@
         <service
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
-            android:exported="true"
-            android:permission="com.xiaomi.mipush.sdk.PushMessagePermission" />
+            android:exported="true" />
 
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
@@ -250,8 +252,7 @@
 
         <receiver
             android:name="com.netease.nimlib.mixpush.mi.MiPushReceiver"
-            android:exported="true"
-            android:permission="com.netease.nimlib.mixpush.mi.MiPushReceiverPermission">
+            android:exported="true">
             <intent-filter android:priority="0x7fffffff">
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
                 <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
@@ -262,30 +263,54 @@
         <!--华为推送配置-->
         <service
             android:name="com.netease.nimlib.mixpush.hw.HWPushService"
-            android:exported="false"
-            tools:ignore="Instantiatable">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
             </intent-filter>
 
         </service>
+        <service
+            android:name=".push.NimHwPushMessageService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.netease.nimlib.mixpush.hw.action.MESSAGING_EVENT" />
+            </intent-filter>
+
+        </service>
+
+        <activity
+            android:name=".push.MixPushActivity"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.huawei.codelabpush"
+                    android:path="/deeplink"
+                    android:scheme="pushscheme" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.oppo.codelabpush.intent.action.test" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <!--meizu-->
-        <receiver
-            android:name="com.netease.nimlib.mixpush.mz.MZPushReceiver"
-            android:permission="com.netease.nimlib.mixpush.mz.MZPushReceiverPermission"
-            tools:ignore="Instantiatable">
+        <!--魅族推送配置项-->
+        <receiver android:name="com.netease.nimlib.mixpush.mz.MZPushReceiver">
             <intent-filter android:priority="0x7fffffff">
-                <!-- 接收push消息 -->
+                <!-- 接收 push 消息 -->
                 <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
-                <!-- 接收register消息 -->
+                <!-- 接收 register 消息 -->
                 <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-                <!-- 接收unregister消息-->
+                <!-- 接收 unregister 消息-->
                 <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
-                <!-- 兼容低版本Flyme3推送服务配置 -->
+                <!-- 兼容低版本 Flyme3 推送服务配置 -->
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 
@@ -296,24 +321,23 @@
         <!--Vivo推送配置项-->
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
-            android:exported="true"
-            android:permission="com.vivo.push.sdk.service.CommandClientServicePermission" />
+            android:exported="true" />
 
         <activity
             android:name="com.vivo.push.sdk.LinkProxyClientActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="com.vivo.push.api_key"
             android:value="2e8c38a8-604a-4c96-9bc0-e102f72728e9" />
+
         <meta-data
             android:name="com.vivo.push.app_id"
             android:value="17757" />
 
-        <receiver
-            android:name="com.netease.nimlib.mixpush.vivo.VivoPushReceiver"
-            android:permission="com.netease.nimlib.mixpush.vivo.VivoPushReceiverPermission">
+        <receiver android:name="com.netease.nimlib.mixpush.vivo.VivoPushReceiver">
             <intent-filter>
                 <!-- 接收 push 消息 -->
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
@@ -323,20 +347,22 @@
         <!--Oppo推送配置项 需要配置以下两项-->
         <service
             android:name="com.netease.nimlib.mixpush.oppo.OppoPushService"
-            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE"
-            tools:ignore="Instantiatable">
+            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
             <intent-filter>
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
         </service>
+        <!--兼容Q以下版本-->
         <service
             android:name="com.netease.nimlib.mixpush.oppo.OppoAppPushService"
-            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE"
-            tools:ignore="Instantiatable">
+            android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
             <intent-filter>
                 <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE" />
+
+                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
         </service>
+        <!--兼容Q版本-->
 
     </application>
 

@@ -44,10 +44,19 @@ class ViewModelFriends : ViewModelBase<ArgDefault>() {
         map<ItemViewModelSearch>(BR.item, R.layout.nim_item_search)
     }
 
+    /**
+     * 字母文本
+     */
     val letter = MutableLiveData<String>()
 
+    /**
+     * 是否显示字母
+     */
     val showLetter = MutableLiveData(false)
 
+    /**
+     * 下载好友列表数据
+     */
     fun loadFriends() {
         useCaseGetFriends.execute(Unit)
             .map {
@@ -59,17 +68,18 @@ class ViewModelFriends : ViewModelBase<ArgDefault>() {
             }
     }
 
+    /**
+     * 将数据转换为ItemViewModel
+     */
     private fun convertItemViewModel(it: List<NimUserInfo>): List<Any> {
         val data = it.map { item ->
             ItemViewModelFriend(this, item)
         }
         val map = hashMapOf<String, ArrayList<ItemViewModelFriend>?>()
         val letters = context.resources.getStringArray(R.array.letter_list)
-
         letters.forEach { letter ->
             map[letter] = null
         }
-
         data.forEach { item ->
             var letter = "#"
             val list = if (Character.isUpperCase(item.pinYin)) {
@@ -93,6 +103,9 @@ class ViewModelFriends : ViewModelBase<ArgDefault>() {
         return list
     }
 
+    /**
+     * 根据字符获取下标
+     */
     fun getIndexByLetter(letter: String?): Int? {
         val data = items.value ?: return null
         data.forEachIndexed { index, any ->

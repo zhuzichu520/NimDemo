@@ -22,12 +22,12 @@ class UseCaseGetImageAndVideoMessage : UseCase<IMMessage, Flowable<Optional<List
 
     override fun execute(parameters: IMMessage): Flowable<Optional<List<IMMessage>>> {
         return createFlowable<Optional<List<IMMessage>>> {
-            msgService().queryMessageListExBlock(
-                MessageBuilder.createEmptyMessage(parameters.sessionId, parameters.sessionType, 0),
-                QueryDirectionEnum.QUERY_OLD,
-                Int.MAX_VALUE,
-                false
-            )
+//            msgService().queryMessageListExBlock(
+//                MessageBuilder.createEmptyMessage(parameters.sessionId, parameters.sessionType, 0),
+//                QueryDirectionEnum.QUERY_OLD,
+//                Int.MAX_VALUE,
+//                false
+//            )
         }.flatMap {
             Flowable.fromIterable(it.get())
         }.filter {

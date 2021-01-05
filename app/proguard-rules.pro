@@ -47,6 +47,7 @@
 
 -dontskipnonpubliclibraryclassmembers                                           # 指定不去忽略非公共的库类的成员
 
+-keepattributes Exceptions
 -keepattributes *Annotation*,InnerClasses                                       # 保护注解，保护内部类
 -keepattributes Signature                                                       # 保护泛型
 -keepattributes SourceFile,LineNumberTable                                      # 保持代码行号
@@ -191,10 +192,32 @@
 -keep class com.tencent.smtt.**{*;}
 -keep class com.tencent.tbs.**{*;}
 
-#
+### NIM SDK
 -dontwarn com.netease.**
 -keep class com.netease.** {*;}
-#如果你使用全文检索插件，需要加入
 -dontwarn org.apache.lucene.**
 -keep class org.apache.lucene.** {*;}
+-keep class net.sqlcipher.** {*;}
+
+### APP 3rd party jars(xiaomi push)
+-dontwarn com.xiaomi.push.**
+-keep class com.xiaomi.** {*;}
+
+### APP 3rd party jars(huawei push)
+# hmscore-support: remote transport
+-keep class com.hianalytics.android.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+
+#oppo push
+-keep class com.heytap.msp.** { *;}
+
+### APP 3rd party jars(meizu push)
+-dontwarn com.meizu.cloud.**
+-keep class com.meizu.cloud.** {*;}
+
+#vivo
+-dontwarn com.vivo.push.**
+-keep class com.vivo.push.** {*;}
+-keep class com.vivo.vms.** {*;}
 

@@ -32,7 +32,7 @@ class ItemViewModelFriend(
 
     val pinYin = Pinyin.toPinyin(name[0])[0].toUpperCase()
 
-    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
+    val isGray: LiveData<Boolean> = AppFactorySDK.getGrayImageLiveData()
 
     /**
      * 头像

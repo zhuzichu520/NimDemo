@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+        tools:replace="android:allowBackup"
         tools:targetApi="n">
 
         <activity

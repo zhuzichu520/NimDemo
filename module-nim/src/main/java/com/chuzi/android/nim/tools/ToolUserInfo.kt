@@ -23,7 +23,7 @@ object ToolUserInfo {
     /**
      * 获取用户名
      */
-    fun getUserName(account: String): String? {
+    fun getUserName(account: String?): String? {
         return getUserInfo(account)?.name
     }
 

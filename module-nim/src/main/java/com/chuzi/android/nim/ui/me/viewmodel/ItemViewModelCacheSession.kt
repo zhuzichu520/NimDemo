@@ -2,7 +2,6 @@ package com.chuzi.android.nim.ui.me.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.api.AppFactorySDK
@@ -28,13 +27,25 @@ data class ItemViewModelCacheSession(
     val contact: RecentContact
 ) : ItemViewModelBase(viewModel) {
 
+    /**
+     * 会话ID
+     */
     val contactId: String = contact.contactId
 
+    /**
+     * 最后一条消息时间
+     */
     val time = contact.time
 
+    /**
+     * 是否选中
+     */
     val isSelected = MutableLiveData(false)
 
-    val isGray: LiveData<Boolean> = Transformations.map(AppFactorySDK.isGrayImage) { it }
+    /**
+     * 图片是否置灰
+     */
+    val isGray: LiveData<Boolean> = AppFactorySDK.getGrayImageLiveData()
 
     /**
      * 头像

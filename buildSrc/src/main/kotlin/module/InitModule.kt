@@ -12,6 +12,7 @@ import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByType
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 /**
@@ -56,7 +57,12 @@ class InitModule(
         }
 
         project.dependencies.apply {
-            add("implementation", project.fileTree(mapOf("dir" to "libs", "include" to "*.jar")))
+            add(
+                "implementation",
+                project.fileTree(
+                    mapOf("dir" to "libs", "include" to "*.jar")
+                )
+            )
             add("implementation", project(mapOf("path" to ":library-shared")))
             add("kapt", Kapts.AROUTER_COMPILER)
             add("kapt", Kapts.QMUI_ARCH_COMPILER)

@@ -6,7 +6,6 @@ import com.chuzi.android.mvvm.base.ArgDefault
 import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
 import com.chuzi.android.nim.databinding.NimFragmentFriendsBinding
-import com.chuzi.android.nim.ui.contract.viewmodel.ItemViewModelFriendIndex
 import com.chuzi.android.nim.ui.contract.viewmodel.ViewModelFriends
 import com.chuzi.android.nim.view.QuickIndexBar
 import com.chuzi.android.shared.base.FragmentBase
@@ -50,6 +49,9 @@ class FragmentFriends : FragmentBase<NimFragmentFriendsBinding, ViewModelFriends
         viewModel.loadFriends()
     }
 
+    /**
+     * 滑动更新字母显示
+     */
     private fun updateShowLetter(letter: String?) {
         viewModel.letter.value = letter
         viewModel.showLetter.value = true
@@ -58,6 +60,9 @@ class FragmentFriends : FragmentBase<NimFragmentFriendsBinding, ViewModelFriends
         }
     }
 
+    /**
+     * 隐藏字母显示
+     */
     private fun hideLetter() {
         viewModel.showLetter.value = false
     }

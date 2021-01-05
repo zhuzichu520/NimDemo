@@ -15,8 +15,8 @@ import com.afollestad.recyclical.withItem
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chuzi.android.libs.tool.showView
 import com.chuzi.android.mvvm.base.ArgDefault
-import com.chuzi.android.nim.R
 import com.chuzi.android.nim.BR
+import com.chuzi.android.nim.R
 import com.chuzi.android.nim.api.AppFactorySDK
 import com.chuzi.android.nim.core.event.LoginSyncDataStatusObserver
 import com.chuzi.android.nim.core.event.NimEvent
@@ -40,8 +40,11 @@ import com.chuzi.android.shared.route.RoutePath
 import com.chuzi.android.shared.skin.SkinManager
 import com.chuzi.android.widget.log.lumberjack.L
 import com.google.common.base.Optional
+import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.StatusCode
 import com.netease.nimlib.sdk.auth.ClientType
+import com.netease.nimlib.sdk.msg.MsgService
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.popup.QMUIPopup
@@ -49,6 +52,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups
 import com.rxjava.rxlife.life
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 /**
  * desc 会话列表页面
@@ -87,6 +91,26 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
         super.onDestroy()
         NimEventManager.registObserveOnlineStatus(false)
         NimEventManager.registObserveOtherClients(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        /**
+         * 页面关闭时打开推送
+         */
+        NIMClient.getService(MsgService::class.java).setChattingAccount(
+            MsgService.MSG_CHATTING_ACCOUNT_ALL, SessionTypeEnum.None
+        )
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        /**
+         * 页面可见时关闭推送
+         */
+        NIMClient.getService(MsgService::class.java)
+            .setChattingAccount(MsgService.MSG_CHATTING_ACCOUNT_NONE, SessionTypeEnum.None)
     }
 
     override fun initListener() {
