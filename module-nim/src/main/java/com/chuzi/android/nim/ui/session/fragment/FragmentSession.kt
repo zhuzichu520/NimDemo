@@ -384,7 +384,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     override fun onClick(view: View?) {
         when (view) {
             binding.menu -> {
-                showMenuPopuo()
+                showMenuPopup()
             }
         }
     }
@@ -392,7 +392,7 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
     /**
      * 右上角+号点击弹窗
      */
-    private fun showMenuPopuo() {
+    private fun showMenuPopup() {
         val recycler = RecyclerView(requireContext())
         recycler.layoutManager = LinearLayoutManager(requireContext())
         recycler.setup {
@@ -449,6 +449,5 @@ class FragmentSession : FragmentBase<NimFragmentSessionBinding, ViewModelSession
         @StringRes val textId: Int,
         @DrawableRes val iconId: Int
     )
-
 
 }

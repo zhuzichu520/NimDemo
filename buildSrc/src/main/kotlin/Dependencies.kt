@@ -51,7 +51,7 @@ object Versions {
     const val UMSDK_COMMON = "9.3.0"
     const val UMSDK_ASMS = "1.1.3"
     const val UMSDK_CRASH = "0.0.4"
-    const val NIM = "8.1.2"
+    const val NIM = "8.2.0"
     const val AMAP = "7.7.0"
     const val AMAP_SEARCH = "6.9.2"
     const val AMAP_LOCATION = "5.2.0"
