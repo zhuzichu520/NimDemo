@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
+import com.chuzi.android.libs.tool.getStatusBarHeight
 import com.chuzi.android.mvvm.databinding.BindingCommand
 import com.chuzi.android.mvvm.ext.createCommand
 import com.chuzi.android.nim.R
@@ -59,7 +60,7 @@ class LayoutTopBar @JvmOverloads constructor(
      * 初始化
      */
     init {
-        binding.root.setPadding(0, QMUIStatusBarHelper.getStatusbarHeight(context), 0, 0)
+        binding.root.setPadding(0, getStatusBarHeight(context), 0, 0)
         setOnClickDoubleListener(this, binding.layoutBack)
     }
 

@@ -54,6 +54,8 @@ android {
 
     }
 
+
+
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
@@ -85,6 +87,7 @@ android {
             java.srcDir("src/main/kotlin")
         }
     }
+
 }
 
 dependencies {

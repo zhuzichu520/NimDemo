@@ -36,7 +36,6 @@ object Versions {
     const val MMKV = "1.2.2"
     const val MULTIDEX = "2.0.1"
     const val ONCE = "1.3.0"
-    const val AUTOSIZE = "1.2.1"
     const val GUAVA = "27.0.1-android"
     const val EASYFLOAT = "1.3.3"
     const val GSON = "2.8.6"
@@ -51,7 +50,7 @@ object Versions {
     const val UMSDK_COMMON = "9.3.0"
     const val UMSDK_ASMS = "1.1.3"
     const val UMSDK_CRASH = "0.0.4"
-    const val NIM = "8.2.0"
+    const val NIM = "8.2.5"
     const val AMAP = "7.7.0"
     const val AMAP_SEARCH = "6.9.2"
     const val AMAP_LOCATION = "5.2.0"
@@ -89,7 +88,7 @@ object NimLibs {
  * 插件版本
  */
 object BuildPluginsVersion {
-    const val AGP = "4.2.0-beta02"
+    const val AGP = "4.2.0-beta04"
     const val KOTLIN = "1.4.20"
     const val VERSIONS_PLUGIN = "0.29.0"
     const val ANDROID_MAVEN = "2.1"
@@ -176,7 +175,6 @@ object Libs {
     const val LOGBACK_ANDROID = "com.github.tony19:logback-android:${Versions.LOGBACK}"
     const val SLF4J = "org.slf4j:slf4j-api:${Versions.SLF4J}"
     const val FLEXBOX = "com.google.android:flexbox:${Versions.FLEXBOX}"
-    const val AUTOSZIE = "me.jessyan:autosize:${Versions.AUTOSIZE}"
     const val ONCE = "com.jonathanfinerty.once:once:${Versions.ONCE}"
     const val MULTIDEX = "androidx.multidex:multidex:${Versions.MULTIDEX}"
     const val MMKV = "com.tencent:mmkv-static:${Versions.MMKV}"

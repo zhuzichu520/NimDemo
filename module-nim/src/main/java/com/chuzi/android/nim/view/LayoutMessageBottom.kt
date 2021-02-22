@@ -39,7 +39,7 @@ class LayoutMessageBottom @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), View.OnClickListener {
+) : LinearLayout(context, attrs, defStyleAttr), View.OnClickListener {
 
     /**
      * 根布局
@@ -178,18 +178,19 @@ class LayoutMessageBottom @JvmOverloads constructor(
         val screenHeight = context.resources.displayMetrics.heightPixels
         val screenHeight6 = screenHeight / 6
         val rootView = (context as Activity).window.decorView
-        val virtualKeyboardHeight = getStatusBarHeight(context)
+        var virtualKeyboardHeight = 0
         var isKeyboardShow = false
         rootView.viewTreeObserver.addOnGlobalLayoutListener {
             val rect = Rect()
             rootView.getWindowVisibleDisplayFrame(rect)
             val heightDifference = screenHeight - rect.bottom
             if (heightDifference < screenHeight6) {
+                virtualKeyboardHeight = heightDifference
                 if (isKeyboardShow) {
                     isKeyboardShow = false
                 }
             } else {
-                val softKeyboardHeight = heightDifference + virtualKeyboardHeight
+                val softKeyboardHeight = heightDifference - virtualKeyboardHeight
                 if (!isKeyboardShow) {
                     isKeyboardShow = true
                     this.softKeyboardHeight = softKeyboardHeight

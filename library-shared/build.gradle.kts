@@ -90,7 +90,6 @@ dependencies {
     api(Libs.LOGBACK_ANDROID)
     api(Libs.SLF4J)
     api(Libs.FLEXBOX)
-    api(Libs.AUTOSZIE)
     api(Libs.ONCE)
     api(Libs.MULTIDEX)
     api(Libs.MMKV)
